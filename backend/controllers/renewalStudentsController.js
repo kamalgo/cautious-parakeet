@@ -220,6 +220,41 @@ exports.getAllRenewalStudentsForPageLoad = async (req, res) => {
 
 
 
+// exports.searchRenewalStudents = async (req, res) => {
+//   const searchQuery = req.body.query || ""; // Get search query from request
+//   const referenceId = req.body.referenceId; // Get referenceId from request (optional)
+
+//   console.log("Received query:", searchQuery);
+//   console.log("Received referenceId:", referenceId);
+
+//   try {
+//     // Create a dynamic where clause based on searchQuery
+//     const whereClause = {
+//       candidateName: {
+//         [Op.like]: `%${searchQuery}%`,
+//       },
+//     };
+
+//     // If referenceId is provided, add it to the where clause
+//     if (referenceId) {
+//       whereClause.referenceId = referenceId;
+//     }
+
+//     const renewalProfiles = await MahadbtRenwalprofiles.findAll({
+//       where: whereClause,
+//     });
+
+//     return res.status(200).json({
+//       success: true,
+//       data: renewalProfiles,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching profiles:", error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// };
+
+
 exports.searchRenewalStudents = async (req, res) => {
   const searchQuery = req.body.query || ""; // Get search query from request
   const referenceId = req.body.referenceId; // Get referenceId from request (optional)
@@ -228,15 +263,18 @@ exports.searchRenewalStudents = async (req, res) => {
   console.log("Received referenceId:", referenceId);
 
   try {
-    // Create a dynamic where clause based on searchQuery
-    const whereClause = {
-      candidateName: {
-        [Op.like]: `%${searchQuery}%`,
-      },
-    };
+    // Create an empty where clause
+    const whereClause = {};
 
-    // If referenceId is provided, add it to the where clause
-    if (referenceId) {
+    // Add search query for candidateName if provided
+    if (searchQuery) {
+      whereClause.candidateName = {
+        [Op.like]: `%${searchQuery}%`,
+      };
+    }
+
+    // Only add referenceId to where clause if it's provided and not equal to "FORSTU"
+    if (referenceId && referenceId !== "FORSTU") {
       whereClause.referenceId = referenceId;
     }
 
@@ -253,7 +291,6 @@ exports.searchRenewalStudents = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
 
 
 
@@ -1689,6 +1726,205 @@ exports.updateRemarks = (req, res) => {
 };
 
 
+// exports.getRemarks = (req, res) => {
+//   const { id } = req.body;
+//   console.log(id);
+//   // Validate id before proceeding
+//   if (!id) {
+//     return res.status(400).json({
+//       success: false,
+//       message: "Missing 'id' in request parameters.",
+//     });
+//   }
+
+//   // Log the received id for debugging
+//   console.log('Fetching remarks for id:', id);
+
+//   // Perform the query to find the record by 'id'
+//   MahadbtRenwalprofiles.findOne({
+//     where: { id: id },
+//     attributes: ['Remarks'], // Only fetch the 'Remarks' field
+//   })
+//     .then((result) => {
+//       // Check if a record was found
+//       if (result) {
+//         res.json({
+//           success: true,
+//           remarks: result.Remarks, // Return the Remarks
+//         });
+//       } else {
+//         res.status(404).json({
+//           success: false,
+//           message: `No profile found with id=${id}.`,
+//         });
+//       }
+//     })
+//     .catch((error) => {
+//       console.error('Fetch error:', error);
+//       res.status(500).json({
+//         success: false,
+//         message: `Error fetching remarks with id=${id}`,
+//         error: error.message,
+//       });
+//     });
+// };
 
 
 
+exports.getRemarks = (req, res) => {
+  const { id } = req.body;
+
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing 'id' in request parameters.",
+    });
+  }
+
+  console.log('Fetching remarks for id:', id);
+
+  MahadbtRenwalprofiles.findOne({
+    where: { id: id },
+    attributes: ['profile_Remarks'],
+  })
+    .then((result) => {
+      if (result) {
+        let remarks = result.profile_Remarks;
+
+        console.log("rema", remarks);
+
+        // Parse remarks if it's a stringified array
+        if (typeof remarks === 'string') {
+          try {
+            remarks = JSON.parse(remarks);  // Parse the JSON string
+          } catch (error) {
+            console.error('Remarks parsing error:', error);
+            return res.status(500).json({
+              success: false,
+              message: `Error parsing remarks for id=${id}`,
+            });
+          }
+        }
+          console.log("remarksssss", remarks);
+        res.json({
+          success: true,
+          remarks: remarks,  // Send as an array
+        });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: `No profile found with id=${id}.`,
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+      res.status(500).json({
+        success: false,
+        message: `Error fetching remarks with id=${id}`,
+        error: error.message,
+      });
+    });
+};
+
+
+exports.removeRemark = (req, res) => {
+  const { id, remarkIndex } = req.body;
+
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing 'id' in request parameters.",
+    });
+  }
+
+  if (remarkIndex === undefined || remarkIndex < 0) {
+    return res.status(400).json({
+      success: false,
+      message: "Missing or invalid 'remarkIndex' in request parameters.",
+    });
+  }
+
+  console.log(`Removing remark at index ${remarkIndex} for id:`, id);
+
+  MahadbtRenwalprofiles.findOne({
+    where: { id: id },
+    attributes: ['Remarks'],
+  })
+    .then((result) => {
+      if (result) {
+        let remarks = result.Remarks;
+
+        console.log("Remarks before parsing:", remarks);
+
+        // If remarks are in string format, parse them into an array
+        if (typeof remarks === 'string') {
+          try {
+            remarks = JSON.parse(remarks);
+          } catch (error) {
+            console.error('Remarks parsing error:', error);
+            return res.status(500).json({
+              success: false,
+              message: `Error parsing remarks for id=${id}`,
+            });
+          }
+        }
+
+        console.log("Remarks after parsing:", remarks);
+
+        // Ensure that remarks is an array
+        if (!Array.isArray(remarks)) {
+          console.error('Remarks is not an array:', remarks);
+          return res.status(500).json({
+            success: false,
+            message: 'Invalid remarks format. Expected an array.',
+          });
+        }
+
+        // Check if remarkIndex is within bounds
+        if (remarkIndex >= remarks.length) {
+          return res.status(400).json({
+            success: false,
+            message: `Invalid remarkIndex: ${remarkIndex} for id=${id}.`,
+          });
+        }
+
+        // Remove the remark by index
+        remarks.splice(remarkIndex, 1);
+
+        // Update the database with the new remarks array
+        MahadbtRenwalprofiles.update(
+          { Remarks: remarks }, // Directly save the updated array
+          { where: { id: id } }
+        )
+          .then(() => {
+            res.json({
+              success: true,
+              message: 'Remark removed successfully',
+              remarks: remarks, // Return the updated remarks array
+            });
+          })
+          .catch((error) => {
+            console.error('Update error:', error);
+            res.status(500).json({
+              success: false,
+              message: `Error updating remarks for id=${id}`,
+              error: error.message,
+            });
+          });
+      } else {
+        res.status(404).json({
+          success: false,
+          message: `No profile found with id=${id}.`,
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Fetch error:', error);
+      res.status(500).json({
+        success: false,
+        message: `Error fetching remarks with id=${id}`,
+        error: error.message,
+      });
+    });
+};

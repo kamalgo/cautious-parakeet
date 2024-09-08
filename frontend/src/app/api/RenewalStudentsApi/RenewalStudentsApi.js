@@ -3,9 +3,111 @@ import { redirectOnTokenExpire } from "../Auth";
 
 const ENDPOINT = import.meta.env.VITE_BACKEND_ENDPOINT;
 
-//fetch users using username
+export async function removeRemarkApi(id, remarkIndex) {
+  console.log("id in removeRemark API:", id);
+  console.log("remarkIndex in removeRemark API:", remarkIndex);
+
+  try {
+    const response = await fetch(`${ENDPOINT}/removeRemark`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ id, remarkIndex }),
+    });
+
+    if (response.status === 401) {
+      redirectOnTokenExpire();
+    }
+
+    const responseData = await response.json();
+    console.log("API Response:", responseData);
+
+    if (responseData.success) {
+      return { success: true, remarks: responseData.remarks }; // Ensure consistent response structure
+    } else {
+      return { success: false, message: responseData.message }; // Include message in error response
+    }
+  } catch (error) {
+    console.error("Error removing remark:", error);
+    return { success: false, message: 'An error occurred while removing the remark.' }; // Include a default message
+  }
+}
+
+
+
+export async function getRemarks(id) {
+  console.log("id in api", id); // Logging the id for debugging purposes
+
+  try {
+    const response = await fetch(`${ENDPOINT}/getRemarks`, {
+      method: "POST", // Use POST method as you're sending 'id' in the body
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({ id }), // Send 'id' in the request body
+    });
+
+    if (response.status === 401) {
+      redirectOnTokenExpire(); // Handle authentication expiry
+    }
+
+    const responseData = await response.json();
+    console.log("API Response:", responseData); // Log the full response
+
+    if (responseData.success) {
+      return responseData.remarks; // Return the remarks array if successful
+    } else {
+      console.error("Failed to fetch remarks:", responseData.message);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching remarks:", error);
+    return [];
+  }
+}
+
+
+// export async function getRemarks(id) {
+//   try {
+//     const response = await fetch(`${ENDPOINT}/getRemarks`, {
+//       method: "GET",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Accept: "application/json",
+//       },
+//       body: JSON.stringify({ id }),
+//     });
+
+//     if (response.status === 401) {
+//       redirectOnTokenExpire();
+//     }
+
+//     const responseData = await response.json();
+//     console.log("uuu",responseData);
+
+//     if (responseData.success) {
+//       return responseData.remarks;
+//     } else {
+//       console.error("Failed to fetch remarks:", responseData.message);
+//       return [];
+//     }
+//   } catch (error) {
+//     console.error("Error fetching remarks:", error);
+//     return [];
+//   }
+// }
+
+
+
 
 //multi part options
+
+
+
+
 export async function sendSelectedDataToDB(id, selectedValues) {
   const { accessToken } = isAuthenticated();  // Get authentication token
 

@@ -317,11 +317,6 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         allowNull: true,
         field: 'Caste_Validity',
     },
-    leavingCertDoc: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Leaving_Cerificate_Doc',
-    },
     allotmentLetterDoc: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -499,6 +494,11 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
     Remarks: {
         type: Sequelize.JSON,
         allowNull: true
+      },
+
+      profile_Remarks: {
+        type: Sequelize.JSON,
+        allowNull: true     
       },
       
 

@@ -145,7 +145,6 @@ exports.signup = (req, res) => {
 exports.signin = (req, res) => {
   try {
     const { username, password } = req.body;
-
     // console.log(username, password);
 
     const errors = validationResult(req);
