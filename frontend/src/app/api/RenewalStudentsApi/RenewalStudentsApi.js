@@ -359,6 +359,46 @@ export async function updateHostelDetails(id, hostelDetails_verified) {
 }
 
 
+// export async function updateSchemeDetails(id, scheme_verified) {
+//   const { accessToken } = isAuthenticated(); // Get authentication token
+
+//   // Log the data being sent for debugging
+//   console.log("Sending data:", {
+//     id: id,
+//     schemeWise_verified: scheme_verified,
+//   });
+
+//   try {
+//     const response = await fetch(`${ENDPOINT}/schemeVerified`, {
+//       method: "POST",
+//       headers: {
+//         "Content-Type": "application/json",
+//         Accept: "application/json",
+//         Authorization: accessToken,
+//       },
+//       body: JSON.stringify({
+//         id: id,
+//         schemeWise_verified: scheme_verified,
+//       }),
+//     });
+
+//     if (response.status === 401) {
+//       redirectOnTokenExpire();
+//       throw new Error("Token expired");
+//     }
+
+//     if (!response.ok) {
+//       throw new Error(`HTTP error! status: ${response.status}`);
+//     }
+
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     console.error("Error updating scheme details:", error);
+//     throw error;
+//   }
+// }
+
 export async function updateSchemeDetails(id, scheme_verified) {
   const { accessToken } = isAuthenticated(); // Get authentication token
 
@@ -382,6 +422,9 @@ export async function updateSchemeDetails(id, scheme_verified) {
       }),
     });
 
+    // Log response status for debugging
+    console.log("Response Status:", response.status);
+
     if (response.status === 401) {
       redirectOnTokenExpire();
       throw new Error("Token expired");
@@ -391,11 +434,13 @@ export async function updateSchemeDetails(id, scheme_verified) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
 
+    // Log the actual response body for debugging
     const data = await response.json();
+    console.log("Response Data:", data); // Log the parsed response
     return data;
   } catch (error) {
     console.error("Error updating scheme details:", error);
-    throw error;
+    throw error; // Ensure the error is thrown for proper handling
   }
 }
 

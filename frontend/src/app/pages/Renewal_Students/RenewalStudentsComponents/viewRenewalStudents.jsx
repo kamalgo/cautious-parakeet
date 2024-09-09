@@ -68,6 +68,9 @@ function viewRenewalStudents() {
         const data = { id };
         const response = await renewalStudentProfileView(data);
 
+        console.log("Full API Response:", response.data); 
+
+
         // Ensure response is correctly set
         if (response && response.data) {
           setViewData(response.data);
@@ -75,7 +78,8 @@ function viewRenewalStudents() {
           setIsIncomeVerified(response.data.incomeDetails_verified === 'yes');
           setIsCurrentCourseVerified(response.data.currentCourse_verified === 'yes');
           setIsHostelVerified(response.data.hostelDetails_verified === 'yes');
-          setIsSchemeVerified(response.data.scheme_verified === 'yes');
+          setIsSchemeVerified(response.data.schemeWise_verified === 'yes');
+          console.log("Scheme Verified Status on Fetch:", response.data.scheme_verified);
 
           // Parse the remarks from the response
           const remarks = JSON.parse(response.data.remarks || '[]');
@@ -176,24 +180,30 @@ function viewRenewalStudents() {
     }
   };
 
-  // Confirmation for Hostel Verification
+  // Confirmation for Confirm Verification
   const confirmSchemeVerification = async (verificationStatus) => {
     try {
       const response = await updateSchemeDetails(id, verificationStatus);
+      console.log("API Response:", response); // Check the response
       if (response.success) {
-        // Update state correctly based on verification status
         setIsSchemeVerified(verificationStatus === 'yes');
+        console.log("Verification Status:", verificationStatus === 'yes'); // Log the status being set
       }
     } catch (err) {
-      console.error("Error updating hostel verification status:", err);
+      console.error("Error updating scheme verification status:", err);
     } finally {
-      setIsSchemeDialogOpen(false); // Ensure dialog closes after operation
+      setIsSchemeDialogOpen(false);
     }
   };
+  
+  
 
 
 
-
+  useEffect(() => {
+    console.log("Scheme verified status:", isSchemeVerified);
+  }, [isSchemeVerified]);
+  
 
   const openModalWithId = () => {
     setSelectedId(id);
@@ -1438,9 +1448,15 @@ function viewRenewalStudents() {
                 >
                   Edit
                 </button>
-                <Button ml={2} colorScheme={isSchemeVerified ? "green" : "red"} size="sm" onClick={(e) => handleVerifyClick(e, 'scheme')}>
-                  {isSchemeVerified ? "Verified" : "Not Verified"}
-                </Button>
+                <Button
+  ml={2}
+  colorScheme={isSchemeVerified ? "green" : "red"}
+  size="sm"
+  onClick={(e) => handleVerifyClick(e, 'scheme')}
+>
+  {isSchemeVerified ? "Verified" : "Not Verified"}
+</Button>
+
                 <AccordionIcon />
               </AccordionButton>
             </h2>
