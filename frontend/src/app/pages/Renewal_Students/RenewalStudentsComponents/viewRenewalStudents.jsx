@@ -27,8 +27,6 @@ import HostelDialog from "./verificationDialogs/HostelDialog";
 import SchemeDialog from "./verificationDialogs/SchemeDialog";
 
 
-
-
 function viewRenewalStudents() {
   const toast = useToast();  // Initialize toast once for the component
   const [selectedOptions, setSelectedOptions] = useState([]);

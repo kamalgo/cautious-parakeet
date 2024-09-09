@@ -330,33 +330,12 @@ const Edit_Current_Course_Renewal_Modal = ({ isOpen, onClose, id }) => {
         <ModalCloseButton />
         <ModalBody>
           <VStack spacing={4}>
-            <FormControl>
-              <FormLabel>Admission Year</FormLabel>
-              <Select name="admissionYear" value={formData.admissionYear} onChange={handleChange} >
-              <option value="">Select</option>
-              <option value="2023">2023</option>
-              <option value="2022">2022</option>
-              <option value="2021">2021</option>
-              <option value="2020">2020</option>
-              <option value="2019">2019</option>
-              <option value="2018">2018</option>
-              <option value="2017">2017</option>
-              <option value="2016">2016</option>
-              <option value="2015">2015</option>
-              <option value="2014">2014</option>
-              <option value="2013">2013</option>
-              <option value="2012">2012</option>
-              <option value="2011">2011</option>
-              <option value="2010">2010</option>
-              <option value="2009">2009</option>
-              <option value="2008">2008</option>
-              <option value="2007">2007</option>
-              <option value="2006">2006</option>
-              <option value="2005">2005</option>
-              <option value="2004">2004</option>
-            </Select>
+
+          <FormControl>
+              <FormLabel>Institute Name</FormLabel>
+              <Input name="instituteName" value={formData.instituteName} onChange={handleChange} />
             </FormControl>
-            
+
             <FormControl>
               <FormLabel>Institute State</FormLabel>
               <Select name="instituteState" value={formData.instituteState} onChange={handleChange}>
@@ -364,7 +343,7 @@ const Edit_Current_Course_Renewal_Modal = ({ isOpen, onClose, id }) => {
               <option value="Maharashtra">Maharashtra</option>
             </Select>  
             </FormControl>
-            
+
             <FormControl>
               <FormLabel>Institute District</FormLabel>
               <Select name="instituteDistrict" value={formData.instituteDistrict} onChange={handleChange}>
@@ -780,6 +759,88 @@ const Edit_Current_Course_Renewal_Modal = ({ isOpen, onClose, id }) => {
             </FormControl>
 
             <FormControl>
+              <FormLabel>Present Year Of Study</FormLabel>
+              <Input name="presentYearOfStudy" value={formData.presentYearOfStudy} onChange={handleChange} />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Past Year Of Study</FormLabel>
+              <Input name="pastYearOfStudy" value={formData.pastYearOfStudy} onChange={handleChange} />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Past Year Completed Pursuing</FormLabel>
+              <Input name="pastYearCompletedPursuing" value={formData.pastYearCompletedPursuing} onChange={handleChange} />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Present Year Completed Pursuing</FormLabel>
+              <Input name="presentYearCompletedPursuing" value={formData.presentYearCompletedPursuing} onChange={handleChange} />
+            </FormControl>
+            
+            <FormControl>
+            <FormLabel>Result Passed/ATKT</FormLabel>
+              <Select name="resultPassedAtkt" value={formData.resultPassedAtkt} onChange={handleChange}>
+              <option value="">Select</option>
+              <option value="Passed">Passed</option>
+              <option value="Passed With ATKT">Passed With ATKT</option>
+              </Select>
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Previous Year Percentage</FormLabel>
+              <Input name="previousYearPercentage" value={formData.previousYearPercentage} onChange={handleChange} />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Admission Year Of That Course</FormLabel>
+              <Select name="admissionYearOfThatCourse" value={formData.admissionYearOfThatCourse} onChange={handleChange} >
+                <option value="">Select</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+            </Select>
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Admission Date Current Course</FormLabel>
+              <Input type="date" name="admissionDateCurrentCourse" value={formData.admissionDateCurrentCourse} onChange={handleChange} />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel>Admission Year of College</FormLabel>
+              <Select name="admissionYear" value={formData.admissionYear} onChange={handleChange} >
+              <option value="">Select</option>
+              <option value="2023">2023</option>
+              <option value="2022">2022</option>
+              <option value="2021">2021</option>
+              <option value="2020">2020</option>
+              <option value="2019">2019</option>
+              <option value="2018">2018</option>
+              <option value="2017">2017</option>
+              <option value="2016">2016</option>
+              <option value="2015">2015</option>
+              <option value="2014">2014</option>
+              <option value="2013">2013</option>
+              <option value="2012">2012</option>
+              <option value="2011">2011</option>
+              <option value="2010">2010</option>
+              <option value="2009">2009</option>
+              <option value="2008">2008</option>
+              <option value="2007">2007</option>
+              <option value="2006">2006</option>
+              <option value="2005">2005</option>
+              <option value="2004">2004</option>
+            </Select>
+            </FormControl>
+            
+
+
+
+            {/* <FormControl>
               <FormLabel>Qualification Level</FormLabel>
               <Select name="qualificationLevel" value={formData.qualificationLevel} onChange={handleChange}>
                 <option value="">Select</option>
@@ -837,11 +898,6 @@ const Edit_Current_Course_Renewal_Modal = ({ isOpen, onClose, id }) => {
 
 
             <FormControl>
-              <FormLabel>Institute Name</FormLabel>
-              <Input name="instituteName" value={formData.instituteName} onChange={handleChange} />
-            </FormControl>
-
-            <FormControl>
               <FormLabel>Course Name</FormLabel>
               <Input name="courseName" value={formData.courseName} onChange={handleChange} />
             </FormControl>
@@ -865,49 +921,7 @@ const Edit_Current_Course_Renewal_Modal = ({ isOpen, onClose, id }) => {
             <FormControl>
               <FormLabel>Admission Application ID</FormLabel>
               <Input name="admissionApplicationId" value={formData.admissionApplicationId} onChange={handleChange} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Past Year Of Study</FormLabel>
-              <Input name="pastYearOfStudy" value={formData.pastYearOfStudy} onChange={handleChange} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Past Year Completed Pursuing</FormLabel>
-              <Input name="pastYearCompletedPursuing" value={formData.pastYearCompletedPursuing} onChange={handleChange} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Present Year Of Study</FormLabel>
-              <Input name="presentYearOfStudy" value={formData.presentYearOfStudy} onChange={handleChange} />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Present Year Completed Pursuing</FormLabel>
-              <Input name="presentYearCompletedPursuing" value={formData.presentYearCompletedPursuing} onChange={handleChange} />
-            </FormControl>
-            <FormControl>
-
-              <FormLabel>Admission Year Of That Course</FormLabel>
-              <Select name="admissionYearOfThatCourse" value={formData.admissionYearOfThatCourse} onChange={handleChange} >
-                <option value="">Select</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-                <option value="2019">2019</option>
-                <option value="2018">2018</option>
-            </Select>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Previous Year Percentage</FormLabel>
-              <Input name="previousYearPercentage" value={formData.previousYearPercentage} onChange={handleChange} />
-            </FormControl>
-            <FormControl>
-
-              <FormLabel>Result Passed/ATKT</FormLabel>
-              <Select name="resultPassedAtkt" value={formData.resultPassedAtkt} onChange={handleChange}>
-              <option value="">Select</option>
-              <option value="Passed">Passed</option>
-              <option value="Passed With ATKT">Passed With ATKT</option>
-              </Select>
-            </FormControl>
+            </FormControl> */}
 
             <FormControl>
               <FormLabel>Admission Caste Category</FormLabel>
@@ -923,11 +937,8 @@ const Edit_Current_Course_Renewal_Modal = ({ isOpen, onClose, id }) => {
               </Select>
             </FormControl>
 
-            <FormControl>
-              <FormLabel>Admission Date Current Course</FormLabel>
-              <Input type="date" name="admissionDateCurrentCourse" value={formData.admissionDateCurrentCourse} onChange={handleChange} />
-            </FormControl>
-            <FormControl>
+
+           {/* <FormControl>
               <FormLabel>Fees Paid Current Course</FormLabel>
               <Input name="feesPaidCurrentCourse" value={formData.feesPaidCurrentCourse} onChange={handleChange} />
             </FormControl>
@@ -943,7 +954,7 @@ const Edit_Current_Course_Renewal_Modal = ({ isOpen, onClose, id }) => {
             <FormControl>
               <FormLabel>Gap Reason</FormLabel>
               <Input name="gapReason" value={formData.gapReason} onChange={handleChange} />
-            </FormControl>
+            </FormControl> */}
           </VStack>
         </ModalBody>
         <ModalFooter>
