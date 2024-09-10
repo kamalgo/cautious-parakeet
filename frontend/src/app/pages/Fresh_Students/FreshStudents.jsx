@@ -529,7 +529,7 @@ import { Table, Input, Button, Modal, Upload, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import Base from "../../components/Base";
 import {
-  FreshStudentApi, castecertS3Fresh, fetchRecordDetails, incomeDocS3Fresh, feeReceiptS3Fresh, hostelCertS3Fresh, 
+  FreshStudentApii, castecertS3Fresh, fetchRecordDetails, incomeDocS3Fresh, feeReceiptS3Fresh, hostelCertS3Fresh, 
   alpabudharakCertS3Fresh, declarationCertS3Fresh, registeredLabourCertS3Fresh, studentPanCardS3Fresh, fatherPanCardS3Fresh, 
   fatherAadharCardS3Fresh, casteValidityS3Fresh
 } from "../../api/FreshStudentApi/FreshStudentApi.js";
@@ -547,7 +547,7 @@ const FreshStudents = () => {
 
   const fetchData = async (query = "") => {
     try {
-      const response = await FreshStudentApi(query);
+      const response = await FreshStudentApii(query);
       setData(response.data); // Adjust according to your API response structure
     } catch (error) {
       console.error("Error fetching data:", error);

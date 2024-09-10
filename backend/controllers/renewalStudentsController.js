@@ -1785,11 +1785,11 @@ exports.getRemarks = (req, res) => {
 
   MahadbtRenwalprofiles.findOne({
     where: { id: id },
-    attributes: ['profile_Remarks'],
+    attributes: ['Remarks'],
   })
     .then((result) => {
       if (result) {
-        let remarks = result.profile_Remarks;
+        let remarks = result.Remarks;
 
         console.log("rema", remarks);
 

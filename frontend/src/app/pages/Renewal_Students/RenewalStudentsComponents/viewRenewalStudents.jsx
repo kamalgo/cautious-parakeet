@@ -28,6 +28,9 @@ import SchemeDialog from "./verificationDialogs/SchemeDialog";
 
 
 function viewRenewalStudents() {
+  const [viewData, setViewData] = useState([]);
+  const [refreshRemarks, setRefreshRemarks] = useState(0);
+
   const toast = useToast();  // Initialize toast once for the component
   const [selectedOptions, setSelectedOptions] = useState([]);
 
@@ -40,7 +43,6 @@ function viewRenewalStudents() {
 
 
   //Modals for edit button
-  const [viewData, setViewData] = useState([]);
   const [selectedId, setSelectedId] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isIncomeModalOpen, setIsIncomeModalOpen] = useState(false);
@@ -403,45 +405,40 @@ function viewRenewalStudents() {
   const handleSelectChange = (selected) => {
     setSelectedOptions(selected);
   };
-  // Handle form submission to send data to DB
+
   const handleSubmit = async () => {
     try {
-      // Map selectedOptions to only include the `value` field
       const selectedValues = selectedOptions.map(option => option.value);
-
-      // Log the selected values for debugging
-      console.log("Selected Values:", id, selectedValues);
-
-      // Call your API function and pass the processed values
-      const response = await sendSelectedDataToDB(id, selectedValues); // Pass only the values
+      const response = await sendSelectedDataToDB(id, selectedValues);
       if (response.success) {
         toast({
-          title: "Success!",
-          description: "Data sent to the database successfully.",
-          status: "success",
+          title: 'Success!',
+          description: 'Data sent to the database successfully.',
+          status: 'success',
           duration: 5000,
           isClosable: true,
-          position: "top-right",
+          position: 'top-right',
         });
+        setRefreshRemarks(prev => prev + 1); // Increment the state to trigger re-render
       } else {
         toast({
-          title: "Failed!",
-          description: "Failed to send data to the database.",
-          status: "error",
+          title: 'Failed!',
+          description: 'Failed to send data to the database.',
+          status: 'error',
           duration: 5000,
           isClosable: true,
-          position: "top-right",
+          position: 'top-right',
         });
       }
     } catch (err) {
-      console.error("Error sending selected data to DB:", err);
+      console.error('Error sending selected data to DB:', err);
       toast({
-        title: "Error!",
-        description: "There was an error sending the data.",
-        status: "error",
+        title: 'Error!',
+        description: 'There was an error sending the data.',
+        status: 'error',
         duration: 5000,
         isClosable: true,
-        position: "top-right",
+        position: 'top-right',
       });
     }
   };
@@ -484,9 +481,10 @@ function viewRenewalStudents() {
 
         <CustomCard
           title="Remarks"
-          id={id} // Pass the ID to CustomCard
-          onRemoveRemark={handleRemoveRemark}
+          id={id}
+          key={refreshRemarks} // Ensure CustomCard is re-rendered when refreshRemarks changes
         />
+
 
 
 

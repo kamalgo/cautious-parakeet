@@ -3,7 +3,7 @@ import { redirectOnTokenExpire } from "../Auth";
 
 const ENDPOINT = import.meta.env.VITE_BACKEND_ENDPOINT;
 
-export async function FreshStudentApi(searchQuery = "") {
+export async function FreshStudentApii(searchQuery = "") {
   const { accessToken } = isAuthenticated();
 
   const response = await fetch(`${ENDPOINT}/getallFreshStudents?q=${searchQuery}`, {
