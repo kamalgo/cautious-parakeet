@@ -500,7 +500,12 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         type: Sequelize.JSON,
         allowNull: true     
       },
-      
+     
+      Application_Status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Application_Status',
+    },
 
 
 }, {

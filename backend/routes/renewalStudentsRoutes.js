@@ -1,13 +1,18 @@
 const express = require("express");
 const router = express.Router();
 
-const {removeRemark, getRemarks, updateRemarks, fetchRefCode, invalidDoc, validDoc, markAsUnsuccessful, markAsSuccessful, updateSchemeDetails , updateHostelDetails, updateCurrentCourseDetails, incomeDetails, personalInfo, getAllRenewalStudentsForPageLoad, searchRenewalStudents , getallRenewalStudents, getRenewalStudentDetails, getSingleMahadbtRenewalProfile, updateMahadbtRenewalProfile
+const {appPending, appSubmitted, removeRemark, getRemarks, updateRemarks, fetchRefCode, invalidDoc, validDoc, markAsUnsuccessful, markAsSuccessful, updateSchemeDetails , updateHostelDetails, updateCurrentCourseDetails, incomeDetails, personalInfo, getAllRenewalStudentsForPageLoad, searchRenewalStudents , getallRenewalStudents, getRenewalStudentDetails, getSingleMahadbtRenewalProfile, updateMahadbtRenewalProfile
      , sendincomeDocS3Renewal, sendfeeReceiptS3Renewal, sendHostelCertToS3Renewal, sendalpabudharakCertS3Renewal,
      sendDeclarationCertToS3Renewal, sendRegisteredLabourCertToS3Renewal, sendStudentPanCardToS3Renewal,
      sendFatherPanCardToS3Renewal, sendFatherAadharCardToS3Renewal, sendCasteValidityToS3Renewal, sendAllotmentLetterToS3Renewal,
      sendLeavingCertToS3Renewal, sendRationCardToS3Renewal, sendPreviousYearMarksheetToS3Renewal,
      sendGapCertToS3Renewal
      } = require("../controllers/renewalStudentsController");
+
+
+
+router.post("/appPending",appPending);
+router.post("/appSubmitted",appSubmitted);
 
 router.put("/removeRemark",removeRemark);
 router.post("/getRemarks",getRemarks);

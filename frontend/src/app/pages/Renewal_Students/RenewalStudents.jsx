@@ -534,6 +534,16 @@ const RenewalStudents = () => {
       key: "referenceId",
     },
     {
+      title: "Mobile Number",
+      dataIndex: "whatsappNumber",
+      key: "whatsappNumber",
+    },
+    {
+      title: "Alternate Mobile Number",
+      dataIndex: "alternateMobileNumber",
+      key: "alternateMobileNumber",
+    },
+    {
       title: 'Actions',
       key: 'actions',
       render: (_, record) => (

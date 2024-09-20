@@ -1,3 +1,5 @@
+
+import { Progress } from '@chakra-ui/react';
 import CustomCard from "./CustomCard";
 import React, { useEffect, useState } from "react";
 import { Select as ChakraSelect } from "chakra-react-select";  // Import chakra-react-select
@@ -11,7 +13,7 @@ import {
 import { FiAlertCircle } from "react-icons/fi"; // Example: FiAlertCircle from React Icons
 import Base from "../../../components/Base";
 import {
-  markLoginUnsuccessful, markLoginSuccessful, renewalStudentProfileView, updatePersonalInfo, updateIncomeDetails, updateCurrentCourseDetails,
+  appPending, appSubmitted, markLoginUnsuccessful, markLoginSuccessful, renewalStudentProfileView, updatePersonalInfo, updateIncomeDetails, updateCurrentCourseDetails,
   updateHostelDetails, updateSchemeDetails, sendSelectedDataToDB
 } from "../../../api/RenewalStudentsApi/RenewalStudentsApi";
 
@@ -68,7 +70,7 @@ function viewRenewalStudents() {
         const data = { id };
         const response = await renewalStudentProfileView(data);
 
-        console.log("Full API Response:", response.data); 
+        console.log("Full API Response:", response.data);
 
 
         // Ensure response is correctly set
@@ -195,15 +197,15 @@ function viewRenewalStudents() {
       setIsSchemeDialogOpen(false);
     }
   };
-  
-  
+
+
 
 
 
   useEffect(() => {
     console.log("Scheme verified status:", isSchemeVerified);
   }, [isSchemeVerified]);
-  
+
 
   const openModalWithId = () => {
     setSelectedId(id);
@@ -244,6 +246,82 @@ function viewRenewalStudents() {
   //     console.error("Error marking login as successful:", err);
   //   }
   // };
+
+
+  //Handle App Submitted
+  const handleAppSubmitted = async () => {
+    try {
+      const response = await appSubmitted(id); // Assuming 'id' is defined in your component
+      if (response.success) {
+        toast({
+          title: "Success!",
+          description: "Application marked as Submitted.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+        console.log("Login marked as successful");
+      } else {
+        toast({
+          title: "Failed!",
+          description: "Could not mark login as successful.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+      }
+    } catch (err) {
+      console.error("Error marking login as successful:", err);
+      toast({
+        title: "Error!",
+        description: "There was an error processing the request.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  };
+
+  //Handle App Submitted
+  // Handle successful login
+  const handleAppPending = async () => {
+    try {
+      const response = await appPending(id); // Assuming 'id' is defined in your component
+      if (response.success) {
+        toast({
+          title: "Success!",
+          description: "Application marked as Pending.",
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+        console.log("Login marked as successful");
+      } else {
+        toast({
+          title: "Failed!",
+          description: "Could not mark login as successful.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+          position: "top-right",
+        });
+      }
+    } catch (err) {
+      console.error("Error marking login as successful:", err);
+      toast({
+        title: "Error!",
+        description: "There was an error processing the request.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  };
 
 
   // Handle successful login
@@ -451,11 +529,24 @@ function viewRenewalStudents() {
 
   console.log("admission caste category", viewData?.admissionCasteCategory);  // Should output exactly "OBC"
   console.log("View data", viewData);  // Logs the entire viewData object
-
+  
   return (
     <div>
 
       <Base>
+        {/* <div>
+          <Progress value={40} hasStripe size="lg" colorScheme="twitter" is />
+        </div> */}
+        <Box p={3}>
+          <Button colorScheme="green" ml={1050} onClick={handleAppSubmitted}>
+            Application Submitted
+          </Button>
+
+          <Button colorScheme="red" ml={5} onClick={handleAppPending}>
+            Application Pending
+          </Button>
+
+        </Box>
         <Box p={3}>
           <Button colorScheme="green" ml={1050} onClick={handleLoginSuccessful}>
             MahaDBT Login Successful
@@ -490,185 +581,203 @@ function viewRenewalStudents() {
 
         <Accordion defaultIndex={[0]} allowMultiple>
 
-          <AccordionItem>
-            <h2>
-              <AccordionButton sx={{ backgroundColor: 'blue.700', color: 'white' }}>
-                <Box as="span" flex="1" textAlign="left" display="flex" alignItems="center">
-                  <Heading as="h2" size="md" p={"20px"}>
-                    Personal Information
-                    {/* Badge to show missing fields count */}
-                    {(() => {
-                      const fields = [
-                        viewData?.candidateName,
-                        viewData?.email,
-                        viewData?.whatsappNumber,
-                        viewData?.referenceId,
-                        viewData?.alternateMobileNumber,
-                        viewData?.mahadbt_Login,
-                        viewData?.Mahadbt_Username,
-                        viewData?.Mahadbt_Password
-                      ];
-                      const missingFieldsCount = fields.filter(field => field === null).length;
+        <AccordionItem>
+  <h2>
+    <AccordionButton sx={{ backgroundColor: 'blue.700', color: 'white' }}>
+      <Box as="span" flex="1" textAlign="left" display="flex" alignItems="center">
+        <Heading as="h2" size="md" p={"20px"}>
+          Personal Information
+          {/* Badge to show missing fields count */}
+          {(() => {
+            const fields = [
+              viewData?.candidateName,
+              viewData?.email,
+              viewData?.whatsappNumber,
+              viewData?.referenceId,
+              viewData?.alternateMobileNumber,
+              viewData?.mahadbt_Login,
+              viewData?.Mahadbt_Username,
+              viewData?.Mahadbt_Password
+            ];
+            const missingFieldsCount = fields.filter(field => field === null).length;
 
-                      return missingFieldsCount > 0 && (
-                        <Badge ml={3} colorScheme="red" fontSize="0.8em">
-                          {missingFieldsCount} Fields Missing
-                        </Badge>
-                      );
-                    })()}
-                  </Heading>
-                </Box>
+            return missingFieldsCount > 0 && (
+              <Badge ml={3} colorScheme="red" fontSize="0.8em">
+                {missingFieldsCount} Fields Missing
+              </Badge>
+            );
+          })()}
+        </Heading>
+      </Box>
 
-                <Button ml="auto" onClick={(e) => { e.stopPropagation(); openModalWithId(); }} colorScheme="blue" size="sm">Edit</Button>
-                <Button ml={2} colorScheme={isVerified ? "green" : "red"} size="sm" onClick={(e) => handleVerifyClick(e, 'personal')}>
-                  {isVerified ? "Verified" : "Not Verified"}
-                </Button>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
+      <Button ml="auto" onClick={(e) => { e.stopPropagation(); openModalWithId(); }} colorScheme="blue" size="sm">Edit</Button>
+      <Button ml={2} colorScheme={isVerified ? "green" : "red"} size="sm" onClick={(e) => handleVerifyClick(e, 'personal')}>
+        {isVerified ? "Verified" : "Not Verified"}
+      </Button>
+      <AccordionIcon />
+    </AccordionButton>
+  </h2>
 
-            <AccordionPanel pb={4}>
-              <SimpleGrid columns={3} spacing={10}>
+  <AccordionPanel pb={4}>
+    <SimpleGrid columns={3} spacing={10}>
 
-                {/* Candidate Name */}
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">
-                    Candidate Name (As Per SSC Marksheet)
-                  </Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.candidateName === null ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.candidateName}</Text>
-                    )}
-                  </Box>
-                </Box>
+      {/* Candidate Name */}
+      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+        <Heading pr={2} as="h5" size="sm">
+          Candidate Name (As Per SSC Marksheet)
+        </Heading>
+        <Box display="flex" alignItems="center">
+          {viewData?.candidateName === null ? (
+            <>
+              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+              <Text fontSize="md">Missing</Text>
+            </>
+          ) : (
+            <Text fontSize="md">{viewData?.candidateName}</Text>
+          )}
+        </Box>
+      </Box>
 
-                {/* Email */}
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">
-                    Email
-                  </Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.email === null ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.email}</Text>
-                    )}
-                  </Box>
-                </Box>
+      {/* Email */}
+      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+        <Heading pr={2} as="h5" size="sm">
+          Email
+        </Heading>
+        <Box display="flex" alignItems="center">
+          {viewData?.email === null ? (
+            <>
+              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+              <Text fontSize="md">Missing</Text>
+            </>
+          ) : (
+            <Text fontSize="md">{viewData?.email}</Text>
+          )}
+        </Box>
+      </Box>
 
-                {/* Mobile (Student WhatsApp Number) */}
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">
-                    Mobile (Student WhatsApp Number)
-                  </Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.whatsappNumber === null ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.whatsappNumber}</Text>
-                    )}
-                  </Box>
-                </Box>
+      {/* Mobile (Student WhatsApp Number) */}
+      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+        <Heading pr={2} as="h5" size="sm">
+          Mobile (Student WhatsApp Number)
+        </Heading>
+        <Box display="flex" alignItems="center">
+          {viewData?.whatsappNumber === null ? (
+            <>
+              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+              <Text fontSize="md">Missing</Text>
+            </>
+          ) : (
+            <Text fontSize="md">{viewData?.whatsappNumber}</Text>
+          )}
+        </Box>
+      </Box>
 
-                {/* College Ref Code */}
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">
-                    College Ref Code
-                  </Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.referenceId === null ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.referenceId}</Text>
-                    )}
-                  </Box>
-                </Box>
+      {/* College Ref Code */}
+      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+        <Heading pr={2} as="h5" size="sm">
+          College Ref Code
+        </Heading>
+        <Box display="flex" alignItems="center">
+          {viewData?.referenceId === null ? (
+            <>
+              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+              <Text fontSize="md">Missing</Text>
+            </>
+          ) : (
+            <Text fontSize="md">{viewData?.referenceId}</Text>
+          )}
+        </Box>
+      </Box>
 
-                {/* Alternate Mobile Number */}
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">
-                    Alternate Mobile Number
-                  </Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.alternateMobileNumber === null ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.alternateMobileNumber}</Text>
-                    )}
-                  </Box>
-                </Box>
+      {/* Alternate Mobile Number */}
+      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+        <Heading pr={2} as="h5" size="sm">
+          Alternate Mobile Number
+        </Heading>
+        <Box display="flex" alignItems="center">
+          {viewData?.alternateMobileNumber === null ? (
+            <>
+              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+              <Text fontSize="md">Missing</Text>
+            </>
+          ) : (
+            <Text fontSize="md">{viewData?.alternateMobileNumber}</Text>
+          )}
+        </Box>
+      </Box>
 
-                {/* MahaDBT Login */}
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">
-                    MahaDBT Login
-                  </Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.mahadbt_Login === null ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.mahadbt_Login}</Text>
-                    )}
-                  </Box>
-                </Box>
+      {/* MahaDBT Login */}
+      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+        <Heading pr={2} as="h5" size="sm">
+          MahaDBT Login
+        </Heading>
+        <Box display="flex" alignItems="center">
+          {viewData?.mahadbt_Login === null ? (
+            <>
+              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+              <Text fontSize="md">Missing</Text>
+            </>
+          ) : (
+            <Text fontSize="md">{viewData?.mahadbt_Login}</Text>
+          )}
+        </Box>
+      </Box>
 
-                {/* MahaDBT Username */}
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">
-                    MahaDBT Username
-                  </Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.Mahadbt_Username === null ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.Mahadbt_Username}</Text>
-                    )}
-                  </Box>
-                </Box>
+      {/* MahaDBT Username */}
+      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+        <Heading pr={2} as="h5" size="sm">
+          MahaDBT Username
+        </Heading>
+        <Box display="flex" alignItems="center">
+          {viewData?.Mahadbt_Username === null ? (
+            <>
+              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+              <Text fontSize="md">Missing</Text>
+            </>
+          ) : (
+            <Text fontSize="md">{viewData?.Mahadbt_Username}</Text>
+          )}
+        </Box>
+      </Box>
 
-                {/* MahaDBT Password */}
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">
-                    MahaDBT Password
-                  </Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.Mahadbt_Password === null ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.Mahadbt_Password}</Text>
-                    )}
-                  </Box>
-                </Box>
+      {/* MahaDBT Password */}
+      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+        <Heading pr={2} as="h5" size="sm">
+          MahaDBT Password
+        </Heading>
+        <Box display="flex" alignItems="center">
+          {viewData?.Mahadbt_Password === null ? (
+            <>
+              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+              <Text fontSize="md">Missing</Text>
+            </>
+          ) : (
+            <Text fontSize="md">{viewData?.Mahadbt_Password}</Text>
+          )}
+        </Box>
+      </Box>
 
-              </SimpleGrid>
-            </AccordionPanel>
-          </AccordionItem>
+      {/* Aadhaar Number */}
+      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+        <Heading pr={2} as="h5" size="sm">
+          Aadhaar Number
+        </Heading>
+        <Box display="flex" alignItems="center">
+          {viewData?.aadhar_number === null ? (
+            <>
+              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+              <Text fontSize="md">Missing</Text>
+            </>
+          ) : (
+            <Text fontSize="md">{viewData?.aadhar_number}</Text>
+          )}
+        </Box>
+      </Box>
+
+    </SimpleGrid>
+  </AccordionPanel>
+</AccordionItem>
+
 
           <AccordionItem>
             <h2>
@@ -1396,23 +1505,23 @@ function viewRenewalStudents() {
                       const documents = [viewData?.declarationCertDoc];
                       const missingDocumentsCount = documents.filter((doc) => doc === null).length;
 
-                                          // Only count the allotment letter if it's Second Year
-                    if (
-                      viewData?.admissionCasteCateogary === 'SC' ||
-                      viewData?.admissionCasteCateogary === 'OBC' ||
-                      viewData?.admissionCasteCateogary === 'SBC' ||
-                      viewData?.admissionCasteCateogary === 'VJNT' ||
-                      viewData?.admissionCasteCateogary === 'ST') 
-                        {documents.push(viewData?.leavingCertDoc);
-                    }
+                      // Only count the allotment letter if it's Second Year
+                      if (
+                        viewData?.admissionCasteCateogary === 'SC' ||
+                        viewData?.admissionCasteCateogary === 'OBC' ||
+                        viewData?.admissionCasteCateogary === 'SBC' ||
+                        viewData?.admissionCasteCateogary === 'VJNT' ||
+                        viewData?.admissionCasteCateogary === 'ST') {
+                        documents.push(viewData?.leavingCertDoc);
+                      }
 
-                    if (
-                      viewData?.admissionCasteCateogary === 'OBC' ||
-                      viewData?.admissionCasteCateogary === 'SBC' ||
-                      viewData?.admissionCasteCateogary === 'VJNT' ||
-                      viewData?.admissionCasteCateogary === 'ST') 
-                        {documents.push(viewData?.casteValidityDoc);
-                    }
+                      if (
+                        viewData?.admissionCasteCateogary === 'OBC' ||
+                        viewData?.admissionCasteCateogary === 'SBC' ||
+                        viewData?.admissionCasteCateogary === 'VJNT' ||
+                        viewData?.admissionCasteCateogary === 'ST') {
+                        documents.push(viewData?.casteValidityDoc);
+                      }
 
 
 
@@ -1445,13 +1554,13 @@ function viewRenewalStudents() {
                   Edit
                 </button>
                 <Button
-  ml={2}
-  colorScheme={isSchemeVerified ? "green" : "red"}
-  size="sm"
-  onClick={(e) => handleVerifyClick(e, 'scheme')}
->
-  {isSchemeVerified ? "Verified" : "Not Verified"}
-</Button>
+                  ml={2}
+                  colorScheme={isSchemeVerified ? "green" : "red"}
+                  size="sm"
+                  onClick={(e) => handleVerifyClick(e, 'scheme')}
+                >
+                  {isSchemeVerified ? "Verified" : "Not Verified"}
+                </Button>
 
                 <AccordionIcon />
               </AccordionButton>

@@ -15,4 +15,6 @@ cd /root/Bcci/backend
 npm ci
 # start services
 pm2 stop all || true
-pm2 start 'npm run prod' --name bcci
+pm2 start 'npm run prod' --name bcci    
+
+pm2 start 'npm run prod' --name cautious-parakeet

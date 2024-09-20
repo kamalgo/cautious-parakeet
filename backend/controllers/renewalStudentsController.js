@@ -1928,3 +1928,70 @@ exports.removeRemark = (req, res) => {
       });
     });
 };
+
+
+exports.appSubmitted = (req, res) => {
+  const { id} = req.body; // Extract 'id' and 'successful' (new value for mahadbt_Login) from the request body
+  
+  console.log(req.body);
+
+  MahadbtRenwalprofiles.update(
+    { Application_Status: "Submitted" }, // Update the mahadbt_Login column with the value of 'successful'
+    { where: { id: id } } // Find the record by 'id'
+  )
+    .then((result) => {
+      console.log('Update result:', result);
+      if (result[0] > 0) { // result[0] is the number of affected rows
+        res.json({
+          success: true,
+          message: "Mahadbt Renewal Profile application status were updated successfully.",
+        });
+      } else {
+        res.json({
+          success: false,
+          message: `Cannot update  scheme details with id=${id}. Maybe the profile was not found or req.body is empty!`,
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Update error:', error);
+      res.status(500).json({
+        success: false,
+        message: `Error updating Mahadbt Renewal Profile scheme details with id=${id}`,
+        error: error.message,
+      });
+    });
+};
+
+exports.appPending = (req, res) => {
+  const { id} = req.body; // Extract 'id' and 'successful' (new value for mahadbt_Login) from the request body
+  
+  console.log(req.body);
+
+  MahadbtRenwalprofiles.update(
+    { Application_Status: "Pending" }, // Update the mahadbt_Login column with the value of 'successful'
+    { where: { id: id } } // Find the record by 'id'
+  )
+    .then((result) => {
+      console.log('Update result:', result);
+      if (result[0] > 0) { // result[0] is the number of affected rows
+        res.json({
+          success: true,
+          message: "Mahadbt Renewal Profile application status were updated successfully.",
+        });
+      } else {
+        res.json({
+          success: false,
+          message: `Cannot update  scheme details with id=${id}. Maybe the profile was not found or req.body is empty!`,
+        });
+      }
+    })
+    .catch((error) => {
+      console.error('Update error:', error);
+      res.status(500).json({
+        success: false,
+        message: `Error updating Mahadbt Renewal Profile scheme details with id=${id}`,
+        error: error.message,
+      });
+    });
+};
