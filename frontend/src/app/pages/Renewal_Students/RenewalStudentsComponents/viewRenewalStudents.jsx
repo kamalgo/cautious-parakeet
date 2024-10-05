@@ -941,7 +941,6 @@ function viewRenewalStudents() {
                     const fields = [
                       viewData?.instituteName,
                       viewData?.instituteState,
-                      viewData?.admissionYear,
                       viewData?.instituteDistrict,
                       viewData?.instituteTaluka,
                       viewData?.presentYearOfStudy,
@@ -952,6 +951,7 @@ function viewRenewalStudents() {
                       viewData?.previousYearPercentage,
                       viewData?.admissionYearOfThatCourse,
                       viewData?.admissionDateCurrentCourse,
+                      viewData?.admissionYear,
 
                     ];
                     const missingFieldsCount = fields.filter(field => !field || field === "NA").length;
@@ -1179,6 +1179,8 @@ function viewRenewalStudents() {
                 </Box>
 
                 {/* Admission Year */}
+
+                {/* {(viewData?.presentYearOfStudy === Third Year && viewdata?.pastYearOfStudy === Second Year) &&
                 <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
                   <Heading pr={2} as="h5" size="sm">Admission Year of College</Heading>
                   <Box display="flex" alignItems="center">
@@ -1189,9 +1191,27 @@ function viewRenewalStudents() {
                       </>
                     ) : (
                       <Text fontSize="md">{viewData?.admissionYear}</Text>
-                    )}
+                    )} }
                   </Box>
-                </Box>
+                </Box> */}
+
+
+{/* Admission Year */}
+{(viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed"  ) && (
+  <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+    <Heading pr={2} as="h5" size="sm">Admission Year of College</Heading>
+    <Box display="flex" alignItems="center">
+      {viewData?.admissionYear === null || viewData?.admissionYear === "NA" ? (
+        <>
+          <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+          <Text fontSize="md">Missing</Text>
+        </>
+      ) : (
+        <Text fontSize="md">{viewData?.admissionYear}</Text>
+      )}
+    </Box>
+  </Box>
+)}
 
 
 

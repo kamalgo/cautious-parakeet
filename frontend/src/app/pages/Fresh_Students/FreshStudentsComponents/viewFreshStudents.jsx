@@ -2378,6 +2378,7 @@ function viewFreshStudents() {
               </SimpleGrid>
             </AccordionPanel>
           </AccordionItem>
+          
         </Accordion>
         {/* <Edit_Prsnl_Info_Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} id={selectedId} /> */}
         {/* <Upload_Document_Modal isOpen={isModalOpenUpload} onClose={() => setisModalOpenUpload(false)}  /> */}
