@@ -529,7 +529,7 @@ function viewRenewalStudents() {
 
   console.log("admission caste category", viewData?.admissionCasteCategory);  // Should output exactly "OBC"
   console.log("View data", viewData);  // Logs the entire viewData object
-  
+
   return (
     <div>
 
@@ -581,202 +581,202 @@ function viewRenewalStudents() {
 
         <Accordion defaultIndex={[0]} allowMultiple>
 
-        <AccordionItem>
-  <h2>
-    <AccordionButton sx={{ backgroundColor: 'blue.700', color: 'white' }}>
-      <Box as="span" flex="1" textAlign="left" display="flex" alignItems="center">
-        <Heading as="h2" size="md" p={"20px"}>
-          Personal Information
-          {/* Badge to show missing fields count */}
-          {(() => {
-            const fields = [
-              viewData?.candidateName,
-              viewData?.email,
-              viewData?.whatsappNumber,
-              viewData?.referenceId,
-              viewData?.alternateMobileNumber,
-              viewData?.mahadbt_Login,
-              viewData?.Mahadbt_Username,
-              viewData?.Mahadbt_Password
-            ];
-            const missingFieldsCount = fields.filter(field => field === null).length;
+          <AccordionItem>
+            <h2>
+              <AccordionButton sx={{ backgroundColor: 'blue.700', color: 'white' }}>
+                <Box as="span" flex="1" textAlign="left" display="flex" alignItems="center">
+                  <Heading as="h2" size="md" p={"20px"}>
+                    Personal Information
+                    {/* Badge to show missing fields count */}
+                    {(() => {
+                      const fields = [
+                        viewData?.candidateName,
+                        viewData?.email,
+                        viewData?.whatsappNumber,
+                        viewData?.referenceId,
+                        viewData?.alternateMobileNumber,
+                        viewData?.mahadbt_Login,
+                        viewData?.Mahadbt_Username,
+                        viewData?.Mahadbt_Password
+                      ];
+                      const missingFieldsCount = fields.filter(field => field === null).length;
 
-            return missingFieldsCount > 0 && (
-              <Badge ml={3} colorScheme="red" fontSize="0.8em">
-                {missingFieldsCount} Fields Missing
-              </Badge>
-            );
-          })()}
-        </Heading>
-      </Box>
+                      return missingFieldsCount > 0 && (
+                        <Badge ml={3} colorScheme="red" fontSize="0.8em">
+                          {missingFieldsCount} Fields Missing
+                        </Badge>
+                      );
+                    })()}
+                  </Heading>
+                </Box>
 
-      <Button ml="auto" onClick={(e) => { e.stopPropagation(); openModalWithId(); }} colorScheme="blue" size="sm">Edit</Button>
-      <Button ml={2} colorScheme={isVerified ? "green" : "red"} size="sm" onClick={(e) => handleVerifyClick(e, 'personal')}>
-        {isVerified ? "Verified" : "Not Verified"}
-      </Button>
-      <AccordionIcon />
-    </AccordionButton>
-  </h2>
+                <Button ml="auto" onClick={(e) => { e.stopPropagation(); openModalWithId(); }} colorScheme="blue" size="sm">Edit</Button>
+                <Button ml={2} colorScheme={isVerified ? "green" : "red"} size="sm" onClick={(e) => handleVerifyClick(e, 'personal')}>
+                  {isVerified ? "Verified" : "Not Verified"}
+                </Button>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
 
-  <AccordionPanel pb={4}>
-    <SimpleGrid columns={3} spacing={10}>
+            <AccordionPanel pb={4}>
+              <SimpleGrid columns={3} spacing={10}>
 
-      {/* Candidate Name */}
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-        <Heading pr={2} as="h5" size="sm">
-          Candidate Name (As Per SSC Marksheet)
-        </Heading>
-        <Box display="flex" alignItems="center">
-          {viewData?.candidateName === null ? (
-            <>
-              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-              <Text fontSize="md">Missing</Text>
-            </>
-          ) : (
-            <Text fontSize="md">{viewData?.candidateName}</Text>
-          )}
-        </Box>
-      </Box>
+                {/* Candidate Name */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">
+                    Candidate Name (As Per SSC Marksheet)
+                  </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.candidateName === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.candidateName}</Text>
+                    )}
+                  </Box>
+                </Box>
 
-      {/* Email */}
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-        <Heading pr={2} as="h5" size="sm">
-          Email
-        </Heading>
-        <Box display="flex" alignItems="center">
-          {viewData?.email === null ? (
-            <>
-              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-              <Text fontSize="md">Missing</Text>
-            </>
-          ) : (
-            <Text fontSize="md">{viewData?.email}</Text>
-          )}
-        </Box>
-      </Box>
+                {/* Email */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">
+                    Email
+                  </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.email === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.email}</Text>
+                    )}
+                  </Box>
+                </Box>
 
-      {/* Mobile (Student WhatsApp Number) */}
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-        <Heading pr={2} as="h5" size="sm">
-          Mobile (Student WhatsApp Number)
-        </Heading>
-        <Box display="flex" alignItems="center">
-          {viewData?.whatsappNumber === null ? (
-            <>
-              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-              <Text fontSize="md">Missing</Text>
-            </>
-          ) : (
-            <Text fontSize="md">{viewData?.whatsappNumber}</Text>
-          )}
-        </Box>
-      </Box>
+                {/* Mobile (Student WhatsApp Number) */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">
+                    Mobile (Student WhatsApp Number)
+                  </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.whatsappNumber === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.whatsappNumber}</Text>
+                    )}
+                  </Box>
+                </Box>
 
-      {/* College Ref Code */}
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-        <Heading pr={2} as="h5" size="sm">
-          College Ref Code
-        </Heading>
-        <Box display="flex" alignItems="center">
-          {viewData?.referenceId === null ? (
-            <>
-              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-              <Text fontSize="md">Missing</Text>
-            </>
-          ) : (
-            <Text fontSize="md">{viewData?.referenceId}</Text>
-          )}
-        </Box>
-      </Box>
+                {/* College Ref Code */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">
+                    College Ref Code
+                  </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.referenceId === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.referenceId}</Text>
+                    )}
+                  </Box>
+                </Box>
 
-      {/* Alternate Mobile Number */}
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-        <Heading pr={2} as="h5" size="sm">
-          Alternate Mobile Number
-        </Heading>
-        <Box display="flex" alignItems="center">
-          {viewData?.alternateMobileNumber === null ? (
-            <>
-              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-              <Text fontSize="md">Missing</Text>
-            </>
-          ) : (
-            <Text fontSize="md">{viewData?.alternateMobileNumber}</Text>
-          )}
-        </Box>
-      </Box>
+                {/* Alternate Mobile Number */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">
+                    Alternate Mobile Number
+                  </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.alternateMobileNumber === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.alternateMobileNumber}</Text>
+                    )}
+                  </Box>
+                </Box>
 
-      {/* MahaDBT Login */}
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-        <Heading pr={2} as="h5" size="sm">
-          MahaDBT Login
-        </Heading>
-        <Box display="flex" alignItems="center">
-          {viewData?.mahadbt_Login === null ? (
-            <>
-              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-              <Text fontSize="md">Missing</Text>
-            </>
-          ) : (
-            <Text fontSize="md">{viewData?.mahadbt_Login}</Text>
-          )}
-        </Box>
-      </Box>
+                {/* MahaDBT Login */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">
+                    MahaDBT Login
+                  </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.mahadbt_Login === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.mahadbt_Login}</Text>
+                    )}
+                  </Box>
+                </Box>
 
-      {/* MahaDBT Username */}
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-        <Heading pr={2} as="h5" size="sm">
-          MahaDBT Username
-        </Heading>
-        <Box display="flex" alignItems="center">
-          {viewData?.Mahadbt_Username === null ? (
-            <>
-              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-              <Text fontSize="md">Missing</Text>
-            </>
-          ) : (
-            <Text fontSize="md">{viewData?.Mahadbt_Username}</Text>
-          )}
-        </Box>
-      </Box>
+                {/* MahaDBT Username */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">
+                    MahaDBT Username
+                  </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.Mahadbt_Username === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.Mahadbt_Username}</Text>
+                    )}
+                  </Box>
+                </Box>
 
-      {/* MahaDBT Password */}
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-        <Heading pr={2} as="h5" size="sm">
-          MahaDBT Password
-        </Heading>
-        <Box display="flex" alignItems="center">
-          {viewData?.Mahadbt_Password === null ? (
-            <>
-              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-              <Text fontSize="md">Missing</Text>
-            </>
-          ) : (
-            <Text fontSize="md">{viewData?.Mahadbt_Password}</Text>
-          )}
-        </Box>
-      </Box>
+                {/* MahaDBT Password */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">
+                    MahaDBT Password
+                  </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.Mahadbt_Password === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.Mahadbt_Password}</Text>
+                    )}
+                  </Box>
+                </Box>
 
-      {/* Aadhaar Number */}
-      <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-        <Heading pr={2} as="h5" size="sm">
-          Aadhaar Number
-        </Heading>
-        <Box display="flex" alignItems="center">
-          {viewData?.aadhar_number === null ? (
-            <>
-              <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-              <Text fontSize="md">Missing</Text>
-            </>
-          ) : (
-            <Text fontSize="md">{viewData?.aadhar_number}</Text>
-          )}
-        </Box>
-      </Box>
+                {/* Aadhaar Number */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">
+                    Aadhaar Number
+                  </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.aadhar_number === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.aadhar_number}</Text>
+                    )}
+                  </Box>
+                </Box>
 
-    </SimpleGrid>
-  </AccordionPanel>
-</AccordionItem>
+              </SimpleGrid>
+            </AccordionPanel>
+          </AccordionItem>
 
 
           <AccordionItem>
@@ -951,9 +951,21 @@ function viewRenewalStudents() {
                       viewData?.previousYearPercentage,
                       viewData?.admissionYearOfThatCourse,
                       viewData?.admissionDateCurrentCourse,
-                      viewData?.admissionYear,
 
                     ];
+
+                            // Only count the allotment letter if it's Second Year
+                        if (viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed") {
+                          fields.push(viewData?.admissionYear);
+                          fields.push(viewData?.qualificationLevel);
+                          fields.push(viewData?.courseStream);
+                          fields.push(viewData?.courseName);
+                          fields.push(viewData?.admissionType);
+                          fields.push(viewData?.cetPercent);
+                          fields.push(viewData?.admissionApplicationId);
+
+                         }
+
                     const missingFieldsCount = fields.filter(field => !field || field === "NA").length;
 
                     return missingFieldsCount > 0 && (
@@ -1178,40 +1190,128 @@ function viewRenewalStudents() {
                   </Box>
                 </Box>
 
+
                 {/* Admission Year */}
-
-                {/* {(viewData?.presentYearOfStudy === Third Year && viewdata?.pastYearOfStudy === Second Year) &&
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">Admission Year of College</Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.admissionYear === null || viewData?.admissionYear === "NA" ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.admissionYear}</Text>
-                    )} }
+                {(viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed") && (
+                  <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                    <Heading pr={2} as="h5" size="sm">Admission Year of College</Heading>
+                    <Box display="flex" alignItems="center">
+                      {viewData?.admissionYear === null || viewData?.admissionYear === "NA" ? (
+                        <>
+                          <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                          <Text fontSize="md">Missing</Text>
+                        </>
+                      ) : (
+                        <Text fontSize="md">{viewData?.admissionYear}</Text>
+                      )}
+                    </Box>
                   </Box>
-                </Box> */}
+                )}
+
+                {/* Qualification Level */}
+                {(viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed") && (
+                  <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                    <Heading pr={2} as="h5" size="sm">Qualification Level</Heading>
+                    <Box display="flex" alignItems="center">
+                      {viewData?.qualificationLevel === null || viewData?.qualificationLevel === "NA" ? (
+                        <>
+                          <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                          <Text fontSize="md">Missing</Text>
+                        </>
+                      ) : (
+                        <Text fontSize="md">{viewData?.qualificationLevel}</Text>
+                      )}
+                    </Box>
+                  </Box>
+                )}
+
+                {/* Course Stream */}
+                {(viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed") && (
+                  <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                    <Heading pr={2} as="h5" size="sm">Course Stream</Heading>
+                    <Box display="flex" alignItems="center">
+                      {viewData?.courseStream === null || viewData?.courseStream === "NA" ? (
+                        <>
+                          <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                          <Text fontSize="md">Missing</Text>
+                        </>
+                      ) : (
+                        <Text fontSize="md">{viewData?.courseStream}</Text>
+                      )}
+                    </Box>
+                  </Box>
+                )}
+
+                {/* Course Name */}
+                {(viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed") && (
+                  <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                    <Heading pr={2} as="h5" size="sm">Course Name</Heading>
+                    <Box display="flex" alignItems="center">
+                      {viewData?.courseName === null || viewData?.courseName === "NA" ? (
+                        <>
+                          <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                          <Text fontSize="md">Missing</Text>
+                        </>
+                      ) : (
+                        <Text fontSize="md">{viewData?.courseName}</Text>
+                      )}
+                    </Box>
+                  </Box>
+                )}
+
+                {/* Admission Type */}
+                {(viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed") && (
+                  <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                    <Heading pr={2} as="h5" size="sm">Admission Type</Heading>
+                    <Box display="flex" alignItems="center">
+                      {viewData?.admissionType === null || viewData?.admissionType === "NA" ? (
+                        <>
+                          <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                          <Text fontSize="md">Missing</Text>
+                        </>
+                      ) : (
+                        <Text fontSize="md">{viewData?.admissionType}</Text>
+                      )}
+                    </Box>
+                  </Box>
+                )}
+
+                {/* CET Percentage */}
+                {(viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed") && (
+                  <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                    <Heading pr={2} as="h5" size="sm">CET Percentage</Heading>
+                    <Box display="flex" alignItems="center">
+                      {viewData?.cetPercent === null || viewData?.cetPercent === "NA" ? (
+                        <>
+                          <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                          <Text fontSize="md">Missing</Text>
+                        </>
+                      ) : (
+                        <Text fontSize="md">{viewData?.cetPercent}</Text>
+                      )}
+                    </Box>
+                  </Box>
+                )}
+
+                {/* Admission Application ID */}
+                {(viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed") && (
+                  <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                    <Heading pr={2} as="h5" size="sm">Admission Application ID</Heading>
+                    <Box display="flex" alignItems="center">
+                      {viewData?.admissionApplicationId === null || viewData?.admissionApplicationId === "NA" ? (
+                        <>
+                          <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                          <Text fontSize="md">Missing</Text>
+                        </>
+                      ) : (
+                        <Text fontSize="md">{viewData?.admissionApplicationId}</Text>
+                      )}
+                    </Box>
+                  </Box>
+                )}
 
 
-{/* Admission Year */}
-{(viewData?.presentYearOfStudy === "Third Year" && viewData?.pastYearCompletedPursuing === "Direct Second Year Completed"  ) && (
-  <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-    <Heading pr={2} as="h5" size="sm">Admission Year of College</Heading>
-    <Box display="flex" alignItems="center">
-      {viewData?.admissionYear === null || viewData?.admissionYear === "NA" ? (
-        <>
-          <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-          <Text fontSize="md">Missing</Text>
-        </>
-      ) : (
-        <Text fontSize="md">{viewData?.admissionYear}</Text>
-      )}
-    </Box>
-  </Box>
-)}
+
 
 
 
@@ -1236,6 +1336,22 @@ function viewRenewalStudents() {
                     )}
                   </Text>
                 </Box>
+
+                {/* Fees paid */}
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm"> Fees paid current course </Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.feesPaidCurrentCourse === null || viewData?.feesPaidCurrentCourse === "NA" ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.feesPaidCurrentCourse}</Text>
+                    )}
+                  </Box>
+                </Box>
+
 
 
                 <Box
@@ -1513,6 +1629,20 @@ function viewRenewalStudents() {
                       ];
                       const missingFieldsCount = fields.filter(field => field === null || field === "NA").length;
 
+                      if (
+                        viewData?.admissionCasteCateogary === 'EBC') {
+                          fields.push(viewData?.leavingCertDoc);
+                      }
+
+                      if (
+                        viewData?.admissionCasteCateogary === 'SEBC' ||
+                        viewData?.admissionCasteCateogary === 'General' ){
+                          fields.push(viewData?.isYourParentAlphabhudarak)
+                          fields.push(viewData?.isRegisteredLabour)
+                          fields.push(viewData?.admittedUnderEws);
+                      }
+
+
                       return missingFieldsCount > 0 && (
                         <Badge ml={3} colorScheme="red" fontSize="0.8em">
                           {missingFieldsCount} Fields Missing
@@ -1541,6 +1671,13 @@ function viewRenewalStudents() {
                         viewData?.admissionCasteCateogary === 'VJNT' ||
                         viewData?.admissionCasteCateogary === 'ST') {
                         documents.push(viewData?.casteValidityDoc);
+                      }
+
+                      if (
+                        viewData?.admissionCasteCateogary === 'SEBC' ||
+                        viewData?.admissionCasteCateogary === 'General' ){
+                        documents.push(viewData?.alphabhudharakDoc)
+                        documents.push(viewData?.labourDoc);
                       }
 
 
@@ -1633,6 +1770,8 @@ function viewRenewalStudents() {
                 </Box>
 
                 {/* Is your parent AlphaBhuDharak */}
+                {(viewData?.admissionCasteCateogary === 'SEBC' ||
+                  viewData?.admissionCasteCateogary === 'General')&&(
                 <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
                   <Heading pr={2} as="h5" size="sm">Is your parent AlphaBhuDharak?</Heading>
                   <Box display="flex" alignItems="center">
@@ -1646,23 +1785,31 @@ function viewRenewalStudents() {
                     )}
                   </Box>
                 </Box>
+                )}
 
-                {/* Is your parent registered labour */}
-                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
-                  <Heading pr={2} as="h5" size="sm">Is your parent registered labour?</Heading>
-                  <Box display="flex" alignItems="center">
-                    {viewData?.isRegisteredLabour === null ? (
-                      <>
-                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
-                        <Text fontSize="md">Missing</Text>
-                      </>
-                    ) : (
-                      <Text fontSize="md">{viewData?.isRegisteredLabour}</Text>
-                    )}
-                  </Box>
-                </Box>
+                {/* Alpabhudarak Doc*/}
+                {(viewData?.isYourParentAlphabhudarak === 'Yes') && (
+                    <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                      <Heading pr={2} as="h5" size="sm">Alphabhudarak Doc </Heading>
+                      <Text fontSize="md">
+                        {viewData?.alphabhudharakDoc ? (
+                          <a href={viewData.alphabhudharakDoc} target="_blank" rel="noopener noreferrer">
+                            Click! <ExternalLinkIcon mx="2px" />
+                          </a>
+                        ) : (
+                          <>
+                            <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                            <Text fontSize="md">Missing</Text>
+                          </>
+                        )}
+                      </Text>
+                    </Box>
+                  )}
+
 
                 {/* Admitted under EWS */}
+                {(viewData?.admissionCasteCateogary === 'SEBC' ||
+                  viewData?.admissionCasteCateogary === 'General')&&(
                 <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
                   <Heading pr={2} as="h5" size="sm">Admitted under EWS?</Heading>
                   <Box display="flex" alignItems="center">
@@ -1676,6 +1823,45 @@ function viewRenewalStudents() {
                     )}
                   </Box>
                 </Box>
+                )}
+
+                {/* Is your parent registered labour */}
+                {(viewData?.admissionCasteCateogary === 'SEBC' ||
+                  viewData?.admissionCasteCateogary === 'General'
+                )&&(
+                <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                  <Heading pr={2} as="h5" size="sm">Is your parent registered labour?</Heading>
+                  <Box display="flex" alignItems="center">
+                    {viewData?.isRegisteredLabour === null ? (
+                      <>
+                        <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                        <Text fontSize="md">Missing</Text>
+                      </>
+                    ) : (
+                      <Text fontSize="md">{viewData?.isRegisteredLabour}</Text>
+                    )}
+                  </Box>
+                </Box>
+              )}
+
+                {/* Registered Labour Doc*/}
+                {(viewData?.isRegisteredLabour === 'Yes') && (
+                    <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>
+                      <Heading pr={2} as="h5" size="sm">Registered Labour Doc </Heading>
+                      <Text fontSize="md">
+                        {viewData?.labourDoc ? (
+                          <a href={viewData.labourDoc} target="_blank" rel="noopener noreferrer">
+                            Click! <ExternalLinkIcon mx="2px" />
+                          </a>
+                        ) : (
+                          <>
+                            <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
+                            <Text fontSize="md">Missing</Text>
+                          </>
+                        )}
+                      </Text>
+                    </Box>
+                  )}
 
                 {/* Declaration Cert */}
                 <Box display={"flex"} justifyContent={"space-between"} alignItems={"center"} p={"10px"}>

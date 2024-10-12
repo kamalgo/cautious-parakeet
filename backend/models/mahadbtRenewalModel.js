@@ -41,13 +41,13 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'Refrence_ID',
-    },  
+    },
     aadhar_number: {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'Candidate_Adhar_Number',
-    },    
-    
+    },
+
     //income section
     annualIncome: {
         type: DataTypes.STRING,
@@ -58,12 +58,12 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'Income_Certificate',
-    },   
+    },
     incomeCertNumber: {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'incomecertificate_Number',
-    },    
+    },
     incomeIssuingAuthority: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -76,10 +76,10 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
     },
 
     //Current Course Section  
-    admissionYear: {
+    instituteName: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: 'admission_year',
+        field: 'institute_name',
     },
     instituteState: {
         type: DataTypes.STRING,
@@ -96,6 +96,52 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         allowNull: true,
         field: 'institute_taluka',
     },
+    presentYearOfStudy: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Present_Year_Of_Study',
+    },
+    pastYearOfStudy: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Past_Year_Of_Study',
+    },
+    presentYearCompletedPursuing: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Present_Year_Completed_Pursuing',
+    },
+    pastYearCompletedPursuing: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Past_Year_Completed_Pursuing',
+    },
+    resultPassedAtkt: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Result',
+    },
+    previousYearPercentage: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Percentage',
+    },
+    //{marksheet passed year is in docs section}, 
+    admissionYearOfThatCourse: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Admission_Year_Of_That_Course',
+    },
+    admissionDateCurrentCourse: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Admission_Date_Current_Course',
+    },
+    admissionYear: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'admission_year',
+    },
     qualificationLevel: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -105,11 +151,6 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'course_stream',
-    },
-    instituteName: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'institute_name',
     },
     courseName: {
         type: DataTypes.STRING,
@@ -131,56 +172,13 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         allowNull: true,
         field: 'admission_application_id',
     },
-    pastYearOfStudy: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Past_Year_Of_Study',
-    },
-    pastYearCompletedPursuing: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Past_Year_Completed_Pursuing',
-    },
-    presentYearOfStudy: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Present_Year_Of_Study',
-    },
-    presentYearCompletedPursuing: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Present_Year_Completed_Pursuing',
-    },
-    admissionYearOfThatCourse: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Admission_Year_Of_That_Course',
-    },
-    previousYearPercentage: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Percentage',
-    },
-    resultPassedAtkt: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Result',
-    },
-    admissionCasteCateogary: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Admission_Category',
-    },
-    admissionDateCurrentCourse: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Admission_Date_Current_Course',
-    },
+    // {admission_letter_doc is in docs section}
     feesPaidCurrentCourse: {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'Fees_Paid_Current_Course',
     },
+    //{Fees_Admission_Receipt_bonafide_Doc is in docs section}
     isThereAnyGap: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -190,6 +188,11 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'Gap_Reason',
+    },
+    admissionCasteCateogary: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Admission_Category',
     },
 
     //Hostel section
@@ -264,8 +267,10 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'Admited_Under_EWS',
-    },  
-    
+    },
+
+
+
     //documents section
     incomeDoc: {
         type: DataTypes.STRING,
@@ -343,7 +348,7 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         field: 'Gap_Doc',
     },
 
-//Verified Section
+    //Verified Section
 
     personalInfo_verified: {
         type: DataTypes.STRING,
@@ -398,12 +403,24 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         allowNull: true,
         field: 'PreviousYear_SchemeName_1',
     },
+    PreviousYear_SchemeName_1_Application_ID: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'PreviousYear_SchemeName_1_Application_ID',
+    },
 
     PreviousYear_SchemeName_2: {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'PreviousYear_SchemeName_2',
     },
+
+    PreviousYear_SchemeName_2_Application_ID: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'PreviousYear_SchemeName_2_Application_ID',
+    },
+
     Dept_Name: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -494,14 +511,14 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
     Remarks: {
         type: Sequelize.JSON,
         allowNull: true
-      },
+    },
 
-      profile_Remarks: {
+    profile_Remarks: {
         type: Sequelize.JSON,
-        allowNull: true     
-      },
-     
-      Application_Status: {
+        allowNull: true
+    },
+
+    Application_Status: {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'Application_Status',

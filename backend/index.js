@@ -47,13 +47,19 @@ sequelize
 
 app.use(cors());
 app.use(morgan("tiny"));
-app.use(fileupload());
+// app.use(fileupload());
+app.use(fileupload({
+  limits: { fileSize: 50 * 1024 * 1024 }, // Set limit to 50MB
+}));
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }));
+// app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ limit: '10mb', extended: true })); // Limits URL-encoded request size to 10MB
+
 
 // parse application/json
-app.use(bodyParser.json());
+// app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: '10mb' })); // Limits JSON request size to 10MB
 app.use(bodyParser.text({ type: "text/html" }));
 
 app.use("/api", authRoutes);

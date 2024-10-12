@@ -554,6 +554,8 @@
     { name: "Doc Upload", icon: MdGroup, path: "/coworker/Doc_Upload" },
     { name: "Fresh Students", icon: FiEye, path: "/coworker/FreshStudents" },
     { name: "Renewal Students", icon: FiEye, path: "/coworker/RenewalStudents" },
+    { name: "Fresh Students New", icon: FiEye, path: "/coworker/FreshStud" },
+
   ];
 
 
