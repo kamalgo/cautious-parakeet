@@ -802,11 +802,11 @@ const shravani_allcolumns = sequelize.define("shravani_allcolumns", {
         allowNull: true,
         field: 'Renewal_Application',
     },
-    availAnyScholarship: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'avail_any_scholarship',
-    },
+    // availAnyScholarship: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'avail_any_scholarship',
+    // },
     beneficiaryInFamily: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -817,21 +817,21 @@ const shravani_allcolumns = sequelize.define("shravani_allcolumns", {
         allowNull: true,
         field: 'undertaking_Not_more_than_two_beneficiary',
     },
-    isTakingBenefitOfTfws: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Is_taking_benefit_of_TFWS',
-    },
-    isAdmittedUnderEwsSeat: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Is_admitted_under_EWS_seat',
-    },
-    renewalApplicationPanjabroa: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Renewal_Application_Panjabroa',
-    },
+    // isTakingBenefitOfTfws: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Is_taking_benefit_of_TFWS',
+    // },
+    // isAdmittedUnderEwsSeat: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Is_admitted_under_EWS_seat',
+    // },
+    // renewalApplicationPanjabroa: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Renewal_Application_Panjabroa',
+    // },
     registeredLabour: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -857,26 +857,26 @@ const shravani_allcolumns = sequelize.define("shravani_allcolumns", {
         allowNull: true,
         field: 'declaration_Rector_Superintendent',
     },
-    beneficiaryInFamilyPanjabroa: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'beneficiary_in_family_Panjabroa',
-    },
-    undertakingFormThatSameYear: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'undertaking_form_that_same_year',
-    },
-    admittedUnderEwsSeat: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'admitted_under_EWS_seat',
-    },
-    declarationCertificateOfParents: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Declaration_certificate_of_parents',
-    },
+    // beneficiaryInFamilyPanjabroa: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'beneficiary_in_family_Panjabroa',
+    // },
+    // undertakingFormThatSameYear: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'undertaking_form_that_same_year',
+    // },
+    // admittedUnderEwsSeat: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'admitted_under_EWS_seat',
+    // },
+    // declarationCertificateOfParents: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Declaration_certificate_of_parents',
+    // },
     leavingCertificate: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -897,106 +897,112 @@ const shravani_allcolumns = sequelize.define("shravani_allcolumns", {
         allowNull: true,
         field: 'CAP_Allotment_Letter',
     },
-    appliedAnyScholarship: {
+    hash_password: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: 'applied_any_scholarship',
+        field: 'hash_password',
     },
-    otherScholarshipName: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Other_Scholarship_Name',
-    },
-    howManyBoysChild: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'How_Many_boys_child',
-    },
-    uploadSelfDeclaration: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Upload_Self_Declaration',
-    },
-    uploadTcLc: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Upload_TC_LC',
-    },
-    uploadAdmissionReceipt: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Upload_Admission_Receipt',
-    },
-    admissionYearInCollege: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Admission_Year_in_College',
-    },
-    percentageOfYear: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-        field: 'Persentage_Of_Year',
-    },
-    resultOfYear: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Result_Of_Year',
-    },
-    uploadMarksheet: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Upload_Marksheet',
-    },
-    studyYear: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Study_Year',
-    },
-    secondYearPursuing: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Second_Year_Pursuing',
-    },
-    admissionDateOfSecondYear: {
-        type: DataTypes.DATEONLY,
-        allowNull: true,
-        field: 'admission_date_of_Second_Year',
-    },
-    feesPaidSecondYear: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-        field: 'Fees_Paid_Second_Year',
-    },
-    uploadFeeBonafide: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Upload_Fee_Bonafide',
-    },
-    modeSecondYear: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Mode_Second_Year',
-    },
-    class12Mark: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Class_12_Mark',
-    },
-    previousYearApplicationId: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'previous_year_ApplicationID',
-    },
-    firstApplicationId: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'First_ApplicationID',
-    },
-    secondApplicationId: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'Second_ApplicationID',
-    },
+
+    // appliedAnyScholarship: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'applied_any_scholarship',
+    // },
+    // otherScholarshipName: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Other_Scholarship_Name',
+    // },
+    // howManyBoysChild: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'How_Many_boys_child',
+    // },
+    // uploadSelfDeclaration: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Upload_Self_Declaration',
+    // },
+    // uploadTcLc: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Upload_TC_LC',
+    // },
+    // uploadAdmissionReceipt: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Upload_Admission_Receipt',
+    // },
+    // admissionYearInCollege: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Admission_Year_in_College',
+    // },
+    // percentageOfYear: {
+    //     type: DataTypes.FLOAT,
+    //     allowNull: true,
+    //     field: 'Persentage_Of_Year',
+    // },
+    // resultOfYear: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Result_Of_Year',
+    // },
+    // uploadMarksheet: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Upload_Marksheet',
+    // },
+    // studyYear: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Study_Year',
+    // },
+    // secondYearPursuing: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Second_Year_Pursuing',
+    // },
+    // admissionDateOfSecondYear: {
+    //     type: DataTypes.DATEONLY,
+    //     allowNull: true,
+    //     field: 'admission_date_of_Second_Year',
+    // },
+    // feesPaidSecondYear: {
+    //     type: DataTypes.FLOAT,
+    //     allowNull: true,
+    //     field: 'Fees_Paid_Second_Year',
+    // },
+    // uploadFeeBonafide: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Upload_Fee_Bonafide',
+    // },
+    // modeSecondYear: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Mode_Second_Year',
+    // },
+    // class12Mark: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Class_12_Mark',
+    // },
+    // previousYearApplicationId: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'previous_year_ApplicationID',
+    // },
+    // firstApplicationId: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'First_ApplicationID',
+    // },
+    // secondApplicationId: {
+    //     type: DataTypes.STRING,
+    //     allowNull: true,
+    //     field: 'Second_ApplicationID',
+    // },
 }, {
     tableName: 'shravani_allcolumns',
     timestamps: false,

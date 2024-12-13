@@ -7,12 +7,16 @@ import Base from "../../components/Base";
 import { useToast } from "@chakra-ui/react";
 import {
   docValidApi, docInValidApi,
-  getAllRenewalStudentsForPageLoad, getRenewalStudentsBySearch, RenewalStudentApi, fetchRecordDetails,
+  getAllRenewalStudentsForPageLoad, getRenewalStudentsBySearch, RenewalStudentApi,
   incomeDocS3Renewal, feeReceiptS3Renewal, hostelCertS3Renewal, alpabudharakCertS3Renewal,
   declarationCertS3Renewal, registeredLabourCertS3Renewal, studentPanCardS3Renewal, fatherPanCardS3Renewal,
   fatherAadharCardS3Renewal, casteValidityS3Renewal, allotmentLetterS3Renewal, leavingCertS3Renewal,
   rationCardS3Renewal, previousYearMarksheetS3Renewal, gapCertS3Renewal
 } from "../../api/RenewalStudentsApi/RenewalStudentsApi";
+
+import {incomeDocS3Fresh, fetchRecordDetails, getAllFreshStudForPageLoad } from '../../api/FreshStudApi/FreshStudApi';
+
+  
 
 const { Search } = Input;
 
@@ -41,7 +45,7 @@ const FreshStud = () => {
 
   const loadInitialData = async (refId) => {
     try {
-      const response = await getAllRenewalStudentsForPageLoad(refId);
+      const response = await getAllFreshStudForPageLoad(refId);
       setData(response.data || []);
     } catch (error) {
       console.error("Error loading initial data:", error);
@@ -94,7 +98,7 @@ const FreshStud = () => {
       let uploadFunction;
       switch (documentType) {
         case "income":
-          uploadFunction = incomeDocS3Renewal;
+          uploadFunction = incomeDocS3Fresh;
           break;
         case "fee":
           uploadFunction = feeReceiptS3Renewal;
@@ -195,7 +199,7 @@ const FreshStud = () => {
             Upload Documents
           </Button>
 
-          <NavLink to={`/coworker/viewRenewalStudents/${record.id}`}>
+          <NavLink to={`/coworker/viewFreshStud/${record.id}`}>
             <Button>View Renewal Students</Button>
           </NavLink>
         </>

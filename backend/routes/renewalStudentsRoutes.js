@@ -39,7 +39,7 @@ router.post("/getallRenewalStudents",getAllRenewalStudentsForPageLoad);
 router.post('/searchRenewalStudents', searchRenewalStudents);
 
 router.get("/getRenewalStudentDetails/:id", getRenewalStudentDetails);
-router.post("/getSingleMahadbtRenewalProfile", getSingleMahadbtRenewalProfile);
+router.post("/getSingleMahadbtRenewalProfile", getSingleMahadbtRenewalProfile);           
 router.put("/updateMahadbtRenewalProfile", updateMahadbtRenewalProfile);
 router.put("/sendincomeDocS3Renewal", sendincomeDocS3Renewal);
 router.put("/sendfeeReceiptS3Renewal", sendfeeReceiptS3Renewal);

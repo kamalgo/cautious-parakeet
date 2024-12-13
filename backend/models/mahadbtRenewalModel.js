@@ -523,6 +523,13 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         allowNull: true,
         field: 'Application_Status',
     },
+    hash_password: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'hash_password',
+    },
+
+
 
 
 }, {

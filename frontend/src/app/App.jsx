@@ -34,6 +34,7 @@ import { StudentProfileView } from "./pages/Student_ProfileView/StudentProfileVi
 import viewFreshStudents from "./pages/Fresh_Students/FreshStudentsComponents/viewFreshStudents";
 import viewRenewalStudents from "./pages/Renewal_Students/RenewalStudentsComponents/viewRenewalStudents";
 import FreshStud from "./pages/Fresh_Stud/FreshStud";
+import viewFreshStud from "./pages/Fresh_Stud/FreshStudentsComponents/viewFreshStud";
 
 function App() {
   return (
@@ -226,7 +227,17 @@ StudentProfileView
           component={viewFreshStudents}
           role={ROLES.COWORKER}
         />
-       
+
+        
+        <ProtectedRoute
+          exact
+          path="/coworker/viewFreshStud/:id"
+          component={viewFreshStud}
+          role={ROLES.COWORKER}
+        />
+
+
+
           <ProtectedRoute
           exact
           path="/coworker/viewRenewalStudents/:id"
