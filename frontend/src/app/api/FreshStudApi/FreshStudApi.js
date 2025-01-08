@@ -3,6 +3,55 @@ import { redirectOnTokenExpire } from "../Auth";
 
 const ENDPOINT = import.meta.env.VITE_BACKEND_ENDPOINT;
 
+export async function editFreshStudentApi(data) {
+  const { accessToken } = isAuthenticated();
+
+  console.log("Data being sent to API:", JSON.stringify(data, null, 2));
+
+  const response = await fetch(`${ENDPOINT}/updateMahadbtFreshProfile`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+      Authorization: accessToken,
+    },
+    body: JSON.stringify(data),
+  });
+
+  console.log("API Response Status:", response.status);
+
+  if (response.status === 401) {
+    redirectOnTokenExpire();
+    return { success: false, message: "Token expired" };
+  }
+
+  const responseData = await response.json();
+  console.log("API Response Data:", responseData);
+
+  return responseData;
+}
+
+  // export async function editFreshStudentApi(data) {
+  //   const { accessToken } = isAuthenticated();
+  
+  //   console.log("data in editstudentapi",data);
+  
+  //   const response = await fetch(`${ENDPOINT}/updateMahadbtFreshProfile`, {
+  //     method: "PUT",
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Accept: "application/json",
+  //       Authorization: accessToken,
+  //     },
+  //     body: JSON.stringify(data),
+  //   });
+  
+  //   if (response.status == 401) {
+  //     redirectOnTokenExpire();
+  //   }
+  
+  //   return response.json();
+  // }
 
 export async function getAllFreshStudForPageLoad(referenceId = "") {
     const { accessToken } = isAuthenticated();

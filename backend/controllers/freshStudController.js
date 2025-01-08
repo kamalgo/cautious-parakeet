@@ -1,3 +1,5 @@
+//This is the new controller latest one for new Fresh Students
+
 const { Sequelize, Op } = require("sequelize");
   const { createObjectCsvWriter } = require("csv-writer");
   const ROLES = require("../helpers/roles");
@@ -162,4 +164,37 @@ exports.sendincomeDocS3Fresh = async (req, res) => {
     console.error("Error:", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
+};
+
+
+
+exports.updateMahadbtFreshProfile = (req, res) => {
+  const { id } = req.body; // Extract id from URL
+  const updatedData = req.body; // Assuming the updated data is in the request body
+
+  shravani_allcolumns.update(updatedData, {
+    where: {
+      id: id,
+    },
+  })
+    .then((num) => {
+      if (num == 1) {
+        res.json({
+          success: true,
+          message: "Mahadbt Fresh Profile was updated successfully.",
+        });
+      } else {
+        res.json({
+          success: false,
+          message: `Cannot update Mahadbt Fresh Profile with id=${id}. Maybe the profile was not found or req.body is empty!`,
+        });
+      }
+    })
+    .catch((error) => {
+      res.status(500).json({
+        success: false,
+        message: `Error updating Mahadbt Fresh Profile with id=${id}`,
+        error: error,
+      });
+    });
 };

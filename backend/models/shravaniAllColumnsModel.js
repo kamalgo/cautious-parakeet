@@ -382,67 +382,67 @@ const shravani_allcolumns = sequelize.define("shravani_allcolumns", {
         allowNull: true,
         field: 'guardian_certificate_doc',
     },
-    admissionYear: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'admission_year',
-    },
-    instituteState: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'institute_state',
-    },
-    instituteDistrict: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'institute_district',
-    },
-    instituteTaluka: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'institute_taluka',
-    },
-    qualificationLevel: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'qualification_level',
-    },
-    courseStream: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'course_stream',
-    },
-    instituteName: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'institute_name',
-    },
-    courseName: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'coursename',
-    },
-    admissionType: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'AdmissionType',
-    },
-    cetPercentage: {
-        type: DataTypes.FLOAT,
-        allowNull: true,
-        field: 'CET_Percentage',
-    },
-    admissionApplicationId: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'admission_application_id',
-    },
-    admissionLetterDoc: {
-        type: DataTypes.STRING,
-        allowNull: true,
-        field: 'admission_letter_doc',
-    },
-    currentYear: {
+        admissionYear: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'admission_year',
+        },
+        instituteState: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'institute_state',
+        },
+        instituteDistrict: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'institute_district',
+        },
+        instituteTaluka: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'institute_taluka',
+        },
+        qualificationLevel: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'qualification_level',
+        },
+        courseStream: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'course_stream',
+        },
+        instituteName: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'institute_name',
+        },
+        courseName: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'coursename',
+        },
+        admissionType: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'AdmissionType',
+        },
+        cetPercentage: {
+            type: DataTypes.FLOAT,
+            allowNull: true,
+            field: 'CET_Percentage',
+        },
+        admissionApplicationId: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'admission_application_id',
+        },
+        admissionLetterDoc: {
+            type: DataTypes.STRING,
+            allowNull: true,
+            field: 'admission_letter_doc',
+        },
+        currentYear: {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'current_year',

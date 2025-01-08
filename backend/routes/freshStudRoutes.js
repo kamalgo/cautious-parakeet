@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
 
-const {sendincomeDocS3Fresh, getFreshStudDetails, getAllFreshStudForPageLoad} = require("../controllers/freshStudController");
+const {updateMahadbtFreshProfile, sendincomeDocS3Fresh, getFreshStudDetails, getAllFreshStudForPageLoad} = require("../controllers/freshStudController");
+
 
 router.post("/getAllFreshStudForPageLoad", getAllFreshStudForPageLoad);
-router.get("/getFreshStudDetails/:id", getFreshStudDetails)
+router.get("/getFreshStudDetails/:id", getFreshStudDetails);
+router.put("/updateMahadbtFreshProfile", updateMahadbtFreshProfile);
 
 //routes for documents upload 
 router.put("/sendincomeDocS3Fresh", sendincomeDocS3Fresh);
