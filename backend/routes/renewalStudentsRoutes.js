@@ -1,45 +1,46 @@
 const express = require("express");
 const router = express.Router();
 
-const {appPending, appSubmitted, removeRemark, getRemarks, updateRemarks, fetchRefCode, invalidDoc, validDoc, markAsUnsuccessful, markAsSuccessful, updateSchemeDetails , updateHostelDetails, updateCurrentCourseDetails, incomeDetails, personalInfo, getAllRenewalStudentsForPageLoad, searchRenewalStudents , getallRenewalStudents, getRenewalStudentDetails, getSingleMahadbtRenewalProfile, updateMahadbtRenewalProfile
+const { profilePending, profileReady, appPending, appSubmitted, removeRemark, getRemarks, updateRemarks, fetchRefCode, invalidDoc, validDoc, markAsUnsuccessful, markAsSuccessful, updateSchemeDetails, updateHostelDetails, updateCurrentCourseDetails, incomeDetails, personalInfo, getAllRenewalStudentsForPageLoad, searchRenewalStudents, getallRenewalStudents, getRenewalStudentDetails, getSingleMahadbtRenewalProfile, updateMahadbtRenewalProfile
      , sendincomeDocS3Renewal, sendfeeReceiptS3Renewal, sendHostelCertToS3Renewal, sendalpabudharakCertS3Renewal,
      sendDeclarationCertToS3Renewal, sendRegisteredLabourCertToS3Renewal, sendStudentPanCardToS3Renewal,
      sendFatherPanCardToS3Renewal, sendFatherAadharCardToS3Renewal, sendCasteValidityToS3Renewal, sendAllotmentLetterToS3Renewal,
      sendLeavingCertToS3Renewal, sendRationCardToS3Renewal, sendPreviousYearMarksheetToS3Renewal,
      sendGapCertToS3Renewal
-     } = require("../controllers/renewalStudentsController");
+} = require("../controllers/renewalStudentsController");
 
+router.post("/profileReady", profileReady);
+router.post("/profilePending", profilePending);
 
+router.post("/appPending", appPending);
+router.post("/appSubmitted", appSubmitted);
 
-router.post("/appPending",appPending);
-router.post("/appSubmitted",appSubmitted);
-
-router.put("/removeRemark",removeRemark);
-router.post("/getRemarks",getRemarks);
+router.put("/removeRemark", removeRemark);
+router.post("/getRemarks", getRemarks);
 router.post("/updateRemarks", updateRemarks);
 router.post("/fetchRefCode", fetchRefCode);
 
-router.post("/validateDocument",validDoc);
-router.post("/invalidateDocument",invalidDoc);
+router.post("/validateDocument", validDoc);
+router.post("/invalidateDocument", invalidDoc);
 
 
 //MahaDBT Login Valid Invalid Section
-router.post("/markAsSuccessful",markAsSuccessful);
-router.post("/markAsUnsuccessful",markAsUnsuccessful);
+router.post("/markAsSuccessful", markAsSuccessful);
+router.post("/markAsUnsuccessful", markAsUnsuccessful);
 
 //verified section 
-router.post("/personalInfoVerified",personalInfo);
-router.post("/incomeDetailsVerified",incomeDetails);
-router.post("/currentCourseVerified",updateCurrentCourseDetails);
-router.post("/hostelVerified",updateHostelDetails);
-router.post("/schemeVerified",updateSchemeDetails);
+router.post("/personalInfoVerified", personalInfo);
+router.post("/incomeDetailsVerified", incomeDetails);
+router.post("/currentCourseVerified", updateCurrentCourseDetails);
+router.post("/hostelVerified", updateHostelDetails);
+router.post("/schemeVerified", updateSchemeDetails);
 
 
-router.post("/getallRenewalStudents",getAllRenewalStudentsForPageLoad);
+router.post("/getallRenewalStudents", getAllRenewalStudentsForPageLoad);
 router.post('/searchRenewalStudents', searchRenewalStudents);
 
 router.get("/getRenewalStudentDetails/:id", getRenewalStudentDetails);
-router.post("/getSingleMahadbtRenewalProfile", getSingleMahadbtRenewalProfile);           
+router.post("/getSingleMahadbtRenewalProfile", getSingleMahadbtRenewalProfile);
 router.put("/updateMahadbtRenewalProfile", updateMahadbtRenewalProfile);
 router.put("/sendincomeDocS3Renewal", sendincomeDocS3Renewal);
 router.put("/sendfeeReceiptS3Renewal", sendfeeReceiptS3Renewal);

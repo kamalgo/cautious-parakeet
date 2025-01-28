@@ -330,7 +330,7 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
     leavingCertDoc: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: 'Leaving_Cerificate_Doc',
+        field: 'Leaving_Certificate',
     },
     rationCardDoc: {
         type: DataTypes.STRING,
@@ -528,6 +528,11 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         allowNull: true,
         field: 'hash_password',
     },
+    profile_completion_status: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'profile_completion_status',
+    },
 
 
 
@@ -539,4 +544,34 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
     updatedAt: 'modifiedAt', // Maps updatedAt to your column name
 });
 
+// ✅ Add `beforeUpdate` Hook **AFTER** defining the model
+RenewalMahadbt.addHook("beforeUpdate", async (student, options) => {
+    const previousData = student._previousDataValues; // Old values
+    const updatedData = student.dataValues; // New values
+    const updatedBy = options.userId; // User performing the update
+    const changes = [];
+
+    // Compare fields and track changes
+    for (const field in updatedData) {
+        if (updatedData[field] !== previousData[field]) {
+            changes.push({
+                student_id: student.id,
+                updated_by: updatedBy,
+                field_name: field,
+                old_value: previousData[field],
+                new_value: updatedData[field],
+            });
+        }
+    }
+
+    // Log changes in `audit_logs` table
+    if (changes.length > 0) {
+        await AuditLog.bulkCreate(changes);
+    }
+});
+
+// ✅ Ensure the model is **exported at the end**
 module.exports = RenewalMahadbt;
+
+// module.exports = RenewalMahadbt;
+
