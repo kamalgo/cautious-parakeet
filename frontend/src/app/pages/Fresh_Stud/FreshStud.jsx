@@ -200,7 +200,7 @@ const FreshStud = () => {
           </Button>
 
           <NavLink to={`/coworker/viewFreshStud/${record.id}`}>
-            <Button>View Renewal Students</Button>
+            <Button>View Fresh Students</Button>
           </NavLink>
         </>
       ),

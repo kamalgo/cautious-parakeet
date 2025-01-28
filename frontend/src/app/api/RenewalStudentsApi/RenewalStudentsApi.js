@@ -145,6 +145,75 @@ export async function sendSelectedDataToDB(id, selectedValues) {
   }
 }
 
+//Profile Status 
+export async function profileReady(id) {
+  const { accessToken } = isAuthenticated();
+
+  try {
+    const response = await fetch(`${ENDPOINT}/profileReady`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: accessToken,  // Include access token for authorization
+      },
+      body: JSON.stringify({
+        id: id,  // Only sending the `id`
+      }),
+    });
+
+    if (response.status === 401) {
+      redirectOnTokenExpire();
+      throw new Error("Token expired");
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;  // Return the response data
+  } catch (error) {
+    console.error("Error marking as successful:", error);
+    throw error;
+  }
+}
+
+
+export async function profilePending(id) {
+  const { accessToken } = isAuthenticated();
+
+  try {
+    const response = await fetch(`${ENDPOINT}/profilePending`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        Authorization: accessToken,  // Include access token for authorization
+      },
+      body: JSON.stringify({
+        id: id,  // Only sending the `id`
+      }),
+    });
+
+    if (response.status === 401) {
+      redirectOnTokenExpire();
+      throw new Error("Token expired");
+    }
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;  // Return the response data
+  } catch (error) {
+    console.error("Error marking as successful:", error);
+    throw error;
+  }
+}
+
+
 //Applicaiton Status
 export async function appSubmitted(id) {
   const { accessToken } = isAuthenticated();

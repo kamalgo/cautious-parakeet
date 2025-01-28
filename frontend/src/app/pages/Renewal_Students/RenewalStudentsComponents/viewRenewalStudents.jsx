@@ -13,7 +13,7 @@ import {
 import { FiAlertCircle } from "react-icons/fi"; // Example: FiAlertCircle from React Icons
 import Base from "../../../components/Base";
 import {
-  appPending, appSubmitted, markLoginUnsuccessful, markLoginSuccessful, renewalStudentProfileView, updatePersonalInfo, updateIncomeDetails, updateCurrentCourseDetails,
+  profilePending, profileReady, appPending, appSubmitted, markLoginUnsuccessful, markLoginSuccessful, renewalStudentProfileView, updatePersonalInfo, updateIncomeDetails, updateCurrentCourseDetails,
   updateHostelDetails, updateSchemeDetails, sendSelectedDataToDB
 } from "../../../api/RenewalStudentsApi/RenewalStudentsApi";
 
@@ -285,7 +285,7 @@ function viewRenewalStudents() {
     }
   };
 
-  //Handle App Submitted
+  //Handle App Pending
   // Handle successful login
   const handleAppPending = async () => {
     try {
@@ -398,6 +398,81 @@ function viewRenewalStudents() {
     }
   };
 
+
+//Handle App Submitted
+const handleProfileReady = async () => {
+  
+  try {
+    const response = await profileReady(id); // Assuming 'id' is defined in your component
+    if (response.success) {
+      toast({
+        title: "Success!",
+        description: "Profile marked as Ready.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+      console.log("Login marked as successful");
+    } else {
+      toast({
+        title: "Failed!",
+        description: "Could not mark login as successful.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  } catch (err) {
+    console.error("Error marking login as successful:", err);
+    toast({
+      title: "Error!",
+      description: "There was an error processing the request.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+  }
+};
+
+
+const handleProfilePending = async () => {
+  try {
+    const response = await profilePending(id); // Assuming 'id' is defined in your component
+    if (response.success) {
+      toast({
+        title: "Success!",
+        description: "Profile marked as Pending.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+      console.log("Login marked as successful");
+    } else {
+      toast({
+        title: "Failed!",
+        description: "Could not mark login as successful.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+        position: "top-right",
+      });
+    }
+  } catch (err) {
+    console.error("Error marking login as successful:", err);
+    toast({
+      title: "Error!",
+      description: "There was an error processing the request.",
+      status: "error",
+      duration: 5000,
+      isClosable: true,
+      position: "top-right",
+    });
+  }
+};
 
 
 
@@ -538,7 +613,21 @@ function viewRenewalStudents() {
           <Progress value={40} hasStripe size="lg" colorScheme="twitter" is />
         </div> */}
         <Box p={3}>
-          <Button colorScheme="green" ml={1050} onClick={handleAppSubmitted}>
+
+          <Button colorScheme="green" ml={1050} onClick={handleProfileReady}>
+            Profile Ready
+          </Button>
+          {/* handleProfilePending */}
+          <Button colorScheme="red" ml={5} onClick={handleProfilePending}>
+            Profile Pending
+          </Button>
+
+        </Box>
+
+
+        <Box p={3}>
+          <Button colorScheme="green" ml={1050}
+           onClick={handleAppSubmitted}>  
             Application Submitted
           </Button>
 
@@ -583,7 +672,17 @@ function viewRenewalStudents() {
 
           <AccordionItem>
             <h2>
-              <AccordionButton sx={{ backgroundColor: 'blue.700', color: 'white' }}>
+            <AccordionButton
+                              sx={{
+                                backgroundColor: 'blue.700',  // Default color
+                                color: 'white',               // Text color
+                                _hover: {
+                                  backgroundColor: 'blue.600', // Darker shade on hover
+                                  color: 'white',              // Keep the text color as white
+                                },
+                                transition: 'background-color 0.3s ease', // Smooth transition
+                              }}
+                            >
                 <Box as="span" flex="1" textAlign="left" display="flex" alignItems="center">
                   <Heading as="h2" size="md" p={"20px"}>
                     Personal Information
@@ -599,7 +698,9 @@ function viewRenewalStudents() {
                         viewData?.Mahadbt_Username,
                         viewData?.Mahadbt_Password
                       ];
-                      const missingFieldsCount = fields.filter(field => field === null).length;
+                      // const missingFieldsCount = fields.filter(field => field === null).length;
+                      const missingFieldsCount = fields.filter(field => !field || field.trim?.() === "").length;
+
 
                       return missingFieldsCount > 0 && (
                         <Badge ml={3} colorScheme="red" fontSize="0.8em">
@@ -678,7 +779,7 @@ function viewRenewalStudents() {
                     College Ref Code
                   </Heading>
                   <Box display="flex" alignItems="center">
-                    {viewData?.referenceId === null ? (
+                  {viewData?.referenceId === null || !viewData?.referenceId?.trim() ? (
                       <>
                         <Icon as={FiAlertCircle} color="red.500" boxSize={5} mr={2} />
                         <Text fontSize="md">Missing</Text>
@@ -830,7 +931,9 @@ function viewRenewalStudents() {
                       viewData?.incomeIssuingAuthority,
                       viewData?.incomeIssueDate,
                     ];
-                    const missingFieldsCount = fields.filter((field) => field === null).length;
+                    // const missingFieldsCount = fields.filter((field) => field === null).length;
+                    const missingFieldsCount = fields.filter(field => !field || field.trim?.() === "").length;
+
 
                     return missingFieldsCount > 0 && (
                       <Badge ml={3} colorScheme="red" fontSize="0.8em">
@@ -1000,7 +1103,9 @@ function viewRenewalStudents() {
 
                          }
 
-                    const missingFieldsCount = fields.filter(field => !field || field === "NA").length;
+                    // const missingFieldsCount = fields.filter(field => !field || field === "NA").length;
+                    const missingFieldsCount = fields.filter(field => !field || field.trim?.() === "").length;
+
 
                     return missingFieldsCount > 0 && (
                       <Badge ml={3} colorScheme="red" fontSize="0.8em">
@@ -1462,7 +1567,8 @@ function viewRenewalStudents() {
                           viewData?.rentPerMonth
                         );
                       }
-                      const missingFieldsCount = fields.filter(field => field === null || field === "NA").length;
+                      // const missingFieldsCount = fields.filter(field => field === null || field === "NA").length;
+                      const missingFieldsCount = fields.filter(field => !field || field.trim?.() === "").length;
 
                       return missingFieldsCount > 0 && (
                         <Badge ml={3} colorScheme="red" fontSize="0.8em">
@@ -1661,7 +1767,8 @@ function viewRenewalStudents() {
                         viewData?.isRegisteredLabour,
                         viewData?.admittedUnderEws
                       ];
-                      const missingFieldsCount = fields.filter(field => field === null || field === "NA").length;
+                      // const missingFieldsCount = fields.filter(field => field === null || field === "NA").length;
+                      const missingFieldsCount = fields.filter(field => !field || field.trim?.() === "").length;
 
                       if (
                         viewData?.admissionCasteCateogary === 'EBC') {
