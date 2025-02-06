@@ -330,7 +330,7 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
     leavingCertDoc: {
         type: DataTypes.STRING,
         allowNull: true,
-        field: 'Leaving_Certificate',
+        field: 'Leaving_Cerificate_Doc',
     },
     rationCardDoc: {
         type: DataTypes.STRING,
