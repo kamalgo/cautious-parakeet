@@ -9,7 +9,8 @@ let database = process.env.DEVELOPMENT_DB_NAME;
 let user = process.env.DEVELOPMENT_DB_USER;
 let password = process.env.DEVELOPMENT_DB_PASSWORD;
 
-let port = process.env.DEVELOPMENT_DB_PORT || 3308; // Default to 3308 if not set
+let port = process.env.DEVELOPMENT_DB_PORT ;
+// let port = process.env.DEVELOPMENT_DB_PORT || 3308; // Default to 3308 if not set
 
 
 // dataaaa
@@ -19,7 +20,7 @@ let port = process.env.DEVELOPMENT_DB_PORT || 3308; // Default to 3308 if not se
 //   password = process.env.DEVELOPMENT_DB_PASSWORD;
 //   host = process.env.DEVELOPMENT_DB;
 //   database = process.env.DEVELOPMENT_DB_NAME;
-// } else {
+// } else { 
 //   user = process.env.PRODUCTION_DB_USER;
 //   password = process.env.PRODUCTION_DB_PASSWORD;
 //   host = process.env.PRODUCTION_DB;
