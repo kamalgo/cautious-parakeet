@@ -39,7 +39,7 @@ const CoworkerDashboard = () => {
         {username ? (
           <div>Hi {username}</div>
         ) : (
-          <div>Hi Guest</div>
+          <div>What is up Guest</div>
         )}
         {/* Other content */}
       </div>

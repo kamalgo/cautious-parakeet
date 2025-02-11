@@ -9,7 +9,7 @@ let database = process.env.DEVELOPMENT_DB_NAME;
 let user = process.env.DEVELOPMENT_DB_USER;
 let password = process.env.DEVELOPMENT_DB_PASSWORD;
 
-let port = process.env.DEVELOPMENT_DB_PORT ;
+let port = process.env.DEVELOPMENT_DB_PORT;
 // let port = process.env.DEVELOPMENT_DB_PORT || 3308; // Default to 3308 if not set
 
 
