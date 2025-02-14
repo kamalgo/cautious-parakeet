@@ -22,7 +22,10 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
         return res.status(201).json({
             success: true,
             message: 'Applicant created successfully',
-            data: newApplicant
+            data: {
+                id: newApplicant.id, // Sending the ID in the response
+                applicantName: newApplicant.mahadbt_Applicant_Name
+            }
         });
     } catch (error) {
         console.error('Error creating applicant:', error);
@@ -33,7 +36,43 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
     }
 };
 
+// exports.mahadbt_Applicant_Name = async (req, res) => {
+//     try {
+//         const { applicantName } = req.body;
+
+//         if (!applicantName) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: 'Applicant name is required.',
+//             });
+//         }
+
+//         // Create a new record in the MahaDBT_Registration table
+//         const newApplicant = await MahaDBT_Registration.create({
+//             mahadbt_Applicant_Name: applicantName // column name in the table
+//         });
+
+//         return res.status(201).json({
+//             success: true,
+//             message: 'Applicant created successfully',
+//             data: newApplicant
+//         });
+//     } catch (error) {
+//         console.error('Error creating applicant:', error);
+//         return res.status(500).json({
+//             success: false,
+//             message: 'Server error.',
+//         });
+//     }
+// };
+
 // Mahadbt Username
+
+
+
+
+
+
 exports.mahadbt_Username = async (req, res) => {
     try {
         const { username } = req.body;
