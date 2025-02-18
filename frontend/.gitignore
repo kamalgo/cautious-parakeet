@@ -26,3 +26,9 @@ dist-ssr
 # Ignore .env file
 .env
 
+=======
+frontend/dist/
+frontend/dist/
+
+.env
+
