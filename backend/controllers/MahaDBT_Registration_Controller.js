@@ -46,44 +46,6 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
     }
 };
 
-// exports.mahadbt_Applicant_Name = async (req, res) => {
-//     try {
-//         const { applicantName } = req.body;
-
-//         if (!applicantName) {
-//             return res.status(400).json({
-//                 success: false,
-//                 message: 'Applicant name is required.',
-//             });
-//         }
-
-//         // Create a new record in the MahaDBT_Registration table
-//         const newApplicant = await MahaDBT_Registration.create({
-//             mahadbt_Applicant_Name: applicantName // column name in the table
-//         });
-
-//         return res.status(201).json({
-//             success: true,
-//             message: 'Applicant created successfully',
-//             data: {
-//                 id: newApplicant.id, // Sending the ID in the response
-//                 applicantName: newApplicant.mahadbt_Applicant_Name
-//             }
-//         });
-//     } catch (error) {
-//         console.error('Error creating applicant:', error);
-//         return res.status(500).json({
-//             success: false,
-//             message: 'Server error.',
-//         });
-//     }
-// };
-
-
-
-
-
-
 exports.mahadbt_Username = async (req, res) => {
     try {
         const { username } = req.body;
@@ -95,16 +57,32 @@ exports.mahadbt_Username = async (req, res) => {
             });
         }
 
-        const updatedApplicant = await MahaDBT_Registration.update(
+        // Store updated username in Redis
+        const redisKey = `applicantUsername:${req.body.id}`; // Use applicant ID to form a unique Redis key
+        const redisData = { id: req.body.id, username }; // Include ID and updated username
+        await redisClient.set(redisKey, JSON.stringify(redisData));
+
+        console.log("✅ Updated in Redis:", redisKey);
+
+        // Now, update the username in MySQL
+        const [updatedRowsCount] = await MahaDBT_Registration.update(
             { Mahadbt_Username: username },
             { where: { id: req.body.id } }
         );
 
+        if (updatedRowsCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Applicant not found.',
+            });
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Username updated successfully',
-            data: updatedApplicant
+            data: { id: req.body.id, username }
         });
+
     } catch (error) {
         console.error('Error updating username:', error);
         return res.status(500).json({
@@ -113,6 +91,7 @@ exports.mahadbt_Username = async (req, res) => {
         });
     }
 };
+
 
 // Mahadbt Password
 exports.mahadbt_Password = async (req, res) => {
@@ -126,16 +105,32 @@ exports.mahadbt_Password = async (req, res) => {
             });
         }
 
-        const updatedApplicant = await MahaDBT_Registration.update(
+        // Store updated password in Redis (you might want to store a hashed version of the password for security)
+        const redisKey = `applicantPassword:${req.body.id}`; // Unique key based on applicant ID
+        const redisData = { id: req.body.id, password }; // Include ID and updated password
+        await redisClient.set(redisKey, JSON.stringify(redisData));
+
+        console.log("✅ Updated password in Redis:", redisKey);
+
+        // Now, update the password in MySQL
+        const [updatedRowsCount] = await MahaDBT_Registration.update(
             { mahadbt_password: password },
             { where: { id: req.body.id } }
         );
 
+        if (updatedRowsCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Applicant not found.',
+            });
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Password updated successfully',
-            data: updatedApplicant
+            data: { id: req.body.id }
         });
+
     } catch (error) {
         console.error('Error updating password:', error);
         return res.status(500).json({
@@ -144,6 +139,7 @@ exports.mahadbt_Password = async (req, res) => {
         });
     }
 };
+
 
 // Mahadbt Applicant Email
 exports.mahadbt_Applicant_Email = async (req, res) => {
@@ -157,16 +153,32 @@ exports.mahadbt_Applicant_Email = async (req, res) => {
             });
         }
 
-        const updatedApplicant = await MahaDBT_Registration.update(
+        // Store updated email in Redis
+        const redisKey = `applicantEmail:${req.body.id}`; // Unique key based on applicant ID
+        const redisData = { id: req.body.id, email }; // Include ID and updated email
+        await redisClient.set(redisKey, JSON.stringify(redisData));
+
+        console.log("✅ Updated email in Redis:", redisKey);
+
+        // Now, update the email in MySQL
+        const [updatedRowsCount] = await MahaDBT_Registration.update(
             { mahadbt_Applicant_Email: email },
             { where: { id: req.body.id } }
         );
 
+        if (updatedRowsCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Applicant not found.',
+            });
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Email updated successfully',
-            data: updatedApplicant
+            data: { id: req.body.id, email }
         });
+
     } catch (error) {
         console.error('Error updating email:', error);
         return res.status(500).json({
@@ -175,6 +187,7 @@ exports.mahadbt_Applicant_Email = async (req, res) => {
         });
     }
 };
+
 
 // Email OTP
 exports.Email_OTP = async (req, res) => {
@@ -188,16 +201,32 @@ exports.Email_OTP = async (req, res) => {
             });
         }
 
-        const updatedApplicant = await MahaDBT_Registration.update(
+        // Store updated OTP in Redis
+        const redisKey = `emailOTP:${req.body.id}`; // Unique key based on applicant ID
+        const redisData = { id: req.body.id, otp }; // Include ID and updated OTP
+        await redisClient.set(redisKey, JSON.stringify(redisData));
+
+        console.log("✅ Updated OTP in Redis:", redisKey);
+
+        // Now, update the OTP in MySQL
+        const [updatedRowsCount] = await MahaDBT_Registration.update(
             { Email_OTP: otp },
             { where: { id: req.body.id } }
         );
 
+        if (updatedRowsCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Applicant not found.',
+            });
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Email OTP updated successfully',
-            data: updatedApplicant
+            data: { id: req.body.id, otp }
         });
+
     } catch (error) {
         console.error('Error updating Email OTP:', error);
         return res.status(500).json({
@@ -206,6 +235,7 @@ exports.Email_OTP = async (req, res) => {
         });
     }
 };
+
 
 // Applicant Mobile
 exports.mahadbt_Applicant_mobile = async (req, res) => {
@@ -219,16 +249,32 @@ exports.mahadbt_Applicant_mobile = async (req, res) => {
             });
         }
 
-        const updatedApplicant = await MahaDBT_Registration.update(
+        // Store updated mobile number in Redis
+        const redisKey = `applicantMobile:${req.body.id}`; // Unique key based on applicant ID
+        const redisData = { id: req.body.id, mobile }; // Include ID and updated mobile number
+        await redisClient.set(redisKey, JSON.stringify(redisData));
+
+        console.log("✅ Updated mobile number in Redis:", redisKey);
+
+        // Now, update the mobile number in MySQL
+        const [updatedRowsCount] = await MahaDBT_Registration.update(
             { mahadbt_Applicant_mobile: mobile },
             { where: { id: req.body.id } }
         );
 
+        if (updatedRowsCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Applicant not found.',
+            });
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Mobile number updated successfully',
-            data: updatedApplicant
+            data: { id: req.body.id, mobile }
         });
+
     } catch (error) {
         console.error('Error updating mobile number:', error);
         return res.status(500).json({
@@ -250,16 +296,32 @@ exports.Mobile_OTP = async (req, res) => {
             });
         }
 
-        const updatedApplicant = await MahaDBT_Registration.update(
+        // Store updated OTP in Redis
+        const redisKey = `mobileOTP:${req.body.id}`; // Unique key based on applicant ID
+        const redisData = { id: req.body.id, otp }; // Include ID and updated OTP
+        await redisClient.set(redisKey, JSON.stringify(redisData));
+
+        console.log("✅ Updated OTP in Redis:", redisKey);
+
+        // Now, update the OTP in MySQL
+        const [updatedRowsCount] = await MahaDBT_Registration.update(
             { Mobile_OTP: otp },
             { where: { id: req.body.id } }
         );
 
+        if (updatedRowsCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Applicant not found.',
+            });
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Mobile OTP updated successfully',
-            data: updatedApplicant
+            data: { id: req.body.id, otp }
         });
+
     } catch (error) {
         console.error('Error updating Mobile OTP:', error);
         return res.status(500).json({
@@ -281,16 +343,32 @@ exports.Adhar_Number = async (req, res) => {
             });
         }
 
-        const updatedApplicant = await MahaDBT_Registration.update(
+        // Store updated Aadhaar number in Redis
+        const redisKey = `aadhaar:${req.body.id}`; // Unique key based on applicant ID
+        const redisData = { id: req.body.id, aadhaar }; // Include ID and updated Aadhaar number
+        await redisClient.set(redisKey, JSON.stringify(redisData));
+
+        console.log("✅ Updated Aadhaar number in Redis:", redisKey);
+
+        // Now, update the Aadhaar number in MySQL
+        const [updatedRowsCount] = await MahaDBT_Registration.update(
             { Adhar_Number: aadhaar },
             { where: { id: req.body.id } }
         );
 
+        if (updatedRowsCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Applicant not found.',
+            });
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Aadhaar number updated successfully',
-            data: updatedApplicant
+            data: { id: req.body.id, aadhaar }
         });
+
     } catch (error) {
         console.error('Error updating Aadhaar number:', error);
         return res.status(500).json({
@@ -299,6 +377,7 @@ exports.Adhar_Number = async (req, res) => {
         });
     }
 };
+
 
 // Aadhaar OTP
 exports.Adhar_OTP = async (req, res) => {
@@ -312,16 +391,32 @@ exports.Adhar_OTP = async (req, res) => {
             });
         }
 
-        const updatedApplicant = await MahaDBT_Registration.update(
+        // Store updated Aadhaar OTP in Redis
+        const redisKey = `aadhaarOTP:${req.body.id}`; // Unique key based on applicant ID
+        const redisData = { id: req.body.id, otp }; // Include ID and updated OTP
+        await redisClient.set(redisKey, JSON.stringify(redisData));
+
+        console.log("✅ Updated Aadhaar OTP in Redis:", redisKey);
+
+        // Now, update the Aadhaar OTP in MySQL
+        const [updatedRowsCount] = await MahaDBT_Registration.update(
             { Adhar_OTP: otp },
             { where: { id: req.body.id } }
         );
 
+        if (updatedRowsCount === 0) {
+            return res.status(404).json({
+                success: false,
+                message: 'Applicant not found.',
+            });
+        }
+
         return res.status(200).json({
             success: true,
             message: 'Aadhaar OTP updated successfully',
-            data: updatedApplicant
+            data: { id: req.body.id, otp }
         });
+
     } catch (error) {
         console.error('Error updating Aadhaar OTP:', error);
         return res.status(500).json({
@@ -330,3 +425,4 @@ exports.Adhar_OTP = async (req, res) => {
         });
     }
 };
+
