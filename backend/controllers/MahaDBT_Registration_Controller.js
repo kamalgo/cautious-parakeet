@@ -3,6 +3,9 @@ const ROLES = require("../helpers/roles");
 
 const MahaDBT_Registration = require("../models/MahaDBT_Registration");
 
+
+const redisClient = require("../database/redisClient");
+
 exports.mahadbt_Applicant_Name = async (req, res) => {
     try {
         const { applicantName } = req.body;
@@ -10,28 +13,35 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
         if (!applicantName) {
             return res.status(400).json({
                 success: false,
-                message: 'Applicant name is required.',
+                message: "Applicant name is required.",
             });
         }
 
-        // Create a new record in the MahaDBT_Registration table
+        // Store in Redis first
+        const redisKey = `applicant:${applicantName}`;
+        await redisClient.set(redisKey, JSON.stringify({ applicantName }));
+
+        console.log("✅ Stored in Redis:", redisKey);
+
+        // Now, store in MySQL RDS
         const newApplicant = await MahaDBT_Registration.create({
-            mahadbt_Applicant_Name: applicantName // column name in the table
+            mahadbt_Applicant_Name: applicantName
         });
 
         return res.status(201).json({
             success: true,
-            message: 'Applicant created successfully',
+            message: "Applicant created successfully",
             data: {
-                id: newApplicant.id, // Sending the ID in the response
+                id: newApplicant.id,
                 applicantName: newApplicant.mahadbt_Applicant_Name
             }
         });
+
     } catch (error) {
-        console.error('Error creating applicant:', error);
+        console.error("❌ Error:", error);
         return res.status(500).json({
             success: false,
-            message: 'Server error.',
+            message: "Server error.",
         });
     }
 };
@@ -55,7 +65,10 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
 //         return res.status(201).json({
 //             success: true,
 //             message: 'Applicant created successfully',
-//             data: newApplicant
+//             data: {
+//                 id: newApplicant.id, // Sending the ID in the response
+//                 applicantName: newApplicant.mahadbt_Applicant_Name
+//             }
 //         });
 //     } catch (error) {
 //         console.error('Error creating applicant:', error);
@@ -65,8 +78,6 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
 //         });
 //     }
 // };
-
-// Mahadbt Username
 
 
 
