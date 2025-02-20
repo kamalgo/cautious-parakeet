@@ -1,13 +1,9 @@
 const redis = require("redis");
-const dotenv = require("dotenv");
-
-dotenv.config(); // Load environment variables
 
 const redisClient = redis.createClient({
     socket: {
-        host: process.env.REDIS_HOST,  // AWS Redis endpoint
-        port: process.env.REDIS_PORT || 6379,
-        tls: {}  // Required for AWS ElastiCache Serverless
+        host: "127.0.0.1",  // Connect via stunnel
+        port: 6380          // Use stunnel's forwarded port
     }
 });
 
