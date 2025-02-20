@@ -5,11 +5,9 @@ dotenv.config(); // Load environment variables
 
 const redisClient = redis.createClient({
     socket: {
-        host: process.env.REDIS_HOST, // AWS Redis endpoint
+        host: process.env.REDIS_HOST,  // AWS Redis endpoint
         port: process.env.REDIS_PORT || 6379,
-        tls: { 
-            rejectUnauthorized: false // Required for AWS ElastiCache
-        }
+        tls: {}  // Required for AWS ElastiCache Serverless
     }
 });
 
@@ -19,6 +17,7 @@ redisClient.on("error", (err) => console.error("❌ Redis Error:", err));
 (async () => {
     try {
         await redisClient.connect();
+        console.log("🚀 Redis connection established!");
     } catch (err) {
         console.error("❌ Redis Connection Failed:", err);
     }
