@@ -1,45 +1,21 @@
-// const redis = require("redis");
-// const dotenv = require("dotenv");
-
-// dotenv.config(); // Load environment variables
-
-// // Create Redis Client
-// const redisClient = redis.createClient({
-//     socket: {
-//         host: process.env.REDIS_HOST,
-//         port: process.env.REDIS_PORT
-//     },
-//     password: process.env.REDIS_PASSWORD || null
-// });
-
-// // Handle Redis Connection Events
-// redisClient.on("connect", () => console.log("✅ Redis Connected"));
-// redisClient.on("error", (err) => console.error("❌ Redis Error:", err));
-
-// // Connect Redis
-// redisClient.connect();
-
-// module.exports = redisClient;
-
 const redis = require("redis");
 const dotenv = require("dotenv");
 
 dotenv.config(); // Load environment variables
 
-// Create Redis Client
 const redisClient = redis.createClient({
     socket: {
-        host: process.env.REDIS_HOST,
-        port: process.env.REDIS_PORT
+        host: process.env.REDIS_HOST, // Use your AWS Redis endpoint
+        port: process.env.REDIS_PORT || 6379,
+        tls: {}  // Required for secure connection to ElastiCache Serverless
     },
-    password: process.env.REDIS_PASSWORD || null  // Optional if password is not required
+    username: process.env.REDIS_USERNAME || "default",
+    password: process.env.REDIS_PASSWORD || null
 });
 
-// Handle Redis Connection Events
 redisClient.on("connect", () => console.log("✅ Redis Connected"));
 redisClient.on("error", (err) => console.error("❌ Redis Error:", err));
 
-// Connect Redis
 redisClient.connect();
 
 module.exports = redisClient;
