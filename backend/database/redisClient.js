@@ -1,19 +1,14 @@
-require("dotenv").config();
 const redis = require("redis");
 
 const redisClient = redis.createClient({
     socket: {
         host: process.env.REDIS_HOST,
         port: process.env.REDIS_PORT,
-        keepAlive: 10000  // Keep the connection alive for 10s
-    },
-    retry_strategy: (options) => {
-        console.log("🔄 Reconnecting to Redis...");
-        return Math.min(options.attempt * 100, 3000); // Retry delay
+        tls: {}  // Enable TLS
     }
 });
 
-redisClient.on("connect", () => console.log("✅ Redis Connected to:", process.env.REDIS_HOST));
+redisClient.on("connect", () => console.log("✅ Redis Connected"));
 redisClient.on("error", (err) => console.error("❌ Redis Error:", err));
 
 (async () => {
@@ -26,6 +21,7 @@ redisClient.on("error", (err) => console.error("❌ Redis Error:", err));
 })();
 
 module.exports = redisClient;
+
 
 
 
