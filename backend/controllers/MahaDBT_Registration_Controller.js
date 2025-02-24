@@ -18,7 +18,7 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
         }
 
         // Store in Redis first
-        const redisKey = `mahadbt_Applicant_Name:${applicantName}`;
+        const redisKey = `applicant:${applicantName}`;
         await redisClient.set(redisKey, JSON.stringify({ applicantName }));
 
         console.log("✅ Stored in Redis:", redisKey);
@@ -58,7 +58,7 @@ exports.mahadbt_Username = async (req, res) => {
         }
 
         // Store updated username in Redis
-        const redisKey = `Mahadbt_Username:${req.body.id}`; // Use applicant ID to form a unique Redis key
+        const redisKey = `applicantUsername:${req.body.id}`; // Use applicant ID to form a unique Redis key
         const redisData = { id: req.body.id, username }; // Include ID and updated username
         await redisClient.set(redisKey, JSON.stringify(redisData));
 
@@ -106,7 +106,7 @@ exports.mahadbt_Password = async (req, res) => {
         }
 
         // Store updated password in Redis (you might want to store a hashed version of the password for security)
-        const redisKey = `mahadbt_password:${req.body.id}`; // Unique key based on applicant ID
+        const redisKey = `applicantPassword:${req.body.id}`; // Unique key based on applicant ID
         const redisData = { id: req.body.id, password }; // Include ID and updated password
         await redisClient.set(redisKey, JSON.stringify(redisData));
 
@@ -154,7 +154,7 @@ exports.mahadbt_Applicant_Email = async (req, res) => {
         }
 
         // Store updated email in Redis
-        const redisKey = `mahadbt_Applicant_Email:${req.body.id}`; // Unique key based on applicant ID
+        const redisKey = `applicantEmail:${req.body.id}`; // Unique key based on applicant ID
         const redisData = { id: req.body.id, email }; // Include ID and updated email
         await redisClient.set(redisKey, JSON.stringify(redisData));
 
@@ -202,7 +202,7 @@ exports.Email_OTP = async (req, res) => {
         }
 
         // Store updated OTP in Redis
-        const redisKey = `Email_OTP:${req.body.id}`; // Unique key based on applicant ID
+        const redisKey = `emailOTP:${req.body.id}`; // Unique key based on applicant ID
         const redisData = { id: req.body.id, otp }; // Include ID and updated OTP
         await redisClient.set(redisKey, JSON.stringify(redisData));
 
@@ -250,7 +250,7 @@ exports.mahadbt_Applicant_mobile = async (req, res) => {
         }
 
         // Store updated mobile number in Redis
-        const redisKey = `mahadbt_Applicant_mobile:${req.body.id}`; // Unique key based on applicant ID
+        const redisKey = `applicantMobile:${req.body.id}`; // Unique key based on applicant ID
         const redisData = { id: req.body.id, mobile }; // Include ID and updated mobile number
         await redisClient.set(redisKey, JSON.stringify(redisData));
 
@@ -297,7 +297,7 @@ exports.Mobile_OTP = async (req, res) => {
         }
 
         // Store updated OTP in Redis
-        const redisKey = `Mobile_OTP:${req.body.id}`; // Unique key based on applicant ID
+        const redisKey = `mobileOTP:${req.body.id}`; // Unique key based on applicant ID
         const redisData = { id: req.body.id, otp }; // Include ID and updated OTP
         await redisClient.set(redisKey, JSON.stringify(redisData));
 
@@ -344,7 +344,7 @@ exports.Adhar_Number = async (req, res) => {
         }
 
         // Store updated Aadhaar number in Redis
-        const redisKey = `Adhar_Number:${req.body.id}`; // Unique key based on applicant ID
+        const redisKey = `aadhaar:${req.body.id}`; // Unique key based on applicant ID
         const redisData = { id: req.body.id, aadhaar }; // Include ID and updated Aadhaar number
         await redisClient.set(redisKey, JSON.stringify(redisData));
 
@@ -392,7 +392,7 @@ exports.Adhar_OTP = async (req, res) => {
         }
 
         // Store updated Aadhaar OTP in Redis
-        const redisKey = `Adhar_OTP:${req.body.id}`; // Unique key based on applicant ID
+        const redisKey = `aadhaarOTP:${req.body.id}`; // Unique key based on applicant ID
         const redisData = { id: req.body.id, otp }; // Include ID and updated OTP
         await redisClient.set(redisKey, JSON.stringify(redisData));
 
