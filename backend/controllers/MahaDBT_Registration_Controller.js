@@ -6,11 +6,54 @@ const MahaDBT_Registration = require("../models/MahaDBT_Registration");
 
 const redisClient = require("../database/redisClient");
 
+// exports.mahadbt_Applicant_Name = async (req, res) => {
+//     try {
+//         const { applicantName } = req.body;
+
+//         if (!applicantName) {
+//             return res.status(400).json({
+//                 success: false,
+//                 message: "Applicant name is required.",
+//             });
+//         }
+
+//         // Store in Redis first
+//         const redisKey = `applicant:${applicantName}`;
+//         await redisClient.set(redisKey, JSON.stringify({ applicantName }));
+
+//         console.log("✅ Stored in Redis:", redisKey);
+
+//         // Now, store in MySQL RDS
+//         const newApplicant = await MahaDBT_Registration.create({
+//             mahadbt_Applicant_Name: applicantName
+//         });
+
+//         return res.status(201).json({
+//             success: true,
+//             message: "Applicant created successfully",
+//             data: {
+//                 id: newApplicant.id,
+//                 applicantName: newApplicant.mahadbt_Applicant_Name
+//             }
+//         });
+
+//     } catch (error) {
+//         console.error("❌ Error:", error);
+//         return res.status(500).json({
+//             success: false,
+//             message: "Server error.",
+//         });
+//     }
+// };
+
 exports.mahadbt_Applicant_Name = async (req, res) => {
     try {
         const { applicantName } = req.body;
+        console.log("🔹 Received request at /mahadbt-applicant");
+        console.log("🔹 Request body:", req.body);
 
         if (!applicantName) {
+            console.log("❌ Missing applicantName");
             return res.status(400).json({
                 success: false,
                 message: "Applicant name is required.",
@@ -19,14 +62,18 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
 
         // Store in Redis first
         const redisKey = `applicant:${applicantName}`;
-        await redisClient.set(redisKey, JSON.stringify({ applicantName }));
+        console.log(`🔹 Attempting to store in Redis: ${redisKey}`, JSON.stringify({ applicantName }));
 
+        await redisClient.set(redisKey, JSON.stringify({ applicantName }));
         console.log("✅ Stored in Redis:", redisKey);
 
         // Now, store in MySQL RDS
+        console.log("🔹 Attempting to store in MySQL");
         const newApplicant = await MahaDBT_Registration.create({
             mahadbt_Applicant_Name: applicantName
         });
+
+        console.log("✅ Stored in MySQL:", newApplicant.id);
 
         return res.status(201).json({
             success: true,
@@ -45,6 +92,8 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
         });
     }
 };
+
+
 
 exports.mahadbt_Username = async (req, res) => {
     try {
