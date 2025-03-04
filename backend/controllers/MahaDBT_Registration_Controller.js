@@ -503,7 +503,7 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
 
         // Store in Redis using HSET
         const redisKey = `mahadbt_Applicant:${redisId}`;
-        await redisClient.hset(redisKey, "id", redisId, "mahadbt_Applicant_Name", applicantName);
+        await redisClient.hSet(redisKey, "id", redisId, "mahadbt_Applicant_Name", applicantName);
         console.log("✅ Stored in Redis HSET:", redisKey, { id: redisId, mahadbt_Applicant_Name: applicantName });
 
         // Now, store in MySQL RDS (MySQL will use its own auto-increment ID)
@@ -546,7 +546,7 @@ exports.mahadbt_Username = async (req, res) => {
 
         // Store updated username in Redis using HSET
         const redisKey = `Mahadbt_Applicant:${id}`; // Use applicant ID for unique key
-        await redisClient.hset(redisKey, "username", username);
+        await redisClient.hSet(redisKey, "username", username);
 
         console.log("✅ Updated in Redis:", redisKey, { username });
 
