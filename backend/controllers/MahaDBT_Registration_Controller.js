@@ -545,7 +545,7 @@ exports.mahadbt_Username = async (req, res) => {
         }
 
         // Store updated username in Redis using HSET
-        const redisKey = `Mahadbt_Applicant:${id}`; // Use applicant ID for unique key
+        const redisKey = `mahadbt_applicant_id:${id}`; // Use applicant ID for unique key
         await redisClient.hSet(redisKey, "username", username);
 
         console.log("✅ Updated in Redis:", redisKey, { username });
