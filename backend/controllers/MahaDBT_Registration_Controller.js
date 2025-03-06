@@ -5,7 +5,7 @@ const MahaDBT_Registration = require("../models/MahaDBT_Registration");
 
 
 const redisClient = require("../database/redisClient");
-
+    
 
 // exports.mahadbt_Applicant_Name = async (req, res) => {
 //     try {
@@ -53,7 +53,6 @@ const redisClient = require("../database/redisClient");
 //         });
 //     }
 // };
-
 exports.mahadbt_Applicant_Name = async (req, res) => {
     try {
         const { applicantName } = req.body;
@@ -68,17 +67,7 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
             });
         }
 
-        // Get the next Redis ID starting from 30
-        const redisId = await redisClient.incr("mahadbt_applicant_id");
-        console.log(`🔹 Generated Redis ID: ${redisId}`);
-
-        // Store in Redis first
-        const redisKey = `mahadbt_Applicant:${redisId}`;
-        const redisData = { id: redisId, applicantName };
-        await redisClient.set(redisKey, JSON.stringify(redisData));
-        console.log("✅ Stored in Redis:", redisKey, redisData);
-
-        // Now, store in MySQL RDS (MySQL will use its own auto-increment ID)
+        // Store directly in MySQL (MySQL will generate the ID)
         console.log("🔹 Attempting to store in MySQL");
         const newApplicant = await MahaDBT_Registration.create({
             mahadbt_Applicant_Name: applicantName
@@ -86,12 +75,20 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
 
         console.log("✅ Stored in MySQL with ID:", newApplicant.id);
 
+        // Use MySQL ID for Redis storage
+        const mysqlId = newApplicant.id;
+        const redisKey = `mahadbt_Applicant:${mysqlId}`;
+        const redisData = { id: mysqlId, applicantName };
+
+        // Store in Redis
+        await redisClient.set(redisKey, JSON.stringify(redisData));
+        console.log("✅ Stored in Redis:", redisKey, redisData);
+
         return res.status(201).json({
             success: true,
             message: "Applicant created successfully",
             data: {
-                redisId: redisId,
-                mysqlId: newApplicant.id,
+                mysqlId: mysqlId,
                 applicantName: newApplicant.mahadbt_Applicant_Name
             }
         });
@@ -104,6 +101,57 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
         });
     }
 };
+
+// exports.mahadbt_Applicant_Name = async (req, res) => {
+//     try {
+//         const { applicantName } = req.body;
+//         console.log("🔹 Received request at /mahadbt-applicant");
+//         console.log("🔹 Request body:", req.body);
+
+//         if (!applicantName) {
+//             console.log("❌ Missing applicantName");
+//             return res.status(400).json({
+//                 success: false,
+//                 message: "Applicant name is required.",
+//             });
+//         }
+
+//         // Get the next Redis ID starting from 30
+//         const redisId = await redisClient.incr("mahadbt_applicant_id");
+//         console.log(`🔹 Generated Redis ID: ${redisId}`);
+
+//         // Store in Redis first
+//         const redisKey = `mahadbt_Applicant:${redisId}`;
+//         const redisData = { id: redisId, applicantName };
+//         await redisClient.set(redisKey, JSON.stringify(redisData));
+//         console.log("✅ Stored in Redis:", redisKey, redisData);
+
+//         // Now, store in MySQL RDS (MySQL will use its own auto-increment ID)
+//         console.log("🔹 Attempting to store in MySQL");
+//         const newApplicant = await MahaDBT_Registration.create({
+//             mahadbt_Applicant_Name: applicantName
+//         });
+
+//         console.log("✅ Stored in MySQL with ID:", newApplicant.id);
+
+//         return res.status(201).json({
+//             success: true,
+//             message: "Applicant created successfully",
+//             data: {
+//                 redisId: redisId,
+//                 mysqlId: newApplicant.id,
+//                 applicantName: newApplicant.mahadbt_Applicant_Name
+//             }
+//         });
+
+//     } catch (error) {
+//         console.error("❌ Error:", error);
+//         return res.status(500).json({
+//             success: false,
+//             message: "Server error.",
+//         });
+//     }
+// };
 
 
 exports.mahadbt_Username = async (req, res) => {
