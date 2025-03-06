@@ -88,7 +88,7 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
             success: true,
             message: "Applicant created successfully",
             data: {
-                mysqlId: mysqlId,
+                id: mysqlId,
                 applicantName: newApplicant.mahadbt_Applicant_Name
             }
         });
