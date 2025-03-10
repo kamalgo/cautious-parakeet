@@ -77,7 +77,7 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
 
         // Use MySQL ID for Redis storage
         const mysqlId = newApplicant.id;
-        const redisKey = `mahadbt_Applicant:${mysqlId}`;
+        const redisKey = `mahadbt_Applicant_Name:${mysqlId}`;
         const redisData = { id: mysqlId, applicantName };
 
         // Store in Redis
