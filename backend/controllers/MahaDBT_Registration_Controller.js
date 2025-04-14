@@ -154,7 +154,7 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
 // };
 
 
-exports.mahadbt_Username = async (req, res) => {
+exports.mahadbt_Username = async (req, res) => {    
     try {
         const { username } = req.body;
 

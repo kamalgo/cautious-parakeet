@@ -539,6 +539,9 @@
     { name: "Doc Upload", icon: MdGroup, path: "/dashboard/admin/Doc_Upload" },
     { name: "Fresh Students", icon: MdGroup, path: "/dashboard/admin/FreshStudents" },
     { name: "Renewal Students", icon: MdGroup, path: "/dashboard/admin/RenewalStudents" },
+    { name: "Projects", icon: MdGroup, path: "/dashboard/admin/projects" },
+
+
 
   ];
 

@@ -35,6 +35,7 @@ import viewFreshStudents from "./pages/Fresh_Students/FreshStudentsComponents/vi
 import viewRenewalStudents from "./pages/Renewal_Students/RenewalStudentsComponents/viewRenewalStudents";
 import FreshStud from "./pages/Fresh_Stud/FreshStud";
 import viewFreshStud from "./pages/Fresh_Stud/FreshStudentsComponents/viewFreshStud";
+import Projects from "./pages/Admin/Projects";
 
 function App() {
   return (
@@ -151,6 +152,14 @@ function App() {
           component={Payments}
           role={ROLES.ADMIN}
         />
+
+<ProtectedRoute
+  exact
+  path="/dashboard/admin/projects"
+  component={Projects}
+  role={ROLES.ADMIN}
+/>
+
         
         <ProtectedRoute
           exact
