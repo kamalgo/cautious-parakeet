@@ -6,7 +6,7 @@ const getAllProjects = async (req, res) => {
     const data = await db.Projects.findAll();
     res.json(data);
   } catch (err) {
-    console.error("Error fetching projects:", error);
+    console.error("Error fetching projects:", err);
     res.status(500).json({ error: err.message });
   }
 };
