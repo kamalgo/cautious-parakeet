@@ -20,3 +20,4 @@ const sequelizeV2 = new Sequelize(
 );
 
 module.exports = sequelizeV2;
+

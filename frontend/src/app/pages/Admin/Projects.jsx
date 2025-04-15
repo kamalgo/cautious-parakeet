@@ -1,13 +1,11 @@
-// src/app/pages/Admin/Projects.jsx
 import React, { useEffect, useState } from "react";
-import { getAllProjects,createProject} from "../../api/ProjectsApi/ProjectsApi";
+import { getAllProjects, createProject } from "../../api/ProjectsApi/ProjectsApi";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true); // Optional: for loading UI
-  const [error, setError] = useState(null);     // Optional: for error UI
+  const [error, setError] = useState(null); // Optional: for error UI
   const [newProjectName, setNewProjectName] = useState("");
-
 
   useEffect(() => {
     const fetchProjects = async () => {
@@ -19,39 +17,43 @@ const Projects = () => {
         console.warn("Unexpected API response format");
         setProjects([]);
       }
+      setLoading(false); // Stop loading after data is fetched
     };
-  
+
     fetchProjects();
   }, []);
-  
 
   return (
     <div className="container">
       <h2>📂 Project List</h2>
       <form
-  onSubmit={async (e) => {
-    e.preventDefault();
-    const result = await createProject({ project_name: newProjectName });
-    if (result.success) {
-      alert("✅ Project added!");
-      setNewProjectName("");
-      fetchProjects(); // reload
-    } else {
-      alert("❌ Failed to add: " + result.message);
-    }
-  }}
-  style={{ marginBottom: "1rem" }}
->
-  <input
-    type="text"
-    placeholder="Enter project name"
-    value={newProjectName}
-    onChange={(e) => setNewProjectName(e.target.value)}
-    required
-  />
-  <button type="submit">➕ Add Project</button>
-</form>
+        onSubmit={async (e) => {
+          e.preventDefault();
+          const result = await createProject({ project_name: newProjectName });
+          if (result.success) {
+            alert("✅ Project added!");
+            setNewProjectName("");
 
+            // Directly update the state without re-fetching
+            setProjects((prevProjects) => [
+              ...prevProjects,
+              { project_name: newProjectName, project_id: result.newProjectId },
+            ]);
+          } else {
+            alert("❌ Failed to add: " + result.message);
+          }
+        }}
+        style={{ marginBottom: "1rem" }}
+      >
+        <input
+          type="text"
+          placeholder="Enter project name"
+          value={newProjectName}
+          onChange={(e) => setNewProjectName(e.target.value)}
+          required
+        />
+        <button type="submit">➕ Add Project</button>
+      </form>
 
       {loading && <p>Loading projects...</p>}
       {error && <p style={{ color: "red" }}>{error}</p>}
