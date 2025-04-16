@@ -184,7 +184,8 @@ router.put("/submitFormData", sendDatatoDB);
 // API's for whatsapp chatbot
 // router.put("/UPTE", isSignedIn, UPTE); // UPTE update profile through email
 router.put("/UPTE", UPTE); // UPTE update profile through email
-router.put("/UPTA", isSignedIn, UPTA); // UPTA update profile through email
+// router.put("/UPTA", isSignedIn, UPTA); // UPTA update profile through email
+router.put("/UPTA", UPTA); // UPTA update profile through aadhaar 
 router.post("/createProfileBot", createProfileBot); //creates a new profile record
 router.post("/createProfileBotRenewal", createProfileBotRenewal);
 router.get("/fetchBlankRecordsByAadhaar",isSignedIn, fetchBlankRecordsByAadhaar);
