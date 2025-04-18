@@ -1,7 +1,7 @@
 const axios = require("axios");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI("YOUR_GEMINI_API_KEY");
+const genAI = new GoogleGenerativeAI("AIzaSyD0ANJ4hfTwNnxwh-mUUQ70yPSfZfC_9hc");
 
 async function urlToGenerativePart(imageUrl, mimeType = "image/jpeg") {
   const response = await axios.get(imageUrl, {
