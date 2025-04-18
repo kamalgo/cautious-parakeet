@@ -11,11 +11,11 @@ const { extractFieldsFromImageURL } = require("../gemini_ocr/extractFieldsFromIm
 
 exports.UPTA = async (req, res) => {
   try {
-    const { aadhaar_number, CAP_Allotment_Letter, confirmOCR } = req.body;
+    const { aadhaar_number, capAllotmentLetter, confirmOCR } = req.body;
 
     // 1. If image is uploaded but not confirmed, trigger Gemini and respond back
-    if (CAP_Allotment_Letter && confirmOCR !== true) {
-      const extractedFields = await extractFieldsFromImageURL(CAP_Allotment_Letter);
+    if (capAllotmentLetter && confirmOCR !== true) {
+      const extractedFields = await extractFieldsFromImageURL(capAllotmentLetter);
 
       return res.status(200).json({
         success: true,
@@ -25,8 +25,8 @@ exports.UPTA = async (req, res) => {
     }
 
     // 2. If OCR is confirmed by user, save the data
-    if (confirmOCR === true && CAP_Allotment_Letter) {
-      const extractedFields = await extractFieldsFromImageURL(CAP_Allotment_Letter);
+    if (confirmOCR === true && capAllotmentLetter) {
+      const extractedFields = await extractFieldsFromImageURL(capAllotmentLetter);
 
       await shravani_allcolumns.update(extractedFields, {
         where: { aadhaar_number },
