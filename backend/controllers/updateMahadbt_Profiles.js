@@ -7,6 +7,52 @@ const Mahadbtprofiles = require("../models/mahadbtModel");
 const mahadbtProfilesBot = require("../models/mahadbtModel_Bot");
 const MahadbtRenewal = require("../models/mahadbtRenewalModel");
 const shravani_allcolumns = require("../models/shravaniAllColumnsModel");
+const { extractFieldsFromImageURL } = require("../gemini_ocr/extractFieldsFromImageURL");
+
+exports.UPTA = async (req, res) => {
+  try {
+    const { aadhaar_number, CAP_Allotment_Letter, confirmOCR } = req.body;
+
+    // 1. If image is uploaded but not confirmed, trigger Gemini and respond back
+    if (CAP_Allotment_Letter && confirmOCR !== true) {
+      const extractedFields = await extractFieldsFromImageURL(CAP_Allotment_Letter);
+
+      return res.status(200).json({
+        success: true,
+        message: "Fields extracted from image. Ask student to confirm.",
+        extractedFields,
+      });
+    }
+
+    // 2. If OCR is confirmed by user, save the data
+    if (confirmOCR === true && CAP_Allotment_Letter) {
+      const extractedFields = await extractFieldsFromImageURL(CAP_Allotment_Letter);
+
+      await shravani_allcolumns.update(extractedFields, {
+        where: { aadhaar_number },
+      });
+
+      return res.status(200).json({
+        success: true,
+        message: "OCR confirmed. Data saved.",
+      });
+    }
+
+    // 3. Default update for other fields
+    await shravani_allcolumns.update(req.body, {
+      where: { aadhaar_number },
+    });
+
+    res.status(200).json({
+      success: true,
+      message: "Data updated.",
+    });
+
+  } catch (err) {
+    console.error("Error in UPTA controller:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 //UPTE update profile through email
     // exports.UPTE = async (req, res) => {
@@ -59,15 +105,15 @@ const shravani_allcolumns = require("../models/shravaniAllColumnsModel");
 //UPTA update profile through aadhar
 
       // exports.UPTA = async (req, res) => {
-      //   Mahadbtprofiles.update(req.body, {
+      //   shravani_allcolumns.update(req.body, {
       //     // Specify the condition for the update
       //     where: {
-      //       aadhaar: req.body.aadhaar,
+      //       aadhaar_number: req.body.aadhaar_number,
       //     },
       //   })
       //     .then((result) => {
       //       console.log("result", result);
-      //       console.log("aadhaar", req.body.aadhaar);
+      //       console.log("aadhaar", req.body.aadhaar_number);
             
       //       // The result is an array where the first element is the number of updated rows
       //       return res.status(200).json({
@@ -79,30 +125,7 @@ const shravani_allcolumns = require("../models/shravaniAllColumnsModel");
       //       console.error("Error updating records:", error);
       //       res.status(500).json({ error: "Internal Server Error" });
       //     });
-      // };
-
-      exports.UPTA = async (req, res) => {
-        shravani_allcolumns.update(req.body, {
-          // Specify the condition for the update
-          where: {
-            aadhaar_number: req.body.aadhaar_number,
-          },
-        })
-          .then((result) => {
-            console.log("result", result);
-            console.log("aadhaar", req.body.aadhaar_number);
-            
-            // The result is an array where the first element is the number of updated rows
-            return res.status(200).json({
-              success: true,
-              message: `${result[0]} row(s) updated`,
-            });
-          })
-          .catch((error) => {
-            console.error("Error updating records:", error);
-            res.status(500).json({ error: "Internal Server Error" });
-          });
-      };      
+      // };      
 
       /////////////////////////////////////////////////////////////////////////////////////////////////////
 
