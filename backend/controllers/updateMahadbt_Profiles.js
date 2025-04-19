@@ -9,50 +9,50 @@ const MahadbtRenewal = require("../models/mahadbtRenewalModel");
 const shravani_allcolumns = require("../models/shravaniAllColumnsModel");
 const { extractFieldsFromImageURL } = require("../gemini_ocr/extractFieldsFromImageURL");
 
-exports.UPTA = async (req, res) => {
-  try {
-    const { aadhaar_number, capAllotmentLetter, confirmOCR } = req.body;
+// exports.UPTA = async (req, res) => {
+//   try {
+//     const { aadhaar_number, capAllotmentLetter, confirmOCR } = req.body;
 
-    // 1. If image is uploaded but not confirmed, trigger Gemini and respond back
-    if (capAllotmentLetter && confirmOCR !== true) {
-      const extractedFields = await extractFieldsFromImageURL(capAllotmentLetter);
+//     // 1. If image is uploaded but not confirmed, trigger Gemini and respond back
+//     if (capAllotmentLetter && confirmOCR !== true) {
+//       const extractedFields = await extractFieldsFromImageURL(capAllotmentLetter);
 
-      return res.status(200).json({
-        success: true,
-        message: "Fields extracted from image. Ask student to confirm.",
-        extractedFields,
-      });
-    }
+//       return res.status(200).json({
+//         success: true,
+//         message: "Fields extracted from image. Ask student to confirm.",
+//         extractedFields,
+//       });
+//     }
 
-    // 2. If OCR is confirmed by user, save the data
-    if (confirmOCR === true && capAllotmentLetter) {
-      const extractedFields = await extractFieldsFromImageURL(capAllotmentLetter);
+//     // 2. If OCR is confirmed by user, save the data
+//     if (confirmOCR === true && capAllotmentLetter) {
+//       const extractedFields = await extractFieldsFromImageURL(capAllotmentLetter);
 
-      await shravani_allcolumns.update(extractedFields, {
-        where: { aadhaar_number },
-      });
+//       await shravani_allcolumns.update(extractedFields, {
+//         where: { aadhaar_number },
+//       });
 
-      return res.status(200).json({
-        success: true,
-        message: "OCR confirmed. Data saved.",
-      });
-    }
+//       return res.status(200).json({
+//         success: true,
+//         message: "OCR confirmed. Data saved.",
+//       });
+//     }
 
-    // 3. Default update for other fields
-    await shravani_allcolumns.update(req.body, {
-      where: { aadhaar_number },
-    });
+//     // 3. Default update for other fields
+//     await shravani_allcolumns.update(req.body, {
+//       where: { aadhaar_number },
+//     });
 
-    res.status(200).json({
-      success: true,
-      message: "Data updated.",
-    });
+//     res.status(200).json({
+//       success: true,
+//       message: "Data updated.",
+//     });
 
-  } catch (err) {
-    console.error("Error in UPTA controller:", err);
-    res.status(500).json({ error: "Internal Server Error" });
-  }
-};
+//   } catch (err) {
+//     console.error("Error in UPTA controller:", err);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
 
 //UPTE update profile through email
     // exports.UPTE = async (req, res) => {
@@ -77,7 +77,48 @@ exports.UPTA = async (req, res) => {
     //         res.status(500).json({ error: "Internal Server Error" });
     //       });
     //   };      
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+exports.UPTA = async (req, res) => {
+  try {
+    const { aadhaar_number, capAllotmentLetter } = req.body;
 
+    if (!aadhaar_number || !capAllotmentLetter) {
+      return res.status(400).json({
+        success: false,
+        message: "aadhaar_number and capAllotmentLetter are required",
+      });
+    }
+
+    // Extract only the Name from the image
+    const { Name } = await extractFieldsFromImageURL(capAllotmentLetter);
+
+    if (!Name) {
+      return res.status(422).json({
+        success: false,
+        message: "Name could not be extracted from the image",
+      });
+    }
+
+    // Save it to the DB using the model's actual field: candidateName
+    await shravani_allcolumns.update(
+      { candidateName: Name },
+      { where: { aadhaar_number } }
+    );
+
+    return res.status(200).json({
+      success: true,
+      message: "candidateName extracted and updated successfully.",
+    });
+
+  } catch (err) {
+    console.error("Error in UPTA controller:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+
+
+
+/////////////////////////////////////////////////////////////////////////////////    
     exports.UPTE = async (req, res) => {
       MahadbtRenewal.update(req.body, {
         // Specify the condition for the update

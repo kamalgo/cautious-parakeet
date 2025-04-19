@@ -30,21 +30,26 @@ async function extractFieldsFromImageURL(imageUrl) {
   const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
   const imagePart = await urlToGenerativePart(imageUrl);
 
-  const prompt = `From this image extract the following fields in JSON format:
-  {
-    "Name": "",
-    "Gender": "",
-    "DateOfBirth": "",
-    "Category": "",
-    "InstituteName": "",
-    "CourseName": "",
-    "DateOfAdmission": "",
-    "Merit No": "",
-    "Seat Type": "",
-    "AdmissionLevel": ""
-  }
+  const prompt = `From this image, extract only the "Name" field and return JSON like:
+{
+  "Name": ""
+}`;
 
-If any field is missing, leave it blank.`;
+//   const prompt = `From this image extract the following fields in JSON format:
+//   {
+//     "Name": "",
+//     "Gender": "",
+//     "DateOfBirth": "",
+//     "Category": "",
+//     "InstituteName": "",
+//     "CourseName": "",
+//     "DateOfAdmission": "",
+//     "Merit No": "",
+//     "Seat Type": "",
+//     "AdmissionLevel": ""
+//   }
+
+// If any field is missing, leave it blank.`;
 
   const result = await model.generateContent([prompt, imagePart]);
   const response = await result.response;
