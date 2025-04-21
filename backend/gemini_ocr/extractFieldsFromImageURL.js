@@ -38,7 +38,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         "IncomeAmount": "", //convert from Marathi to English and format as a number there should be no commas
         "CertificateNo": "", //convert from Marathi to English
         "IncomeIssuingAuthority":"", //eg: "Talathi", "Tehsildar", "District Collector" convert from Marathi to english
-        "Incomecertificateissueddate":""
+        "Incomecertificateissueddate":"" //eg: िदनांक : 11/08/2024
       }`;
       break;
 
