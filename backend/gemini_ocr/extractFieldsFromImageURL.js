@@ -16,10 +16,13 @@ async function urlToGenerativePart(imageUrl, mimeType = "image/jpeg") {
 }
 
 function cleanGeminiJSON(text) {
+  if (!text) {
+    return "";
+  }
   return text
-    .replace(/```json\n?/g, '')
-    .replace(/```/g, '')
-    .trim();
+    .replace(/```(json)?\n?/g, '') // Remove ```json and optional newline
+    .replace(/```/g, '')         // Remove remaining ```
+    .trim();                         // Trim leading/trailing whitespace
 }
 
 async function extractFieldsFromImageURL(imageUrl, docType) {
@@ -88,7 +91,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
 
     // 🛠️ Remap fields for incomeDoc
     if (docType === "incomeDoc") {
-      const { IncomeAmount, CertificateNo, ...rest } = parsed;
+      const { IncomeAmount, CertificateNo,IncomeIssuingAuthority,Incomecertificateissueddate, ...rest } = parsed;
       return {
         ...rest,
         annualFamilyIncome: IncomeAmount || "",
