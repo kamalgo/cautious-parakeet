@@ -169,6 +169,56 @@ exports.UPTA = async (req, res) => {
   }
 };
 
+//////////////////////////////////////////////////////////////////////////////
+
+exports.getIncomeInfo = async (req, res) => {
+  const { aadhaar } = req.query;
+
+  try {
+    const student = await db.Student.findOne({ where: { aadhaar } });
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    const { name, annualFamilyIncome, incomeCertNo } = student;
+
+    return res.json({
+      message: "Extracted Income Certificate Data",
+      data: {
+        Name: name,
+        Income: annualFamilyIncome,
+        CertificateNumber: incomeCertNo
+      }
+    });
+  } catch (err) {
+    console.error("🔴 Error in getIncomeInfo:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
+
+/////////////////////////////////////////////////////////////////
+exports.handleStudentResponse = async (req, res) => {
+  const { aadhaar, response } = req.body; // 'response' is expected to be "yes" or "no"
+
+  try {
+    const student = await db.Student.findOne({ where: { aadhaar } });
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found" });
+    }
+
+    if (response.toLowerCase() === "no") {
+      await student.destroy();
+      return res.json({ message: "Info deleted as per student request." });
+    }
+
+    return res.json({ message: "Info kept. Student confirmed it's correct." });
+  } catch (err) {
+    console.error("🔴 Error in handleStudentResponse:", err);
+    return res.status(500).json({ message: "Server error" });
+  }
+};
 
 
 
