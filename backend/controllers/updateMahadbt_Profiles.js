@@ -189,13 +189,15 @@ exports.getIncomeInfo = async (req, res) => {
       return res.status(404).json({ message: "Student not found with provided Aadhaar" });
     }
 
-    const { name, annualFamilyIncome, incomeCertNo } = student;
+    const { name, annualFamilyIncome, incomeCertNo, incomeIssAuthority,incomeIssuedDate } = student;
 
       // Log the extracted data
       console.log("🟢 Extracted Income Certificate Data:", {
         Name: name,
         Income: annualFamilyIncome,
         CertificateNumber: incomeCertNo,
+        incomeIssuingAuthority: incomeIssAuthority,
+        Incomedate: incomeIssuedDate,
 
 
       });
