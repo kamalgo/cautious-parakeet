@@ -23,7 +23,7 @@ function cleanGeminiJSON(text) {
 }
 
 async function extractFieldsFromImageURL(imageUrl, docType) {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
+  const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
   const imagePart = await urlToGenerativePart(imageUrl);
 
   let prompt = "";
@@ -33,7 +33,9 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       prompt = `From this income certificate image, extract the information. Return the extracted information as JSON with the following fields:
       {
         "IncomeAmount": "", //convert from Marathi to English and format as a number there should be no commas
-        "CertificateNo": "" //convert from Marathi to English
+        "CertificateNo": "", //convert from Marathi to English
+        "Income Issuing Authority":"", //eg: "Talathi", "Tehsildar", "District Collector" convert from Marathi to english
+        "Income certificate issued date":""
       }`;
       break;
 
