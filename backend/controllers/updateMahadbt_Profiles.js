@@ -188,8 +188,16 @@ exports.getIncomeInfo = async (req, res) => {
 
     const { name, annualFamilyIncome, incomeCertNo } = student;
 
+      // Log the extracted data
+      console.log("🟢 Extracted Income Certificate Data:", {
+        Name: name,
+        Income: annualFamilyIncome,
+        CertificateNumber: incomeCertNo,
+      });
+      
     return res.status(200).json({
       message: "Extracted Income Certificate Data",
+      console: "Data fetched successfully",
       data: {
         Name: name,
         Income: annualFamilyIncome,
