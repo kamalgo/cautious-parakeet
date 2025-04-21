@@ -173,14 +173,14 @@ exports.UPTA = async (req, res) => {
 
 exports.getIncomeInfo = async (req, res) => {
   try {
-    const { aadhaar } = req.query;
+    const { aadhaar_number } = req.query;
 
     // Basic validation
-    if (!aadhaar) {
+    if (!aadhaar_number) {
       return res.status(400).json({ message: "Aadhaar number is required" });
     }
 
-    const student = await db.Student.findOne({ where: { aadhaar } });
+    const student = await db.Student.findOne({ where: { aadhaar_number } });
 
     if (!student) {
       return res.status(404).json({ message: "Student not found with provided Aadhaar" });
