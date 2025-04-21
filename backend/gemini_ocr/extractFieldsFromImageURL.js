@@ -30,7 +30,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
 
   switch (docType) {
     case "incomeDoc":
-      prompt = `From this income certificate image, extract the information and translate any Marathi text into English. Return the extracted information as JSON with the following fields:
+      prompt = `From this income certificate image, extract the information. Return the extracted information as JSON with the following fields:
       {
         "IncomeAmount": "", //convert from Marathi to English and format as a number there should be no commas
         "CertificateNo": "" //convert from Marathi to English
