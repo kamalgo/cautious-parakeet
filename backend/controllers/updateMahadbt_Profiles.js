@@ -95,6 +95,7 @@ exports.UPTA = async (req, res) => {
     for (const [key, value] of Object.entries(rest)) {
       if (documentFields.includes(key)) {
         const extracted = await extractFieldsFromImageURL(value, key);
+        console.log(`📄 Extracted fields from ${key}:`, extracted); // <-- print extracted
 
         if (!extracted || Object.keys(extracted).length === 0) {
           return res.status(422).json({
