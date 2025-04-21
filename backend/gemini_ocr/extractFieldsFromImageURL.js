@@ -15,7 +15,6 @@ async function urlToGenerativePart(imageUrl, mimeType = "image/jpeg") {
   };
 }
 
-// Helper to clean Gemini's markdown-wrapped JSON
 function cleanGeminiJSON(text) {
   return text
     .replace(/```json\n?/g, '')
@@ -31,7 +30,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
 
   switch (docType) {
     case "incomeDoc":
-      prompt = `From this income certificate image, extract fields as JSON:
+      prompt = `From this income certificate image, extract the information below in English and return as JSON:
       {
         "Name": "",
         "IncomeAmount": "",
@@ -40,7 +39,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       break;
 
     case "domicileDoc":
-      prompt = `From this domicile certificate image, extract fields as JSON:
+      prompt = `From this domicile certificate image, extract the following in English and return as JSON:
       {
         "Name": "",
         "State": "",
@@ -49,7 +48,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       break;
 
     case "capAllotmentLetter":
-      prompt = `From this CAP Allotment Letter, extract fields in JSON:
+      prompt = `From this CAP Allotment Letter image, extract these fields in English and return as JSON:
       {
         "Name": "",
         "InstituteName": "",
@@ -62,7 +61,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       break;
 
     case "casteDoc":
-      prompt = `From this caste certificate image, extract fields in JSON:
+      prompt = `From this caste certificate image, extract the following in English and return as JSON:
       {
         "Name": "",
         "Caste": "",
@@ -71,7 +70,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       break;
 
     default:
-      prompt = `From this document image, extract only this:
+      prompt = `From this document image, extract this information in English and return as JSON:
       {
         "Name": ""
       }`;
@@ -84,7 +83,19 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
   const cleanedText = cleanGeminiJSON(rawText);
 
   try {
-    return JSON.parse(cleanedText);
+    const parsed = JSON.parse(cleanedText);
+
+    // 🛠️ Remap fields for incomeDoc
+    if (docType === "incomeDoc") {
+      const { IncomeAmount, CertificateNo, ...rest } = parsed;
+      return {
+        ...rest,
+        annualFamilyIncome: IncomeAmount || "",
+        incomeCertNo: CertificateNo || ""
+      };
+    }
+
+    return parsed;
   } catch (e) {
     console.error("❌ Failed to parse Gemini response:", rawText);
     return {};
@@ -92,6 +103,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
 }
 
 module.exports = { extractFieldsFromImageURL };
+
 
 
 
