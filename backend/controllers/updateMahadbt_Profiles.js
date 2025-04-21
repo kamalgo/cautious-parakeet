@@ -80,34 +80,49 @@ const { extractFieldsFromImageURL } = require("../gemini_ocr/extractFieldsFromIm
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.UPTA = async (req, res) => {
   try {
-    const { aadhaar_number, capAllotmentLetter } = req.body;
+    const { aadhaar_number, ...rest } = req.body;
 
-    if (!aadhaar_number || !capAllotmentLetter) {
+    if (!aadhaar_number) {
       return res.status(400).json({
         success: false,
-        message: "aadhaar_number and capAllotmentLetter are required",
+        message: "aadhaar_number is required",
       });
     }
 
-    // Extract only the Name from the image
-    const { Name } = await extractFieldsFromImageURL(capAllotmentLetter);
+    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter"];
+    const updateFields = {};
 
-    if (!Name) {
-      return res.status(422).json({
+    for (const [key, value] of Object.entries(rest)) {
+      if (documentFields.includes(key)) {
+        const extracted = await extractFieldsFromImageURL(value, key);
+
+        if (!extracted || Object.keys(extracted).length === 0) {
+          return res.status(422).json({
+            success: false,
+            message: `Could not extract any data from ${key}`,
+          });
+        }
+
+        Object.assign(updateFields, extracted);
+      } else {
+        updateFields[key] = value;
+      }
+    }
+
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({
         success: false,
-        message: "Name could not be extracted from the image",
+        message: "No updatable fields found",
       });
     }
 
-    // Save it to the DB using the model's actual field: candidateName
-    await shravani_allcolumns.update(
-      { candidateName: Name },
-      { where: { aadhaar_number } }
-    );
+    await shravani_allcolumns.update(updateFields, {
+      where: { aadhaar_number },
+    });
 
     return res.status(200).json({
       success: true,
-      message: "candidateName extracted and updated successfully.",
+      message: "Data extracted and/or updated successfully.",
     });
 
   } catch (err) {
