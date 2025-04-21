@@ -34,8 +34,8 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       {
         "IncomeAmount": "", //convert from Marathi to English and format as a number there should be no commas
         "CertificateNo": "", //convert from Marathi to English
-        "Income Issuing Authority":"", //eg: "Talathi", "Tehsildar", "District Collector" convert from Marathi to english
-        "Income certificate issued date":""
+        "IncomeIssuingAuthority":"", //eg: "Talathi", "Tehsildar", "District Collector" convert from Marathi to english
+        "Incomecertificateissueddate":""
       }`;
       break;
 
@@ -92,7 +92,9 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       return {
         ...rest,
         annualFamilyIncome: IncomeAmount || "",
-        incomeCertNo: CertificateNo || ""
+        incomeCertNo: CertificateNo || "",
+        incomeIssAuthority: IncomeIssuingAuthority || "",
+        incomeIssuedDate: Incomecertificateissueddate || "",
       };
     }
 

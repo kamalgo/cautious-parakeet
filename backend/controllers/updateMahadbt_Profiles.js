@@ -110,6 +110,9 @@ exports.UPTA = async (req, res) => {
           updateFields.incomeDoc = value;  // Save the image URL (value is the image URL)
           updateFields.annualFamilyIncome = extracted.annualFamilyIncome;
           updateFields.incomeCertNo = extracted.incomeCertNo;
+          updateFields.incomeIssAuthority = extracted.incomeIssAuthority;
+          updateFields.incomeIssuedDate = extracted.incomeIssuedDate  ;
+
         } else if (key === "casteDoc") {
           updateFields.casteDoc = value; // Save the image URL (value is the image URL)
           updateFields.Name = extracted.Name;
@@ -193,6 +196,8 @@ exports.getIncomeInfo = async (req, res) => {
         Name: name,
         Income: annualFamilyIncome,
         CertificateNumber: incomeCertNo,
+
+
       });
 
     return res.status(200).json({
