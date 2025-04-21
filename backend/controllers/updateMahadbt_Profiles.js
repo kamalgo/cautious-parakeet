@@ -8,6 +8,8 @@ const mahadbtProfilesBot = require("../models/mahadbtModel_Bot");
 const MahadbtRenewal = require("../models/mahadbtRenewalModel");
 const shravani_allcolumns = require("../models/shravaniAllColumnsModel");
 const { extractFieldsFromImageURL } = require("../gemini_ocr/extractFieldsFromImageURL");
+const moment = require('moment');
+
 
 // exports.UPTA = async (req, res) => {
 //   try {
@@ -111,8 +113,12 @@ exports.UPTA = async (req, res) => {
           updateFields.annualFamilyIncome = extracted.annualFamilyIncome;
           updateFields.incomeCertNo = extracted.incomeCertNo;
           updateFields.incomeIssAuthority = extracted.incomeIssAuthority;
-          updateFields.incomeIssuedDate = extracted.incomeIssuedDate  ;
-
+          if (extracted.incomeIssuedDate) {
+            const formattedDate = moment(extracted.incomeIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.incomeIssuedDate = formattedDate;
+          } else {
+            updateFields.incomeIssuedDate = null;
+          }
         } else if (key === "casteDoc") {
           updateFields.casteDoc = value; // Save the image URL (value is the image URL)
           updateFields.Name = extracted.Name;
