@@ -180,7 +180,7 @@ exports.getIncomeInfo = async (req, res) => {
       return res.status(400).json({ message: "Aadhaar number is required" });
     }
 
-    const student = await shravani_allcolumns.Student.findOne({ where: { aadhaar_number } });
+    const student = await shravani_allcolumns.findOne({ where: { aadhaar_number } });
 
     if (!student) {
       return res.status(404).json({ message: "Student not found with provided Aadhaar" });
