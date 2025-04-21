@@ -93,9 +93,10 @@ exports.UPTA = async (req, res) => {
     const updateFields = {};
 
     for (const [key, value] of Object.entries(rest)) {
+      console.log(`Processing ${key}:`, value); // Debugging line to log document fields
       if (documentFields.includes(key)) {
         const extracted = await extractFieldsFromImageURL(value, key);
-        console.log(`📄 Extracted fields from ${key}:`, extracted); // <-- print extracted
+        console.log(`📄 Extracted fields from ${key}:`, extracted); // Debugging line for extracted fields
 
         if (!extracted || Object.keys(extracted).length === 0) {
           return res.status(422).json({
@@ -104,12 +105,37 @@ exports.UPTA = async (req, res) => {
           });
         }
 
-        Object.assign(updateFields, extracted);
+        // Add the extracted fields to updateFields, including the image URL
+        if (key === "incomeDoc") {
+          updateFields.incomeDoc = value;  // Save the image URL (value is the image URL)
+          updateFields.annualFamilyIncome = extracted.annualFamilyIncome;
+          updateFields.incomeCertNo = extracted.incomeCertNo;
+        } else if (key === "casteDoc") {
+          updateFields.casteDoc = value; // Save the image URL (value is the image URL)
+          updateFields.Name = extracted.Name;
+          updateFields.Caste = extracted.Caste;
+          updateFields.CasteCategory = extracted.CasteCategory;
+        } else if (key === "domicileDoc") {
+          updateFields.domicileDoc = value; // Save the image URL (value is the image URL)
+          updateFields.Name = extracted.Name;
+          updateFields.State = extracted.State;
+          updateFields.IssueDate = extracted.IssueDate;
+        } else if (key === "capAllotmentLetter") {
+          updateFields.capAllotmentLetter = value; // Save the image URL (value is the image URL)
+          updateFields.Name = extracted.Name;
+          updateFields.InstituteName = extracted.InstituteName;
+          updateFields.CourseName = extracted.CourseName;
+          updateFields.DateOfAdmission = extracted.DateOfAdmission;
+          updateFields.MeritNo = extracted.MeritNo;
+          updateFields.SeatType = extracted.SeatType;
+          updateFields.AdmissionLevel = extracted.AdmissionLevel;
+        }
       } else {
-        updateFields[key] = value;
+        updateFields[key] = value; // For other fields, just add them as is
       }
     }
 
+    // Ensure that there are fields to update
     if (Object.keys(updateFields).length === 0) {
       return res.status(400).json({
         success: false,
@@ -117,9 +143,20 @@ exports.UPTA = async (req, res) => {
       });
     }
 
-    await shravani_allcolumns.update(updateFields, {
+    // Debugging to check the update result
+    const updateResult = await shravani_allcolumns.update(updateFields, {
       where: { aadhaar_number },
     });
+
+    console.log("Update result:", updateResult);
+
+    // Check if any rows were updated
+    if (updateResult[0] === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No rows were updated.",
+      });
+    }
 
     return res.status(200).json({
       success: true,
@@ -131,6 +168,7 @@ exports.UPTA = async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
+
 
 
 
