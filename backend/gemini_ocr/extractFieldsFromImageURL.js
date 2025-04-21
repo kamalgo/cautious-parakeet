@@ -23,7 +23,7 @@ function cleanGeminiJSON(text) {
 }
 
 async function extractFieldsFromImageURL(imageUrl, docType) {
-  const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+  const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
   const imagePart = await urlToGenerativePart(imageUrl);
 
   let prompt = "";
