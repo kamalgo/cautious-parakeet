@@ -172,18 +172,23 @@ exports.UPTA = async (req, res) => {
 //////////////////////////////////////////////////////////////////////////////
 
 exports.getIncomeInfo = async (req, res) => {
-  const { aadhaar } = req.query;
-
   try {
+    const { aadhaar } = req.query;
+
+    // Basic validation
+    if (!aadhaar) {
+      return res.status(400).json({ message: "Aadhaar number is required" });
+    }
+
     const student = await db.Student.findOne({ where: { aadhaar } });
 
     if (!student) {
-      return res.status(404).json({ message: "Student not found" });
+      return res.status(404).json({ message: "Student not found with provided Aadhaar" });
     }
 
     const { name, annualFamilyIncome, incomeCertNo } = student;
 
-    return res.json({
+    return res.status(200).json({
       message: "Extracted Income Certificate Data",
       data: {
         Name: name,
@@ -192,10 +197,14 @@ exports.getIncomeInfo = async (req, res) => {
       }
     });
   } catch (err) {
-    console.error("🔴 Error in getIncomeInfo:", err);
-    return res.status(500).json({ message: "Server error" });
+    console.error("🔴 Error in getIncomeInfo:", err.message, err.stack);
+    return res.status(500).json({ 
+      message: "Internal Server Error", 
+      error: err.message 
+    });
   }
 };
+
 
 /////////////////////////////////////////////////////////////////
 exports.handleStudentResponse = async (req, res) => {
