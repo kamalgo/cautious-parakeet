@@ -105,16 +105,24 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           incomeIssuedDate: Incomecertificateissueddate || ""
         };
 
-      case "casteDoc":
-        const { casteCertNo, casteIssuedDistrict, casteApplicantName, casteIssAuthority, casteIssuedDate, ...restCaste } = parsed;
-        return {
-          ...restCaste,
-          casteCertificateNumber: casteCertNo || "",
-          casteIssuedDistrict: casteIssuedDistrict || "",
-          casteApplicantName: casteApplicantName || "",
-          casteIssAuthority: casteIssAuthority || "",
-          casteIssuedDate: casteIssuedDate || ""
-        };
+        case "casteDoc":
+          const {
+            CasteCertificateNumber,
+            IssuingDistrict,
+            ApplicantName,
+            IssuingAuthority,
+            CasteIssuingDate,
+            ...restCaste
+          } = parsed;
+          return {
+            ...restCaste,
+            casteCertificateNumber: CasteCertificateNumber || "",
+            casteIssuedDistrict: IssuingDistrict || "",
+            casteApplicantName: ApplicantName || "",
+            casteIssAuthority: IssuingAuthority || "",
+            casteIssuedDate: CasteIssuingDate || ""
+          };
+        
 
       case "domicileDoc":
         const { Name, State, IssueDate, ...restDomicile } = parsed;
