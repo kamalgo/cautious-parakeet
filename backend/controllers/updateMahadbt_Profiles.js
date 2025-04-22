@@ -180,13 +180,13 @@ exports.UPTA = async (req, res) => {
 
 //////////////////////////////////////////////////////////////////////////////
 
-exports.getIncomeInfo = async (req, res) => {
-  try {
-    const { aadhaar_number } = req.query;
 
-    // Basic validation
-    if (!aadhaar_number) {
-      return res.status(400).json({ message: "Aadhaar number is required" });
+exports.getStudentDocInfo = async (req, res) => {
+  try {
+    const { aadhaar_number, docType } = req.query;
+
+    if (!aadhaar_number || !docType) {
+      return res.status(400).json({ message: "Aadhaar number and docType are required" });
     }
 
     const student = await shravani_allcolumns.findOne({ where: { aadhaar_number } });
@@ -195,36 +195,84 @@ exports.getIncomeInfo = async (req, res) => {
       return res.status(404).json({ message: "Student not found with provided Aadhaar" });
     }
 
-    const { name, annualFamilyIncome, incomeCertNo, incomeIssAuthority,incomeIssuedDate } = student;
+    // Define the supported document fields
+    const documentFields = {
+      incomeDoc: ["annualFamilyIncome", "incomeCertNo", "incomeIssAuthority", "incomeIssuedDate", "name"],
+      casteDoc: ["casteCertificateNumber","casteIssuedDistrict","casteApplicantName", "casteIssAuthority", "casteIssuedDate"],
+      domicileDoc: ["domicileCertNo", "domicileIssAuthority", "domicileIssuedDate", "name"],
+      disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"]
+    };
 
-      // Log the extracted data
-      console.log("🟢 Extracted Income Certificate Data:", {
-        Name: name,
-        Income: annualFamilyIncome,
-        CertificateNumber: incomeCertNo,
-        incomeIssuingAuthority: incomeIssAuthority,
-        Incomedate: incomeIssuedDate,
+    if (!documentFields[docType]) {
+      return res.status(400).json({ message: "Invalid docType provided" });
+    }
 
+    const responseData = {};
+    documentFields[docType].forEach(field => {
+      responseData[field] = student[field] || null;
+    });
 
-      });
+    console.log(`🟢 Extracted ${docType} Data:`, responseData);
 
     return res.status(200).json({
-      message: "Extracted Income Certificate Data",
-      console: "Data fetched successfully",
-      data: {
-        Name: name,
-        Income: annualFamilyIncome,
-        CertificateNumber: incomeCertNo
-      }
+      message: `Extracted ${docType} data successfully`,
+      data: responseData
     });
+
   } catch (err) {
-    console.error("🔴 Error in getIncomeInfo:", err.message, err.stack);
-    return res.status(500).json({ 
-      message: "Internal Server Error", 
-      error: err.message 
+    console.error("🔴 Error in getStudentDocInfo:", err.message, err.stack);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message
     });
   }
 };
+
+// exports.getIncomeInfo = async (req, res) => {
+//   try {
+//     const { aadhaar_number } = req.query;
+
+//     // Basic validation
+//     if (!aadhaar_number) {
+//       return res.status(400).json({ message: "Aadhaar number is required" });
+//     }
+
+//     const student = await shravani_allcolumns.findOne({ where: { aadhaar_number } });
+
+//     if (!student) {
+//       return res.status(404).json({ message: "Student not found with provided Aadhaar" });
+//     }
+
+//     const { name, annualFamilyIncome, incomeCertNo, incomeIssAuthority,incomeIssuedDate } = student;
+
+//       // Log the extracted data
+//       console.log("🟢 Extracted Income Certificate Data:", {
+//         Name: name,
+//         Income: annualFamilyIncome,
+//         CertificateNumber: incomeCertNo,
+//         incomeIssuingAuthority: incomeIssAuthority,
+//         Incomedate: incomeIssuedDate,
+
+
+//       });
+
+//     return res.status(200).json({
+//       message: "Extracted Income Certificate Data",
+//       console: "Data fetched successfully",
+//       data: {
+//         Name: name,
+//         Income: annualFamilyIncome,
+//         CertificateNumber: incomeCertNo
+//       }
+//     });
+//   } catch (err) {
+//     console.error("🔴 Error in getIncomeInfo:", err.message, err.stack);
+//     return res.status(500).json({ 
+//       message: "Internal Server Error", 
+//       error: err.message 
+//     });
+//   }
+// };
 
 
 /////////////////////////////////////////////////////////////////
