@@ -121,9 +121,11 @@ exports.UPTA = async (req, res) => {
           }
         } else if (key === "casteDoc") {
           updateFields.casteDoc = value; // Save the image URL (value is the image URL)
-          updateFields.Name = extracted.Name;
-          updateFields.Caste = extracted.Caste;
-          updateFields.CasteCategory = extracted.CasteCategory;
+          updateFields.casteCertificateNumber = extracted.casteCertificateNumber;
+          updateFields.casteIssuedDistrict = extracted.casteIssuedDistrict;
+          updateFields.casteApplicantName = extracted.casteApplicantName;
+          updateFields.casteIssAuthority = extracted.casteIssAuthority;
+          updateFields.casteIssuedDate = extracted.casteIssuedDate;
         } else if (key === "domicileDoc") {
           updateFields.domicileDoc = value; // Save the image URL (value is the image URL)
           updateFields.Name = extracted.Name;
