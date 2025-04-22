@@ -125,7 +125,12 @@ exports.UPTA = async (req, res) => {
           updateFields.casteIssuedDistrict = extracted.casteIssuedDistrict;
           updateFields.casteApplicantName = extracted.casteApplicantName;
           updateFields.casteIssAuthority = extracted.casteIssAuthority;
-          updateFields.casteIssuedDate = extracted.casteIssuedDate;
+          if (extracted.casteIssuedDate) {
+            const formattedDate = moment(extracted.casteIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.casteIssuedDate = formattedDate;
+          } else {
+            updateFields.casteIssuedDate = null;
+          }
         } else if (key === "domicileDoc") {
           updateFields.domicileDoc = value; // Save the image URL (value is the image URL)
           updateFields.Name = extracted.Name;
