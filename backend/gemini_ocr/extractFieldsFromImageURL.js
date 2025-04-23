@@ -35,10 +35,11 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
     case "incomeDoc":
       prompt = `From this income certificate image, extract the information. Return the extracted information as JSON with the following fields:
       {
-        "IncomeAmount": "", 
-        "CertificateNo": "",
-        "IncomeIssuingAuthority": "",
-        "Incomecertificateissueddate": ""
+         "IncomeAmount": "", //convert from Marathi to English and format as a number there should be no commas
+         "CertificateNo": "", //convert from Marathi to English
+         "IncomeIssuingAuthority":"", //eg: "Talathi", "Tehsildar", "District Collector" convert from Marathi to english
+         "Incomecertificateissueddate":"" //eg: िदनांक : 11/08/2024
+
       }`;
       break;
 
@@ -49,7 +50,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         "CasteCertificateNumber": "",
         "IssuingDistrict": "",
         "ApplicantName": "",
-        "IssuingAuthority": "",
+        "IssuingAuthority": "", //eg: "Talathi", "Tehsildar", "District Collector"
         "CasteIssuingDate": ""
       }`;
       break;
@@ -59,7 +60,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       {
         "DomicileCertificateNo": "", 
         "DomicileApplicantName": "",
-        "DomicileIssuingAuthority": "",
+        "DomicileIssuingAuthority": "", //eg: "Talathi", "Tehsildar", "District Collector"
         "DomicileIssuingDate": "",
       }`;
       break;

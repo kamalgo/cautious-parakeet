@@ -212,7 +212,7 @@ exports.getStudentDocInfo = async (req, res) => {
     const documentFields = {
       incomeDoc: ["annualFamilyIncome", "incomeCertNo", "incomeIssAuthority", "incomeIssuedDate", "name"],
       casteDoc: ["casteCertificateNumber","casteIssuedDistrict","casteApplicantName", "casteIssAuthority", "casteIssuedDate"],
-      domicileDoc: ["DomicileCertificateNo", "DomicileApplicantName", "DomicileIssuingAuthority", "DomicileDateofIssue"],
+      domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"]
     };
 
