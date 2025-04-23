@@ -59,7 +59,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       prompt = `From this domicile certificate image, extract the following in English and return as JSON:
       {
         "DomicileCertificateNo": "", 
-        "DomicileApplicantName": "",
+        "DomicileApplicantName": "", //in name dont add kumar or kumari
         "DomicileIssuingAuthority": "", //eg: "Talathi", "Tehsildar", "District Collector"
         "DomicileIssuingDate": "",
       }`;
@@ -127,13 +127,13 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         
 
       case "domicileDoc":
-        const { DomicileCertificateNo, DomicileApplicantName, DomicileIssuingAuthority,DomicileDateofIssue, ...restDomicile } = parsed;
+        const { DomicileCertificateNo, DomicileApplicantName, DomicileIssuingAuthority,DomicileIssuingDate, ...restDomicile } = parsed;
         return {
           ...restDomicile,
           domicileCertNumber: DomicileCertificateNo || "",
           domicileApplicantName: DomicileApplicantName || "",
           domicileIssuedAuthority: DomicileIssuingAuthority || "",
-          domicileIssuedDate: DomicileDateofIssue || ""
+          domicileIssuedDate: DomicileIssuingDate || ""
 
         };
 
