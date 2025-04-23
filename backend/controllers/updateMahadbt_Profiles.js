@@ -133,9 +133,15 @@ exports.UPTA = async (req, res) => {
           }
         } else if (key === "domicileDoc") {
           updateFields.domicileDoc = value; // Save the image URL (value is the image URL)
-          updateFields.Name = extracted.Name;
-          updateFields.State = extracted.State;
-          updateFields.IssueDate = extracted.IssueDate;
+          updateFields.domicileCertNumber = extracted.domicileCertNumber;
+          updateFields.domicileApplicantName = extracted.domicileApplicantName;
+          updateFields.domicileIssuedAuthority = extracted.domicileIssuedAuthority;
+          if (extracted.domicileIssuedDate) {
+            const formattedDate = moment(extracted.domicileIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.domicileIssuedDate = formattedDate;
+          } else {
+            updateFields.domicileIssuedDate = null;
+          }
         } else if (key === "capAllotmentLetter") {
           updateFields.capAllotmentLetter = value; // Save the image URL (value is the image URL)
           updateFields.Name = extracted.Name;
@@ -206,7 +212,7 @@ exports.getStudentDocInfo = async (req, res) => {
     const documentFields = {
       incomeDoc: ["annualFamilyIncome", "incomeCertNo", "incomeIssAuthority", "incomeIssuedDate", "name"],
       casteDoc: ["casteCertificateNumber","casteIssuedDistrict","casteApplicantName", "casteIssAuthority", "casteIssuedDate"],
-      domicileDoc: ["domicileCertNo", "domicileIssAuthority", "domicileIssuedDate", "name"],
+      domicileDoc: ["DomicileCertificateNo", "DomicileApplicantName", "DomicileIssuingAuthority", "DomicileDateofIssue"],
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"]
     };
 

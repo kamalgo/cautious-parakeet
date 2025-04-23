@@ -57,9 +57,10 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
     case "domicileDoc":
       prompt = `From this domicile certificate image, extract the following in English and return as JSON:
       {
-        "Name": "",
-        "State": "",
-        "IssueDate": ""
+        "DomicileCertificateNo": "", 
+        "DomicileApplicantName": "",
+        "DomicileIssuingAuthority": "",
+        "DomicileIssuingDate": "",
       }`;
       break;
 
@@ -125,12 +126,14 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         
 
       case "domicileDoc":
-        const { Name, State, IssueDate, ...restDomicile } = parsed;
+        const { DomicileCertificateNo, DomicileApplicantName, DomicileIssuingAuthority,DomicileDateofIssue, ...restDomicile } = parsed;
         return {
           ...restDomicile,
-          name: Name || "",
-          state: State || "",
-          issueDate: IssueDate || ""
+          domicileCertNumber: DomicileCertificateNo || "",
+          domicileApplicantName: DomicileApplicantName || "",
+          domicileIssuedAuthority: DomicileIssuingAuthority || "",
+          domicileIssuedDate: DomicileDateofIssue || ""
+
         };
 
       case "capAllotmentLetter":
