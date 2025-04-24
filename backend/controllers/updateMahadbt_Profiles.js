@@ -91,7 +91,7 @@ exports.UPTA = async (req, res) => {
       });
     }
 
-    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter"];
+    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc"];
     const updateFields = {};
 
     for (const [key, value] of Object.entries(rest)) {
@@ -157,7 +157,15 @@ exports.UPTA = async (req, res) => {
             updateFields.admissionDate = null;
           }
         }
-
+      } else if (key === "class10Doc") {
+        updateFields.class10Doc = value; // Save the image URL (value is the image URL)
+        
+        updateFields.class10Board = extracted.doYouHaveDisability;
+        updateFields.class10PassingYear = extracted.courseName;
+        updateFields.class10Percentage = extracted.cetPercentage;
+        updateFields.class10SeatNumber = extracted.admissionApplicationId;
+        updateFields.class10MonthOfExam = extracted.instituteName;
+        updateFields.class10MarksObtained = extracted.class10MarksObtained
       } else {
         updateFields[key] = value; // For other fields, just add them as is
       }
@@ -220,7 +228,8 @@ exports.getStudentDocInfo = async (req, res) => {
       casteDoc: ["casteCertificateNumber","casteIssuedDistrict","casteApplicantName", "casteIssAuthority", "casteIssuedDate"],
       domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
-      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate"]
+      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate"],
+      class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"]
     };
 
     if (!documentFields[docType]) {
