@@ -82,6 +82,29 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         "Gender": "",
               }`;
       break;
+      
+      case "class10Doc":
+        prompt = `From this CAP Allotment Letter image, extract these fields in English and return as JSON:
+        {
+          "class10Board": "",
+          "class10PassingYear": "",
+          "class10Percentage": "",
+          "class10SeatNumber": "",        
+          "class10MonthOfExam": "",
+          "class10MarksObtained": "",
+                }`;
+        break;
+
+      case "class12Doc":
+        prompt = `From this Class 12 marksheet image, extract these fields in English and return as JSON:
+        {
+          "class12Stream": "",           // e.g., Science, Commerce, Arts
+          "class12Board": "",            // e.g., Maharashtra State Board
+          "class12SeatNumber": "",       
+          "class12PassingYear": "",      
+          "class12Percentage": ""       
+        }`;
+        break;
 
     default:
       prompt = `From this document image, extract this information in English and return as JSON:
@@ -157,6 +180,46 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           //unable to map AppliedforEWS,meritNo, seatType, admissionLevel
         };
 
+      case "class10Doc":
+        const {
+          class10Board,
+          class10PassingYear,
+          class10Percentage,
+          class10SeatNumber,
+          class10MonthOfExam,
+          class10MarksObtained,
+          ...restClass10
+        } = parsed;
+        return {
+          ...restClass10,
+          class10Board: class10Board || "",
+          class10PassingYear: class10PassingYear || "",
+          class10Percentage: class10Percentage || "",
+          class10SeatNumber: class10SeatNumber || "",
+          class10MonthOfExam: class10MonthOfExam || "",
+          class10MarksObtained: class10MarksObtained || ""
+        };
+
+        case "class12Doc":
+          const {
+            class12Stream,
+            class12Board,
+            class12SeatNumber,
+            class12PassingYear,
+            class12Percentage,
+            ...restClass12
+          } = parsed;
+          return {
+            ...restClass12,
+            class12Stream: class12Stream || "",
+            class12Board: class12Board || "",
+            class12SeatNumber: class12SeatNumber || "",
+            class12PassingYear: class12PassingYear || "",
+            class12Percentage: class12Percentage || ""
+          };
+  
+
+
       default:
         return parsed;  // If the docType is unknown, just return the raw parsed content
     }
@@ -172,110 +235,4 @@ module.exports = { extractFieldsFromImageURL };
 
 
 
-// async function extractFieldsFromImageURL(imageUrl, docType) {
-//   const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
-//   const imagePart = await urlToGenerativePart(imageUrl);
 
-//   let prompt = "";
-
-//   switch (docType) {
-//     case "incomeDoc":
-//       prompt = `From this income certificate image, extract the information. Return the extracted information as JSON with the following fields:
-//       {
-//         "IncomeAmount": "", //convert from Marathi to English and format as a number there should be no commas
-//         "CertificateNo": "", //convert from Marathi to English
-//         "IncomeIssuingAuthority":"", //eg: "Talathi", "Tehsildar", "District Collector" convert from Marathi to english
-//         "Incomecertificateissueddate":"" //eg: िदनांक : 11/08/2024
-//       }`;
-//       break;
-
-//     case "domicileDoc":
-//       prompt = `From this domicile certificate image, extract the following in English and return as JSON:
-//       {
-//         "Name": "",
-//         "State": "",
-//         "IssueDate": ""
-//       }`;
-//       break;
-
-//     case "capAllotmentLetter":
-//       prompt = `From this CAP Allotment Letter image, extract these fields in English and return as JSON:
-//       {
-//         "Religion": "",
-//         "InstituteName": "",
-//         "CourseName": "",
-//         "DateOfAdmission": "",
-//         "MeritNo": "",
-//         "SeatType": "",
-//         "AdmissionLevel": "",
-//         ""
-//       }`;
-//       break;
-
-//     case "casteDoc":
-//       prompt = `From this caste certificate image, extract the following in English and return as JSON:
-//       {
-//         "Caste": "",
-//         "CasteCertificateNumber": "",
-//         "IssuingDistrict": "",
-//         "ApplicantName": "",
-//         "IssuingAuthority": "",
-//         "CasteIssuingDate": "",
-//       }`;
-//       break;
-
-//     default:
-//       prompt = `From this document image, extract this information in English and return as JSON:
-//       {
-//         "Name": ""
-//       }`;
-//       break;
-//   }
-
-//   const result = await model.generateContent([prompt, imagePart]);
-//   const response = await result.response;
-//   const rawText = await response.text();
-//   const cleanedText = cleanGeminiJSON(rawText);
-
-//   try {
-//     const parsed = JSON.parse(cleanedText);
-
-//     // 🛠️ Remap fields for incomeDoc
-//     if (docType === "incomeDoc") {
-//       const { IncomeAmount, CertificateNo,IncomeIssuingAuthority,Incomecertificateissueddate, ...rest } = parsed;
-//       return {
-//         ...rest,
-//         annualFamilyIncome: IncomeAmount || "",
-//         incomeCertNo: CertificateNo || "",
-//         incomeIssAuthority: IncomeIssuingAuthority || "",
-//         incomeIssuedDate: Incomecertificateissueddate || "",
-//       };
-//     }
-
-//     if (docType === "casteDoc") {
-//       const {
-//         casteCertNo,
-//         casteIssuedDistrict,
-//         casteApplicantName,
-//         casteIssAuthority,
-//         casteIssuedDate,
-//         ...rest
-//       } = parsed;
-    
-//       return {
-//         ...rest,
-//         casteCertificateNumber: casteCertNo || "",
-//         casteIssuedDistrict: casteIssuedDistrict || "",
-//         casteApplicantName: casteApplicantName || "",
-//         casteIssAuthority: casteIssAuthority || "",
-//         casteIssuedDate: casteIssuedDate || "",
-//       };
-//     }
-    
-
-//     return parsed;
-//   } catch (e) {
-//     console.error("❌ Failed to parse Gemini response:", rawText);
-//     return {};
-//   }
-// }

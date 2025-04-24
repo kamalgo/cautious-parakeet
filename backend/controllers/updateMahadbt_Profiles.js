@@ -156,7 +156,7 @@ exports.UPTA = async (req, res) => {
           } else {
             updateFields.admissionDate = null;
           }
-        }
+          
       } else if (key === "class10Doc") {
         updateFields.class10Doc = value; // Save the image URL (value is the image URL)
         
@@ -168,8 +168,20 @@ exports.UPTA = async (req, res) => {
         updateFields.class10MarksObtained = extracted.class10MarksObtained
       } else {
         updateFields[key] = value; // For other fields, just add them as is
+      }      } else if (key === "class12Doc") {
+        updateFields.class12Doc = value; // Save the image URL (value is the image URL)
+        
+        updateFields.class12Stream = extracted.class12Stream;
+        updateFields.class12Board = extracted.class12Board;
+        updateFields.class12SeatNumber = extracted.class12SeatNumber;
+        updateFields.class12PassingYear = extracted.class12PassingYear;
+        updateFields.class12Percentage = extracted.class12Percentage;
+      } else {
+        updateFields[key] = value; // For other fields, just add them as is
       }
+
     }
+    
 
     // Ensure that there are fields to update
     if (Object.keys(updateFields).length === 0) {
@@ -229,7 +241,9 @@ exports.getStudentDocInfo = async (req, res) => {
       domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
       capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate"],
-      class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"]
+      class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"],
+      class12Doc: ["class12Stream", "class12Board", "class12SeatNumber", "class12PassingYear", "class12Percentage"]
+      // Add other document types and their respective fields here
     };
 
     if (!documentFields[docType]) {
