@@ -60,7 +60,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       {
         "DomicileCertificateNo": "", 
         "DomicileApplicantName": "", //in name dont add kumar or kumari
-        "DomicileIssuingAuthority": "", //eg: "Talathi", "Tehsildar", "District Collector"
+        "DomicileIssuingAuthority": "", //eg: "Talathi", "Tehsildar", "District Collector", "Executive Magistrate"  
         "DomicileIssuingDate": "",
       }`;
       break;
@@ -68,14 +68,19 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
     case "capAllotmentLetter":
       prompt = `From this CAP Allotment Letter image, extract these fields in English and return as JSON:
       {
-        "Religion": "",
-        "InstituteName": "",
+        "CasteCategory": "",
+        "DisabilityofanyType": "",
         "CourseName": "",
-        "DateOfAdmission": "",
+        "CETMeritPercentage": "",        
+        "AdmissionApplicationID": "",
+        "AppliedforEWS": "",
+        "InstituteName": "", //eg: "06203-Annasaheb Dange College of Engineering and Technology, Ashta Sangli" 
+        "DateOfAdmission": ""
         "MeritNo": "",
         "SeatType": "",
-        "AdmissionLevel": ""
-      }`;
+        "AdmissionLevel": "" //eg: "UG", "PG" search for this in the header of the document,
+        "Gender": "",
+              }`;
       break;
 
     default:
@@ -138,16 +143,18 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         };
 
       case "capAllotmentLetter":
-        const { Religion, InstituteName, CourseName, DateOfAdmission, MeritNo, SeatType, AdmissionLevel, ...restCap } = parsed;
+        const { DisabilityofanyType, CourseName, CETMeritPercentage, AdmissionApplicationID, InstituteName, DateOfAdmission,
+                Gender,  ...restCap } = parsed;
         return {
           ...restCap,
-          religion: Religion || "",
-          instituteName: InstituteName || "",
+          doYouHaveDisability: DisabilityofanyType || "",
           courseName: CourseName || "",
-          dateOfAdmission: DateOfAdmission || "",
-          meritNo: MeritNo || "",
-          seatType: SeatType || "",
-          admissionLevel: AdmissionLevel || ""
+          cetPercentage: CETMeritPercentage || "",
+          admissionApplicationId: AdmissionApplicationID || "",
+          instituteName: InstituteName || "",
+          admissionDate: DateOfAdmission || "",
+          gender: Gender || ""
+          //unable to map AppliedforEWS,meritNo, seatType, admissionLevel
         };
 
       default:

@@ -144,14 +144,20 @@ exports.UPTA = async (req, res) => {
           }
         } else if (key === "capAllotmentLetter") {
           updateFields.capAllotmentLetter = value; // Save the image URL (value is the image URL)
-          updateFields.Name = extracted.Name;
-          updateFields.InstituteName = extracted.InstituteName;
-          updateFields.CourseName = extracted.CourseName;
-          updateFields.DateOfAdmission = extracted.DateOfAdmission;
-          updateFields.MeritNo = extracted.MeritNo;
-          updateFields.SeatType = extracted.SeatType;
-          updateFields.AdmissionLevel = extracted.AdmissionLevel;
+          updateFields.doYouHaveDisability = extracted.doYouHaveDisability;
+          updateFields.courseName = extracted.courseName;
+          updateFields.cetPercentage = extracted.cetPercentage;
+          updateFields.admissionApplicationId = extracted.admissionApplicationId;
+          updateFields.instituteName = extracted.instituteName;
+          updateFields.gender = extracted.gender;
+          if (extracted.admissionDate) {
+            const formattedDate = moment(extracted.admissionDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.admissionDate = formattedDate;
+          } else {
+            updateFields.admissionDate = null;
+          }
         }
+
       } else {
         updateFields[key] = value; // For other fields, just add them as is
       }
@@ -213,7 +219,8 @@ exports.getStudentDocInfo = async (req, res) => {
       incomeDoc: ["annualFamilyIncome", "incomeCertNo", "incomeIssAuthority", "incomeIssuedDate", "name"],
       casteDoc: ["casteCertificateNumber","casteIssuedDistrict","casteApplicantName", "casteIssAuthority", "casteIssuedDate"],
       domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
-      disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"]
+      disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
+      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate"]
     };
 
     if (!documentFields[docType]) {
