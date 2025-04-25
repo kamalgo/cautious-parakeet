@@ -160,11 +160,11 @@ exports.UPTA = async (req, res) => {
       } else if (key === "class10Doc") {
         updateFields.class10Doc = value; // Save the image URL (value is the image URL)
         
-        updateFields.class10Board = extracted.doYouHaveDisability;
-        updateFields.class10PassingYear = extracted.courseName;
-        updateFields.class10Percentage = extracted.cetPercentage;
-        updateFields.class10SeatNumber = extracted.admissionApplicationId;
-        updateFields.class10MonthOfExam = extracted.instituteName;
+        updateFields.class10Board = extracted.class10Board;
+        updateFields.class10PassingYear = extracted.class10PassingYear;
+        updateFields.class10Percentage = extracted.class10Percentage;
+        updateFields.class10SeatNumber = extracted.class10SeatNumber;
+        updateFields.class10MonthOfExam = extracted.class10MonthOfExam;
         updateFields.class10MarksObtained = extracted.class10MarksObtained
       } else {
         updateFields[key] = value; // For other fields, just add them as is
