@@ -99,17 +99,17 @@ exports.UPTA = async (req, res) => {
       if (documentFields.includes(key)) {
         const extracted = await extractFieldsFromImageURL(value, key);
         console.log(`📄 Extracted fields from ${key}:`, extracted); // Debugging line for extracted fields
-
+    
         if (!extracted || Object.keys(extracted).length === 0) {
           return res.status(422).json({
             success: false,
             message: `Could not extract any data from ${key}`,
           });
         }
-
+    
         // Add the extracted fields to updateFields, including the image URL
         if (key === "incomeDoc") {
-          updateFields.incomeDoc = value;  // Save the image URL (value is the image URL)
+          updateFields.incomeDoc = value; // Save the image URL (value is the image URL)
           updateFields.annualFamilyIncome = extracted.annualFamilyIncome;
           updateFields.incomeCertNo = extracted.incomeCertNo;
           updateFields.incomeIssAuthority = extracted.incomeIssAuthority;
@@ -156,30 +156,25 @@ exports.UPTA = async (req, res) => {
           } else {
             updateFields.admissionDate = null;
           }
-          
-      } else if (key === "class10Doc") {
-        updateFields.class10Doc = value; // Save the image URL (value is the image URL)
-        
-        updateFields.class10Board = extracted.class10Board;
-        updateFields.class10PassingYear = extracted.class10PassingYear;
-        updateFields.class10Percentage = extracted.class10Percentage;
-        updateFields.class10SeatNumber = extracted.class10SeatNumber;
-        updateFields.class10MonthOfExam = extracted.class10MonthOfExam;
-        updateFields.class10MarksObtained = extracted.class10MarksObtained
-      } else {
-        updateFields[key] = value; // For other fields, just add them as is
-      }      } else if (key === "class12Doc") {
-        updateFields.class12Doc = value; // Save the image URL (value is the image URL)
-        
-        updateFields.class12Stream = extracted.class12Stream;
-        updateFields.class12Board = extracted.class12Board;
-        updateFields.class12SeatNumber = extracted.class12SeatNumber;
-        updateFields.class12PassingYear = extracted.class12PassingYear;
-        updateFields.class12Percentage = extracted.class12Percentage;
+        } else if (key === "class10Doc") {
+          updateFields.class10Doc = value; // Save the image URL (value is the image URL)
+          updateFields.class10Board = extracted.class10Board;
+          updateFields.class10PassingYear = extracted.class10PassingYear;
+          updateFields.class10Percentage = extracted.class10Percentage;
+          updateFields.class10SeatNumber = extracted.class10SeatNumber;
+          updateFields.class10MonthOfExam = extracted.class10MonthOfExam;
+          updateFields.class10MarksObtained = extracted.class10MarksObtained;
+        } else if (key === "class12Doc") { // ✅ Properly nested "else if"
+          updateFields.class12Doc = value; // Save the image URL (value is the image URL)
+          updateFields.class12Stream = extracted.class12Stream;
+          updateFields.class12Board = extracted.class12Board;
+          updateFields.class12SeatNumber = extracted.class12SeatNumber;
+          updateFields.class12PassingYear = extracted.class12PassingYear;
+          updateFields.class12Percentage = extracted.class12Percentage;
+        }
       } else {
         updateFields[key] = value; // For other fields, just add them as is
       }
-
     }
     
 
