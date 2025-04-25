@@ -91,7 +91,7 @@ exports.UPTA = async (req, res) => {
       });
     }
 
-    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc"];
+    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc","class12Doc"];
     const updateFields = {};
 
     for (const [key, value] of Object.entries(rest)) {
