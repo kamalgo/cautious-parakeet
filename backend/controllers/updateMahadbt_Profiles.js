@@ -91,7 +91,7 @@ exports.UPTA = async (req, res) => {
       });
     }
 
-    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc","class12Doc"];
+    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc","class12Doc","hostelDoc"];
     const updateFields = {};
 
     for (const [key, value] of Object.entries(rest)) {
@@ -172,6 +172,23 @@ exports.UPTA = async (req, res) => {
           updateFields.class12PassingYear = extracted.class12PassingYear;
           updateFields.class12Percentage = extracted.class12Percentage;
         }
+        else if (key === "hostelDoc") {
+          updateFields.hostelDoc = value; // Save the image URL (value is the image URL)
+          updateFields.hostelState = extracted.hostelState;
+          updateFields.hostelDistrict = extracted.hostelDistrict;
+          updateFields.hostelTaluka = extracted.hostelTaluka;
+          updateFields.hostelName = extracted.hostelName; 
+          updateFields.hostelAddress = extracted.hostelAddress;
+          updateFields.hostelPincode = extracted.hostelPincode;
+          updateFields.hostelType = extracted.hostelType;          
+          if (extracted.hostelAdmissionDate) {
+            const formattedDate = moment(extracted.hostelAdmissionDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.hostelAdmissionDate = formattedDate;
+          } else {
+            updateFields.hostelAdmissionDate = null;
+          }
+        }
+        
       } else {
         updateFields[key] = value; // For other fields, just add them as is
       }
@@ -237,7 +254,8 @@ exports.getStudentDocInfo = async (req, res) => {
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
       capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate"],
       class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"],
-      class12Doc: ["class12Stream", "class12Board", "class12SeatNumber", "class12PassingYear", "class12Percentage"]
+      class12Doc: ["class12Stream", "class12Board", "class12SeatNumber", "class12PassingYear", "class12Percentage"],
+      hostelDoc: ["hostelState", "hostelDistrict", "hostelTaluka", "hostelName", "hostelAddress", "hostelPincode","hostelAdmissionDate","hostelType"]
       // Add other document types and their respective fields here
     };
 

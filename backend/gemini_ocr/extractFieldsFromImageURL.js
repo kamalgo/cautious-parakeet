@@ -106,6 +106,21 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         }`;
         break;
 
+        case "hostelDoc":
+          prompt = `From this hostel admission document image, extract these fields in English and return as JSON:
+          {
+            "hostelState": "",           // e.g., Maharashtra
+            "hostelDistrict": "",        // e.g., Pune
+            "hostelTaluka": "",          // e.g., Haveli
+            "hostelName": "",            // e.g., Government Hostel for Boys
+            "hostelAddress": "",         // Full address line
+            "hostelPincode": "",         // 6 digit pincode
+            "hostelAdmissionDate": "",   // Format: DD/MM/YYYY
+            "hostelType": ""             // e.g., Government, Private
+          }`;
+          break;
+  
+
     default:
       prompt = `From this document image, extract this information in English and return as JSON:
       {
@@ -217,6 +232,31 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
             class12PassingYear: class12PassingYear || "",
             class12Percentage: class12Percentage || ""
           };
+
+          case "hostelDoc":
+            const {
+              hostelState,
+              hostelDistrict,
+              hostelTaluka,
+              hostelName,
+              hostelAddress,
+              hostelPincode,
+              hostelAdmissionDate,
+              hostelType,
+              ...restHostel
+            } = parsed;
+            return {
+              ...restHostel,
+              hostelState: hostelState || "",
+              hostelDistrict: hostelDistrict || "",
+              hostelTaluka: hostelTaluka || "",
+              hostelName: hostelName || "",
+              hostelAddress: hostelAddress || "",
+              hostelPincode: hostelPincode || "",
+              hostelAdmissionDate: hostelAdmissionDate || "",
+              hostelType: hostelType || ""
+            };
+  
   
 
 
