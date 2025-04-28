@@ -119,6 +119,19 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
             "hostelType": ""             // e.g., Government, Private
           }`;
           break;
+
+          case "disabilityDoc":
+            prompt = `From this disability certificate image, extract these fields in English and return as JSON:
+            {
+              "disabilityType": "",             // e.g., Visual Impairment, Hearing Impairment
+              "disabilityName": "",             // Full name of the person
+              "disabilityCertificateNo": "",    // Certificate number
+              "disabilityPercentage": "",       // e.g., 40%, 75%
+              "disabilityIssuedDate": "",       // Format: DD/MM/YYYY
+              "disabilityIssuingAuthority": ""  // Authority who issued the certificate
+            }`;
+            break;
+          
   
 
     default:
@@ -256,7 +269,26 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
               hostelAdmissionDate: hostelAdmissionDate || "",
               hostelType: hostelType || ""
             };
-  
+            case "disabilityDoc":
+              const {
+                disabilityType,
+                disabilityName,
+                disabilityCertificateNo,
+                disabilityPercentage,
+                disabilityIssuedDate,
+                disabilityIssuingAuthority,
+                ...restDisability
+              } = parsed;
+              return {
+                ...restDisability,
+                disabilityType: disabilityType || "",
+                disabilityName: disabilityName || "",
+                disabilityCertificateNo: disabilityCertificateNo || "",
+                disabilityPercentage: disabilityPercentage || "",
+                disabilityIssuedDate: disabilityIssuedDate || "",
+                disabilityIssuingAuthority: disabilityIssuingAuthority || ""
+              };
+            
   
 
 

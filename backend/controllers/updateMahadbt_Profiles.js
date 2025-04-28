@@ -91,7 +91,7 @@ exports.UPTA = async (req, res) => {
       });
     }
 
-    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc","class12Doc","hostelDoc"];
+    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc","class12Doc","hostelDoc","disabilityDoc"];
     const updateFields = {};
 
     for (const [key, value] of Object.entries(rest)) {
@@ -187,7 +187,21 @@ exports.UPTA = async (req, res) => {
           } else {
             updateFields.hostelAdmissionDate = null;
           }
-        }
+        }else if (key === "disabilityDoc") {
+          updateFields.disabilityDoc = value; // Save the image URL (value is the image URL)
+          updateFields.disabilityType = extracted.disabilityType;
+          updateFields.disabilityName = extracted.disabilityName;
+          updateFields.disabilityCertificateNo = extracted.disabilityCertificateNo;
+          updateFields.disabilityPercentage = extracted.disabilityPercentage;
+          updateFields.disabilityIssuingAuthority = extracted.disabilityIssuingAuthority;
+          
+          if (extracted.disabilityIssuedDate) {
+            const formattedDate = moment(extracted.disabilityIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.disabilityIssuedDate = formattedDate;
+          } else {
+            updateFields.disabilityIssuedDate = null;
+          }
+        }        
         
       } else {
         updateFields[key] = value; // For other fields, just add them as is
@@ -255,7 +269,8 @@ exports.getStudentDocInfo = async (req, res) => {
       capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate"],
       class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"],
       class12Doc: ["class12Stream", "class12Board", "class12SeatNumber", "class12PassingYear", "class12Percentage"],
-      hostelDoc: ["hostelState", "hostelDistrict", "hostelTaluka", "hostelName", "hostelAddress", "hostelPincode","hostelAdmissionDate","hostelType"]
+      hostelDoc: ["hostelState", "hostelDistrict", "hostelTaluka", "hostelName", "hostelAddress", "hostelPincode","hostelAdmissionDate","hostelType"],
+      disabilityDoc: ["disabilityType", "disabilityName", "disabilityCertificateNo", "disabilityPercentage", "disabilityIssuingAuthority", "disabilityIssuedDate"]
       // Add other document types and their respective fields here
     };
 
