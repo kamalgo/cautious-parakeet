@@ -540,7 +540,7 @@
     { name: "Fresh Students", icon: MdGroup, path: "/dashboard/admin/FreshStudents" },
     { name: "Renewal Students", icon: MdGroup, path: "/dashboard/admin/RenewalStudents" },
     { name: "Projects", icon: MdGroup, path: "/dashboard/admin/projects" },
-
+    { name: "Manage Tables", icon: MdGroup, path: "/dashboard/admin/manageTables" },
 
 
   ];

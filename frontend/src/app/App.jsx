@@ -36,6 +36,7 @@ import viewRenewalStudents from "./pages/Renewal_Students/RenewalStudentsCompone
 import FreshStud from "./pages/Fresh_Stud/FreshStud";
 import viewFreshStud from "./pages/Fresh_Stud/FreshStudentsComponents/viewFreshStud";
 import Projects from "./pages/Admin/Projects";
+import ManageTables from "./pages/Admin/ManageTables/ManageTables";
 
 function App() {
   return (
@@ -157,6 +158,13 @@ function App() {
   exact
   path="/dashboard/admin/projects"
   component={Projects}
+  role={ROLES.ADMIN}
+/>
+
+<ProtectedRoute
+  exact
+  path="/dashboard/admin/manageTables"
+  component={ManageTables}
   role={ROLES.ADMIN}
 />
 

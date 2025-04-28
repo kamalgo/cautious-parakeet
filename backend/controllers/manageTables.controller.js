@@ -22,7 +22,7 @@ const getTableData = async (req, res) => {
   const { tableName } = req.params;
 
   try {
-    const [rows] = await sequelize.query(`SELECT * FROM ${tableName}`);
+    const [rows] = await sequelize.query(`SELECT * FROM mahadbt_v2.${tableName}`);
     res.json({ rows });
   } catch (error) {
     console.error(`Error fetching data for table ${tableName}:`, error);
