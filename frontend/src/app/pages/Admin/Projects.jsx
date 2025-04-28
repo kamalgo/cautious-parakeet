@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAllProjects, createProject } from "../../api/ProjectsApi/ProjectsApi";
+import Base from "../../components/Base";
 
 const Projects = () => {
   const [projects, setProjects] = useState([]);
@@ -45,6 +46,7 @@ const Projects = () => {
 
   return (
     <div className="container">
+      <Base>
       <h2>📂 Project List</h2>
 
       <form onSubmit={handleAddProject} style={{ marginBottom: "1rem" }}>
@@ -67,6 +69,7 @@ const Projects = () => {
           <li key={project.project_id}>{project.project_name}</li>
         ))}
       </ul>
+      </Base>
     </div>
   );
 };
