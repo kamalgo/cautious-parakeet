@@ -857,6 +857,12 @@ const shravani_allcolumns = sequelize.define("shravani_allcolumns", {
         allowNull: true,
         field: 'declaration_Rector_Superintendent',
     },
+    nonCreamyDoc: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        field: 'Non_creamy_Layer_doc',
+    },
+    
     // beneficiaryInFamilyPanjabroa: {
     //     type: DataTypes.STRING,
     //     allowNull: true,
