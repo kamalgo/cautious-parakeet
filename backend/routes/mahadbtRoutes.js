@@ -260,3 +260,4 @@ router.get("/getallRenewal",getallRenewal);
 // send mail bulk mail to students
 
 module.exports = router;
+  
