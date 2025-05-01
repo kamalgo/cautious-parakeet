@@ -1,5 +1,7 @@
 const axios = require("axios");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { normalizeAuthority } = require("../../backend/utils/normalizers/authorityNormalizer"); // adjust path if needed
+
 
 const genAI = new GoogleGenerativeAI("AIzaSyD0ANJ4hfTwNnxwh-mUUQ70yPSfZfC_9hc");
 
@@ -159,7 +161,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           ...restIncome,
           annualFamilyIncome: IncomeAmount || "",
           incomeCertNo: CertificateNo || "",
-          incomeIssAuthority: IncomeIssuingAuthority || "",
+          incomeIssAuthority: normalizeAuthority(IncomeIssuingAuthority || ""),
           incomeIssuedDate: Incomecertificateissueddate || ""
         };
 
@@ -177,7 +179,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
             casteCertificateNumber: CasteCertificateNumber || "",
             casteIssuedDistrict: IssuingDistrict || "",
             casteApplicantName: ApplicantName || "",
-            casteIssAuthority: IssuingAuthority || "",
+            casteIssAuthority: normalizeAuthority(IssuingAuthority) || "",
             casteIssuedDate: CasteIssuingDate || ""
           };
         
@@ -188,7 +190,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           ...restDomicile,
           domicileCertNumber: DomicileCertificateNo || "",
           domicileApplicantName: DomicileApplicantName || "",
-          domicileIssuedAuthority: DomicileIssuingAuthority || "",
+          domicileIssuedAuthority: normalizeAuthority(DomicileIssuingAuthority) || "",
           domicileIssuedDate: DomicileIssuingDate || ""
 
         };
