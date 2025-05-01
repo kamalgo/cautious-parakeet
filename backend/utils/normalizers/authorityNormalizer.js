@@ -1,4 +1,4 @@
-export function normalizeAuthority(input = "") {
+function normalizeAuthority(input = "") {
     const authority = input.trim().toLowerCase();
   
     if (/sub\s*divisional\s*officer|s\.?d\.?o\.?/i.test(authority)) {
@@ -13,6 +13,16 @@ export function normalizeAuthority(input = "") {
       return "Naib Tahsildar(NT)";
     }
   
+    if (/talathi/i.test(authority)) {
+      return "Talathi";
+    }
+  
+    if (/district\s*collector/i.test(authority)) {
+      return "District Collector";
+    }
+  
     return input;
   }
+  
+  module.exports = { normalizeAuthority };
   
