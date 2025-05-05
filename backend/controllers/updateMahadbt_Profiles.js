@@ -113,6 +113,7 @@ exports.UPTA = async (req, res) => {
           updateFields.annualFamilyIncome = extracted.annualFamilyIncome;
           updateFields.incomeCertNo = extracted.incomeCertNo;
           updateFields.incomeIssAuthority = extracted.incomeIssAuthority;
+          updateFields.doYouHaveIncomeCertificate = "Yes"; 
           if (extracted.incomeIssuedDate) {
             const formattedDate = moment(extracted.incomeIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.incomeIssuedDate = formattedDate;
@@ -138,6 +139,7 @@ exports.UPTA = async (req, res) => {
           updateFields.domicileCertNumber = extracted.domicileCertNumber;
           updateFields.domicileApplicantName = extracted.domicileApplicantName;
           updateFields.domicileIssuedAuthority = extracted.domicileIssuedAuthority;
+          updateFields.doYouHaveDomicileCertificate = "Yes";
           if (extracted.domicileIssuedDate) {
             const formattedDate = moment(extracted.domicileIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.domicileIssuedDate = formattedDate;
@@ -197,7 +199,7 @@ exports.UPTA = async (req, res) => {
           updateFields.disabilityCertificateNo = extracted.disabilityCertificateNo;
           updateFields.disabilityPercentage = extracted.disabilityPercentage;
           updateFields.disabilityIssuingAuthority = extracted.disabilityIssuingAuthority;
-          
+          updateFields.doYouHaveDisability = "Yes";
           if (extracted.disabilityIssuedDate) {
             const formattedDate = moment(extracted.disabilityIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.disabilityIssuedDate = formattedDate;
