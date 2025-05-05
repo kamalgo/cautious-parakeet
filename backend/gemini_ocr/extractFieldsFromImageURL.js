@@ -1,7 +1,14 @@
 const axios = require("axios");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const { normalizeAuthority } = require("../../backend/utils/normalizers/authorityNormalizer"); // adjust path if needed
 
+//normalizers
+const { normalizeAuthority } = require("../../backend/utils/normalizers/authorityNormalizer");
+const { normalizeTaluka } = require("../../backend/utils/normalizers/normalizeTaluka");
+const { normalizeDistrict } = require("../../backend/utils/normalizers/normalizeDistrict");
+const {normalizeDisabilityName} = require("../../backend/utils/normalizers/normalizeDisabilityName");
+const { normalizeQualificationLevel } = require("../../backend/utils/normalizers/normalizeQualificationLevel");
+const {normalizeStream} = require("../../backend/utils/normalizers/normalizeStream");
+const { normalizeSubCaste } = require("../../backend/utils/normalizers/normalizeSubcaste");
 
 const genAI = new GoogleGenerativeAI("AIzaSyD0ANJ4hfTwNnxwh-mUUQ70yPSfZfC_9hc");
 
@@ -48,7 +55,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
     case "casteDoc":
       prompt = `From this caste certificate image, extract the following in English and return as JSON:
       {
-        "Caste": "",
+        "Caste": "", //eg:  Kunbi Caste which is recognised as Other Backward Class at Sr No.83 , save as "(83)Kunbi"
         "CasteCertificateNumber": "",
         "IssuingDistrict": "",
         "ApplicantName": "",
@@ -73,7 +80,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         "CasteCategory": "",
         "DisabilityofanyType": "",
         "CourseName": "",
-        "CETMeritPercentage": "",        
+        "MeritMarks": "", //eg: Merit Marks "85.00"        
         "AdmissionApplicationID": "",
         "AppliedforEWS": "",
         "InstituteName": "", //eg: "06203-Annasaheb Dange College of Engineering and Technology, Ashta Sangli" 
@@ -172,15 +179,17 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
             ApplicantName,
             IssuingAuthority,
             CasteIssuingDate,
+            Caste,
             ...restCaste
           } = parsed;
           return {
             ...restCaste,
             casteCertificateNumber: CasteCertificateNumber || "",
-            casteIssuedDistrict: IssuingDistrict || "",
+            casteIssuedDistrict: normalizeDistrict(IssuingDistrict || ""),
             casteApplicantName: ApplicantName || "",
-            casteIssAuthority: normalizeAuthority(IssuingAuthority) || "",
-            casteIssuedDate: CasteIssuingDate || ""
+            casteIssAuthority: normalizeAuthority(IssuingAuthority || ""),
+            casteIssuedDate: CasteIssuingDate || "",
+            subCaste: normalizeSubCaste(Caste || "") // Normalize the caste name
           };
         
 
@@ -190,14 +199,29 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           ...restDomicile,
           domicileCertNumber: DomicileCertificateNo || "",
           domicileApplicantName: DomicileApplicantName || "",
-          domicileIssuedAuthority: normalizeAuthority(DomicileIssuingAuthority) || "",
+          domicileIssuedAuthority: normalizeAuthority(DomicileIssuingAuthority || ""),
           domicileIssuedDate: DomicileIssuingDate || ""
 
         };
 
       case "capAllotmentLetter":
-        const { DisabilityofanyType, CourseName, CETMeritPercentage, AdmissionApplicationID, InstituteName, DateOfAdmission,
-                Gender,  ...restCap } = parsed;
+        const { DisabilityofanyType, CourseName, MeritMarks, AdmissionApplicationID, InstituteName, DateOfAdmission, 
+                Gender, AdmissionLevel,  ...restCap } = parsed;
+        
+                console.log("✅ Extracted CAP fields:", {
+                  ...restCap,
+                  doYouHaveDisability: DisabilityofanyType || "",
+                  courseName: CourseName || "",
+                  cetPercentage: MeritMarks || "",
+                  admissionApplicationId: AdmissionApplicationID || "",
+                  instituteName: InstituteName || "",
+                  admissionDate: DateOfAdmission || "",
+                  gender: Gender || "",
+                  qualificationLevel: normalizeQualificationLevel(AdmissionLevel || ""), // Assuming qualificationLevel is in restCap
+        
+                });
+                
+
         return {
           ...restCap,
           doYouHaveDisability: DisabilityofanyType || "",
@@ -206,7 +230,8 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           admissionApplicationId: AdmissionApplicationID || "",
           instituteName: InstituteName || "",
           admissionDate: DateOfAdmission || "",
-          gender: Gender || ""
+          gender: Gender || "",
+          qualificationLevel: normalizeQualificationLevel(AdmissionLevel || ""), // Assuming qualificationLevel is in restCap
           //unable to map AppliedforEWS,meritNo, seatType, admissionLevel
         };
 
@@ -241,7 +266,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           } = parsed;
           return {
             ...restClass12,
-            class12Stream: class12Stream || "",
+            class12Stream: normalizeStream(class12Stream || ""),
             class12Board: class12Board || "",
             class12SeatNumber: class12SeatNumber || "",
             class12PassingYear: class12PassingYear || "",
@@ -263,8 +288,8 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
             return {
               ...restHostel,
               hostelState: hostelState || "",
-              hostelDistrict: hostelDistrict || "",
-              hostelTaluka: hostelTaluka || "",
+              hostelDistrict: normalizeDistrict(hostelDistrict || ""),
+              hostelTaluka:normalizeTaluka(hostelTaluka) || "",
               hostelName: hostelName || "",
               hostelAddress: hostelAddress || "",
               hostelPincode: hostelPincode || "",
@@ -284,7 +309,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
               return {
                 ...restDisability,
                 disabilityType: disabilityType || "",
-                disabilityName: disabilityName || "",
+                disabilityName: normalizeDisabilityName(disabilityName || ""),
                 disabilityCertificateNo: disabilityCertificateNo || "",
                 disabilityPercentage: disabilityPercentage || "",
                 disabilityIssuedDate: disabilityIssuedDate || "",

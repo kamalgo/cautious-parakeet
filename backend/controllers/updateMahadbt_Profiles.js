@@ -121,10 +121,12 @@ exports.UPTA = async (req, res) => {
           }
         } else if (key === "casteDoc") {
           updateFields.casteDoc = value; // Save the image URL (value is the image URL)
+          updateFields.subCaste = extracted.subCaste;
           updateFields.casteCertificateNumber = extracted.casteCertificateNumber;
           updateFields.casteIssuedDistrict = extracted.casteIssuedDistrict;
           updateFields.casteApplicantName = extracted.casteApplicantName;
-          updateFields.casteIssAuthority = extracted.casteIssAuthority;
+          updateFields.casteIssAuthority = extracted.casteIssAuthority;    
+          updateFields.doYouHaveCasteCertificate = "Yes";
           if (extracted.casteIssuedDate) {
             const formattedDate = moment(extracted.casteIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.casteIssuedDate = formattedDate;
@@ -144,6 +146,7 @@ exports.UPTA = async (req, res) => {
           }
         } else if (key === "capAllotmentLetter") {
           updateFields.capAllotmentLetter = value; // Save the image URL (value is the image URL)
+          updateFields.qualificationLevel = extracted.qualificationLevel;
           updateFields.doYouHaveDisability = extracted.doYouHaveDisability;
           updateFields.courseName = extracted.courseName;
           updateFields.cetPercentage = extracted.cetPercentage;
@@ -266,7 +269,7 @@ exports.getStudentDocInfo = async (req, res) => {
       casteDoc: ["casteCertificateNumber","casteIssuedDistrict","casteApplicantName", "casteIssAuthority", "casteIssuedDate"],
       domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
-      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate"],
+      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate","qualificationLevel"],
       class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"],
       class12Doc: ["class12Stream", "class12Board", "class12SeatNumber", "class12PassingYear", "class12Percentage"],
       hostelDoc: ["hostelState", "hostelDistrict", "hostelTaluka", "hostelName", "hostelAddress", "hostelPincode","hostelAdmissionDate","hostelType"],
