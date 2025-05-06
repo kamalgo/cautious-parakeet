@@ -100,7 +100,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           "class10Percentage": "",
           "class10SeatNumber": "",        
           "class10MonthOfExam": "",
-          "class10MarksObtained": "",
+          "class10MarksObtained": "", //eg: 385 + 3 
                 }`;
         break;
 
@@ -226,7 +226,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           ...restCap,
           doYouHaveDisability: DisabilityofanyType || "",
           courseName: CourseName || "",
-          cetPercentage: CETMeritPercentage || "",
+          cetPercentage: MeritMarks || "",
           admissionApplicationId: AdmissionApplicationID || "",
           instituteName: InstituteName || "",
           admissionDate: DateOfAdmission || "",
