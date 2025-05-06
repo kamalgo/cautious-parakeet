@@ -57,28 +57,28 @@ const moment = require('moment');
 // };
 
 //UPTE update profile through email
-    // exports.UPTE = async (req, res) => {
-    //     Mahadbtprofiles.update(req.body, {
-    //       // Specify the condition for the update
-    //       where: {
-    //         email: req.body.email,
-    //       },
-    //     })
-    //       .then((result) => {
-    //         console.log("result", result);
-    //         console.log("email", req.body.id);
-            
-    //         // The result is an array where the first element is the number of updated rows
-    //         return res.status(200).json({
-    //           success: true,
-    //           message: `${result[0]} row(s) updated`,
-    //         });
-    //       })
-    //       .catch((error) => {
-    //         console.error("Error updating records:", error);
-    //         res.status(500).json({ error: "Internal Server Error" });
-    //       });
-    //   };      
+// exports.UPTE = async (req, res) => {
+//     Mahadbtprofiles.update(req.body, {
+//       // Specify the condition for the update
+//       where: {
+//         email: req.body.email,
+//       },
+//     })
+//       .then((result) => {
+//         console.log("result", result);
+//         console.log("email", req.body.id);
+
+//         // The result is an array where the first element is the number of updated rows
+//         return res.status(200).json({
+//           success: true,
+//           message: `${result[0]} row(s) updated`,
+//         });
+//       })
+//       .catch((error) => {
+//         console.error("Error updating records:", error);
+//         res.status(500).json({ error: "Internal Server Error" });
+//       });
+//   };      
 /////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.UPTA = async (req, res) => {
   try {
@@ -91,7 +91,7 @@ exports.UPTA = async (req, res) => {
       });
     }
 
-    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc","class12Doc","hostelDoc","disabilityDoc"];
+    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc", "class12Doc", "hostelDoc", "disabilityDoc"];
     const updateFields = {};
 
     for (const [key, value] of Object.entries(rest)) {
@@ -99,21 +99,21 @@ exports.UPTA = async (req, res) => {
       if (documentFields.includes(key)) {
         const extracted = await extractFieldsFromImageURL(value, key);
         console.log(`📄 Extracted fields from ${key}:`, extracted); // Debugging line for extracted fields
-    
+
         if (!extracted || Object.keys(extracted).length === 0) {
           return res.status(422).json({
             success: false,
             message: `Could not extract any data from ${key}`,
           });
         }
-    
+
         // Add the extracted fields to updateFields, including the image URL
         if (key === "incomeDoc") {
           updateFields.incomeDoc = value; // Save the image URL (value is the image URL)
           updateFields.annualFamilyIncome = extracted.annualFamilyIncome;
           updateFields.incomeCertNo = extracted.incomeCertNo;
           updateFields.incomeIssAuthority = extracted.incomeIssAuthority;
-          updateFields.doYouHaveIncomeCertificate = "Yes"; 
+          updateFields.doYouHaveIncomeCertificate = "Yes";
           if (extracted.incomeIssuedDate) {
             const formattedDate = moment(extracted.incomeIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.incomeIssuedDate = formattedDate;
@@ -126,7 +126,7 @@ exports.UPTA = async (req, res) => {
           updateFields.casteCertificateNumber = extracted.casteCertificateNumber;
           updateFields.casteIssuedDistrict = extracted.casteIssuedDistrict;
           updateFields.casteApplicantName = extracted.casteApplicantName;
-          updateFields.casteIssAuthority = extracted.casteIssAuthority;    
+          updateFields.casteIssAuthority = extracted.casteIssAuthority;
           updateFields.doYouHaveCasteCertificate = "Yes";
           if (extracted.casteIssuedDate) {
             const formattedDate = moment(extracted.casteIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
@@ -182,17 +182,17 @@ exports.UPTA = async (req, res) => {
           updateFields.hostelState = extracted.hostelState;
           updateFields.hostelDistrict = extracted.hostelDistrict;
           updateFields.hostelTaluka = extracted.hostelTaluka;
-          updateFields.hostelName = extracted.hostelName; 
+          updateFields.hostelName = extracted.hostelName;
           updateFields.hostelAddress = extracted.hostelAddress;
           updateFields.hostelPincode = extracted.hostelPincode;
-          updateFields.hostelType = extracted.hostelType;          
+          updateFields.hostelType = extracted.hostelType;
           if (extracted.hostelAdmissionDate) {
             const formattedDate = moment(extracted.hostelAdmissionDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.hostelAdmissionDate = formattedDate;
           } else {
             updateFields.hostelAdmissionDate = null;
           }
-        }else if (key === "disabilityDoc") {
+        } else if (key === "disabilityDoc") {
           updateFields.disabilityDoc = value; // Save the image URL (value is the image URL)
           updateFields.disabilityType = extracted.disabilityType;
           updateFields.disabilityName = extracted.disabilityName;
@@ -206,13 +206,13 @@ exports.UPTA = async (req, res) => {
           } else {
             updateFields.disabilityIssuedDate = null;
           }
-        }        
-        
+        }
+
       } else {
         updateFields[key] = value; // For other fields, just add them as is
       }
     }
-    
+
 
     // Ensure that there are fields to update
     if (Object.keys(updateFields).length === 0) {
@@ -268,13 +268,13 @@ exports.getStudentDocInfo = async (req, res) => {
     // Define the supported document fields
     const documentFields = {
       incomeDoc: ["annualFamilyIncome", "incomeCertNo", "incomeIssAuthority", "incomeIssuedDate", "name"],
-      casteDoc: ["casteCertificateNumber","casteIssuedDistrict","casteApplicantName", "casteIssAuthority", "casteIssuedDate"],
+      casteDoc: ["casteCertificateNumber", "casteIssuedDistrict", "casteApplicantName", "casteIssAuthority", "casteIssuedDate", "subCaste"],
       domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
-      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate","qualificationLevel"],
+      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate", "qualificationLevel"],
       class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"],
       class12Doc: ["class12Stream", "class12Board", "class12SeatNumber", "class12PassingYear", "class12Percentage"],
-      hostelDoc: ["hostelState", "hostelDistrict", "hostelTaluka", "hostelName", "hostelAddress", "hostelPincode","hostelAdmissionDate","hostelType"],
+      hostelDoc: ["hostelState", "hostelDistrict", "hostelTaluka", "hostelName", "hostelAddress", "hostelPincode", "hostelAdmissionDate", "hostelType"],
       disabilityDoc: ["disabilityType", "disabilityName", "disabilityCertificateNo", "disabilityPercentage", "disabilityIssuingAuthority", "disabilityIssuedDate"]
       // Add other document types and their respective fields here
     };
@@ -374,86 +374,199 @@ exports.handleStudentResponse = async (req, res) => {
   }
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////////
+exports.getScholarshipSuggestions = async (req, res) => {
+  try {
+    const { aadhaar_number } = req.body;
+
+    if (!aadhaar_number) {
+      return res.status(400).json({ message: "Aadhaar number is required" });
+    }
+
+    const student = await shravani_allcolumns.findOne({ where: { aadhaar_number } });
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found with provided Aadhaar" });
+    }
+
+    const { annualFamilyIncome, casteCategory, areYouHostellerDayScholar } = student;
+
+    const eligibleScholarships = [];
+
+    // Normalize and prepare values
+    const casteLower = (casteCategory || "").toLowerCase().trim();
+    const hostellerStatus = (areYouHostellerDayScholar || "").toLowerCase().trim();
+
+    console.log("Student Caste Category (normalized):", casteLower);
+
+
+    const eligibleCastes = ['open', 'ebc', 'sebc'];
+    const isEligibleCaste = eligibleCastes.includes(casteLower);
+    const isHosteller = hostellerStatus === "hosteller";
+
+    // Scholarship 1: Rajashri Chhatrapati Shahu Maharaj Scholarship
+    if (annualFamilyIncome < 800000 && isEligibleCaste) {
+      eligibleScholarships.push("Rajashri Chhatrapati Shahu Maharaj Scholarship");
+    }
+
+    // Scholarship 2: Dr. Panjabrao Deshmukh Hostel Maintenance Scholarship
+    if (annualFamilyIncome < 800000 && isEligibleCaste && isHosteller) {
+      eligibleScholarships.push("Dr. Panjabrao Deshmukh Hostel Maintenance Scholarship");
+    }
+
+    // Scholarship 3: Post Matric Scholarship for OBC Students
+    if (casteLower === "(obc) other backward class" && annualFamilyIncome < 150000) {
+      eligibleScholarships.push("Post Matric Scholarship for OBC Students");
+    }
+
+    // Scholarship 4: Tution fees and examination fees to OBC Students
+    if (casteLower === "(obc) other backward class" && annualFamilyIncome > 150000) {
+      eligibleScholarships.push("Tution fees and examination fees to OBC Students");
+    }
+
+    // Scholarship 5: Post matric to sbc students
+    if (casteLower === "(sbc) special backward class" && annualFamilyIncome < 150000) {
+      eligibleScholarships.push("Post matric to sbc students");
+    }
+
+    // Scholarship 6: Payment of maintenance allowance to VJNT and SBC students
+    if (casteLower === "(sbc) special backward class" || casteLower === "(vjnt) vimukta jat nomadic tribes" && annualFamilyIncome < 150000 && isHosteller) {
+      eligibleScholarships.push("Payment of maintenance allowance to VJNT and SBC students");
+    }
+    
+    // Scholarship 7: Tution fees and examination fees to SBC Students
+    if (casteLower === "(sbc) special backward class" && annualFamilyIncome > 150000) {
+      eligibleScholarships.push("Tution fees and examination fees to SBC Students");
+    }
+
+    // Scholarship 8: Post matric to VJNT students
+    if (casteLower === "(vjnt) vimukta jat nomadic tribes" && annualFamilyIncome < 150000) {
+      eligibleScholarships.push("Post matric to VJNT students");
+    }  
+    
+    // Scholarship 9: Tution fees and examination fees to VJNT Students
+    if (casteLower === "(vjnt) vimukta jat nomadic tribes" && annualFamilyIncome > 150000) {
+      eligibleScholarships.push("Tution fees and examination fees to VJNT Students");
+    }    
+
+    // Scholarship 10: GOVT. of India Post Matric Scholarship for SC Students
+    if (annualFamilyIncome < 250000 && casteLower === "(sc) scheduled caste") {
+      eligibleScholarships.push("Govt. of India Post Matric Scholarship for SC Students");
+      eligibleScholarships.push("Maintenannce Allowance for Students studying in professional courses"); //does this requires hosteller status?
+
+    } 
+
+    // Scholarship 11: Freeship for SC Students
+    if (annualFamilyIncome > 250000 && casteLower === "(sc) scheduled caste" && isHosteller) {
+      eligibleScholarships.push("freeship for SC Students");
+    }  
+    
+    // Scholarship 12: Post Matric Scholarship for ST Students
+    if (casteLower === "(st) scheduled tribes") {
+      eligibleScholarships.push("freeship for SC Students");
+    }
+
+    console.log("🟢 Scholarship suggestions for student:", eligibleScholarships);
+
+    return res.status(200).json({
+      message: eligibleScholarships.length > 0
+        ? "Eligible scholarships found"
+        : "No scholarships found based on current criteria.",
+      data: eligibleScholarships
+    });
+
+  } catch (error) {
+    console.error("🔴 Error in getScholarshipSuggestions:", error.message, error.stack);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: error.message
+    });
+  }
+};
+
+
+
+
 
 
 /////////////////////////////////////////////////////////////////////////////////    
-    exports.UPTE = async (req, res) => {
-      MahadbtRenewal.update(req.body, {
-        // Specify the condition for the update
-        where: {
-          email: req.body.email,
-        },
-      })
-        .then((result) => {
-          console.log("result", result);
-          console.log("email", req.body.email);
-          
-          // The result is an array where the first element is the number of updated rows
-          return res.status(200).json({
-            success: true,
-            message: `${result[0]} row(s) updated`,
-          });
-        })
-        .catch((error) => {
-          console.error("Error updating records:", error);
-          res.status(500).json({ error: "Internal Server Error" });
-        });
-    };     
+exports.UPTE = async (req, res) => {
+  MahadbtRenewal.update(req.body, {
+    // Specify the condition for the update
+    where: {
+      email: req.body.email,
+    },
+  })
+    .then((result) => {
+      console.log("result", result);
+      console.log("email", req.body.email);
+
+      // The result is an array where the first element is the number of updated rows
+      return res.status(200).json({
+        success: true,
+        message: `${result[0]} row(s) updated`,
+      });
+    })
+    .catch((error) => {
+      console.error("Error updating records:", error);
+      res.status(500).json({ error: "Internal Server Error" });
+    });
+};
 
 
 //UPTA update profile through aadhar
 
-      // exports.UPTA = async (req, res) => {
-      //   shravani_allcolumns.update(req.body, {
-      //     // Specify the condition for the update
-      //     where: {
-      //       aadhaar_number: req.body.aadhaar_number,
-      //     },
-      //   })
-      //     .then((result) => {
-      //       console.log("result", result);
-      //       console.log("aadhaar", req.body.aadhaar_number);
-            
-      //       // The result is an array where the first element is the number of updated rows
-      //       return res.status(200).json({
-      //         success: true,
-      //         message: `${result[0]} row(s) updated`,
-      //       });
-      //     })
-      //     .catch((error) => {
-      //       console.error("Error updating records:", error);
-      //       res.status(500).json({ error: "Internal Server Error" });
-      //     });
-      // };      
+// exports.UPTA = async (req, res) => {
+//   shravani_allcolumns.update(req.body, {
+//     // Specify the condition for the update
+//     where: {
+//       aadhaar_number: req.body.aadhaar_number,
+//     },
+//   })
+//     .then((result) => {
+//       console.log("result", result);
+//       console.log("aadhaar", req.body.aadhaar_number);
 
-      /////////////////////////////////////////////////////////////////////////////////////////////////////
+//       // The result is an array where the first element is the number of updated rows
+//       return res.status(200).json({
+//         success: true,
+//         message: `${result[0]} row(s) updated`,
+//       });
+//     })
+//     .catch((error) => {
+//       console.error("Error updating records:", error);
+//       res.status(500).json({ error: "Internal Server Error" });
+//     });
+// };      
 
-      exports.createProfileBot = async (req, res) => {
-        try {
-          // Extract data from req.body or wherever your data comes from
-          // const { aadhaar, name, aadhaar_link_mob_no, email } = req.body;
-          const { aadhaar_number } = req.body;
-      
-          // Create a new record in the Mahadbtprofiles table
-          const newProfile = await shravani_allcolumns.create({
-            aadhaar_number : aadhaar_number           
-          });
-      
-          // Handle success
-          return res.status(200).json({
-            success: true,
-            message: 'Profile created successfully',
-            data: newProfile  // Optionally return the created record
-          });
-        } catch (error) {
-          // Handle error
-          console.error('Error creating profile:', error);
-          return res.status(500).json({
-            success: false,
-            error: 'Internal Server Error'
-          });
-        }
-      };
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+exports.createProfileBot = async (req, res) => {
+  try {
+    // Extract data from req.body or wherever your data comes from
+    // const { aadhaar, name, aadhaar_link_mob_no, email } = req.body;
+    const { aadhaar_number } = req.body;
+
+    // Create a new record in the Mahadbtprofiles table
+    const newProfile = await shravani_allcolumns.create({
+      aadhaar_number: aadhaar_number
+    });
+
+    // Handle success
+    return res.status(200).json({
+      success: true,
+      message: 'Profile created successfully',
+      data: newProfile  // Optionally return the created record
+    });
+  } catch (error) {
+    // Handle error
+    console.error('Error creating profile:', error);
+    return res.status(500).json({
+      success: false,
+      error: 'Internal Server Error'
+    });
+  }
+};
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -463,7 +576,7 @@ exports.createProfileBotRenewal = async (req, res) => {
 
     // Create a new record in the Mahadbtprofiles table
     const newProfile = await MahadbtRenewal.create({
-      email : email           
+      email: email
     });
 
     // Handle success
@@ -489,7 +602,7 @@ exports.createProfileBotRenewal = async (req, res) => {
 // Function to fetch records with blank values in specified columns using Aadhaar
 
 // Function to fetch records by aadhaar
-exports.fetchBlankRecordsByAadhaar  = async (req, res) => {
+exports.fetchBlankRecordsByAadhaar = async (req, res) => {
   try {
     // Extract aadhaar from request parameters or body
     const { aadhaar } = req.body;
@@ -515,11 +628,11 @@ exports.fetchBlankRecordsByAadhaar  = async (req, res) => {
     });
   }
 };
-  
+
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // exports.editStudent = async (req, res) => {
- 
+
 //   console.log("name************", req.body);
 //   console.log("name==========",req.body.namee);
 //   mahadbtProfilesBot.update(req.body, {
@@ -570,7 +683,7 @@ exports.fetchBlankRecordsByAadhaar  = async (req, res) => {
 //       console.log("request body**********", req.body);
 //       console.log("result", result);
 //       console.log("request body id", req.body.id);
-      
+
 //       // The result is an array where the first element is the number of updated rows
 //       return res.status(200).json({
 //         success: true,
@@ -705,22 +818,22 @@ exports.editStudent = async (req, res) => {
 //     });
 // };
 
-  exports.fetchstud = (req, res) => {
-    Mahadbtprofiles
+exports.fetchstud = (req, res) => {
+  Mahadbtprofiles
     .findAll({})
     .then((data) => {
-        console.log('Data retrieved:', data);
-        res.json({
-            success: true,
-            data,
-        });
+      console.log('Data retrieved:', data);
+      res.json({
+        success: true,
+        data,
+      });
     })
     .catch((error) => {
-        res.status(500).json({
-            success: false,
-            message: "Failed to retrieve data from forstu_tranches",
-            error: error.message || "An error occurred",
-        });
+      res.status(500).json({
+        success: false,
+        message: "Failed to retrieve data from forstu_tranches",
+        error: error.message || "An error occurred",
+      });
     });
 };
 
@@ -729,35 +842,35 @@ exports.editStudent = async (req, res) => {
 
 exports.getallFresh = async (req, res) => {
 
-  try{
-        const freshprofiles = await mahadbtProfilesBot.findAll();
-        return res.status(200).json(
-           {
-            sucess: true,
-            data : freshprofiles
-           }
-          );
+  try {
+    const freshprofiles = await mahadbtProfilesBot.findAll();
+    return res.status(200).json(
+      {
+        sucess: true,
+        data: freshprofiles
+      }
+    );
 
-  }catch (error) {
-    console.error("Error fetching profiles :" , error);
-    res.status(500).json({error: "internal server Error"})
+  } catch (error) {
+    console.error("Error fetching profiles :", error);
+    res.status(500).json({ error: "internal server Error" })
 
   }
 };
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////
 exports.getallRenewal = async (req, res) => {
-  try{
-        const renewalprofiles = await MahadbtRenewal.findAll();
-        return res.status(200).json(
-          {
-            sucess: true,
-            data : renewalprofiles
-          }
-        );
-  }catch (error){
+  try {
+    const renewalprofiles = await MahadbtRenewal.findAll();
+    return res.status(200).json(
+      {
+        sucess: true,
+        data: renewalprofiles
+      }
+    );
+  } catch (error) {
     console.error("Error fetching profiles :", error);
-    res.status(500).json({error:"internal server Error"})
+    res.status(500).json({ error: "internal server Error" })
 
   }
 }

@@ -1,7 +1,7 @@
 const express = require("express");
 
 const{UPTE, UPTA, createProfileBot, fetchBlankRecordsByAadhaar, editStudent, fetchstud, getallFresh
-      ,getallRenewal, createProfileBotRenewal, getStudentDocInfo,handleStudentResponse
+      ,getallRenewal, createProfileBotRenewal, getStudentDocInfo,handleStudentResponse, getScholarshipSuggestions
       } = require("../controllers/updateMahadbt_Profiles")
 
 const {
@@ -188,6 +188,8 @@ router.put("/UPTE", UPTE); // UPTE update profile through email
 router.put("/UPTA", UPTA); // UPTA update profile through aadhaar 
 router.get("/getStudentDocInfo", getStudentDocInfo); // get income info
 router.post("/handleStudentResponse", handleStudentResponse); // handle student response
+
+router.post("/getScholarshipSuggestions",getScholarshipSuggestions);
 
 
 router.post("/createProfileBot", createProfileBot); //creates a new profile record

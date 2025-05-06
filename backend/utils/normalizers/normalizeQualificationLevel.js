@@ -11,7 +11,7 @@ function normalizeQualificationLevel(input = "") {
       "Post Graduate Diploma Course": [
         "post graduate diploma", "pg diploma", "post graduate diploma course"
       ],
-      "Under Graduate Course": ["undergraduate", "under graduate", "ug course", "under graduate course"],
+      "Under Graduate Course": ["undergraduate", "under graduate", "ug course", "under graduate course", "ug", "UG"],
       "Under Graduate Course for Sainiki": [
         "under graduate sainik", "ug sainik", "under graduate course for sainiki"
       ],
