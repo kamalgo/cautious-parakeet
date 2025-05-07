@@ -200,6 +200,7 @@ exports.UPTA = async (req, res) => {
           updateFields.disabilityPercentage = extracted.disabilityPercentage;
           updateFields.disabilityIssuingAuthority = extracted.disabilityIssuingAuthority;
           updateFields.doYouHaveDisability = "Yes";
+          updateFields.doYouHaveDisabilityCertificate = "Yes";          
           if (extracted.disabilityIssuedDate) {
             const formattedDate = moment(extracted.disabilityIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.disabilityIssuedDate = formattedDate;

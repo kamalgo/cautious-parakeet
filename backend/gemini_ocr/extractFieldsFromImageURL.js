@@ -9,6 +9,7 @@ const {normalizeDisabilityName} = require("../../backend/utils/normalizers/norma
 const { normalizeQualificationLevel } = require("../../backend/utils/normalizers/normalizeQualificationLevel");
 const {normalizeStream} = require("../../backend/utils/normalizers/normalizeStream");
 const { normalizeSubCaste } = require("../../backend/utils/normalizers/normalizeSubcaste");
+const {normalizeInstituteName} = require("../../backend/utils/normalizers/normalizeInstituteName");
 
 const genAI = new GoogleGenerativeAI("AIzaSyD0ANJ4hfTwNnxwh-mUUQ70yPSfZfC_9hc");
 
@@ -78,12 +79,12 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
       prompt = `From this CAP Allotment Letter image, extract these fields in English and return as JSON:
       {
         "CasteCategory": "",
-        "DisabilityofanyType": "",
+        "DisabilityofanyType": "", eg: "Yes" or "No"
         "CourseName": "",
         "MeritMarks": "", //eg: Merit Marks "85.00"        
         "AdmissionApplicationID": "",
         "AppliedforEWS": "",
-        "InstituteName": "", //eg: "06203-Annasaheb Dange College of Engineering and Technology, Ashta Sangli" 
+        "InstituteName": "", //eg: "06203 - Annasaheb Dange College of Engineering and Technology, Ashta Sangli" 
         "DateOfAdmission": ""
         "MeritNo": "",
         "SeatType": "",
@@ -214,7 +215,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
                   courseName: CourseName || "",
                   cetPercentage: MeritMarks || "",
                   admissionApplicationId: AdmissionApplicationID || "",
-                  instituteName: InstituteName || "",
+                  instituteName: normalizeInstituteName(InstituteName || ""),
                   admissionDate: DateOfAdmission || "",
                   gender: Gender || "",
                   qualificationLevel: normalizeQualificationLevel(AdmissionLevel || ""), // Assuming qualificationLevel is in restCap
