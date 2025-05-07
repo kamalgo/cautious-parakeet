@@ -84,8 +84,9 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         "MeritMarks": "", //eg: Merit Marks "85.00"        
         "AdmissionApplicationID": "",
         "AppliedforEWS": "",
-        "InstituteName": "", //eg: "06203 - Annasaheb Dange College of Engineering and Technology, Ashta Sangli" 
-        "DateOfAdmission": ""
+        "InstituteName": "", //eg: "06203 - Annasaheb Dange College of Engineering and Technology, Ashta Sangli",
+        "DateOfAdmission": "",
+        "AdmissionYear": "", //eg: "2024"
         "MeritNo": "",
         "SeatType": "",
         "AdmissionLevel": "" //eg: "UG", "PG" search for this in the header of the document,
@@ -207,7 +208,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
 
       case "capAllotmentLetter":
         const { DisabilityofanyType, CourseName, MeritMarks, AdmissionApplicationID, InstituteName, DateOfAdmission, 
-                Gender, AdmissionLevel,  ...restCap } = parsed;
+                Gender, AdmissionLevel,AdmissionYear,  ...restCap } = parsed;
         
                 console.log("✅ Extracted CAP fields:", {
                   ...restCap,
@@ -219,7 +220,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
                   admissionDate: DateOfAdmission || "",
                   gender: Gender || "",
                   qualificationLevel: normalizeQualificationLevel(AdmissionLevel || ""), // Assuming qualificationLevel is in restCap
-        
+                  admissionYear: AdmissionYear || "", // Assuming admissionYear is in restCap
                 });
                 
 
@@ -232,7 +233,8 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           instituteName: normalizeInstituteName(InstituteName || ""),
           admissionDate: DateOfAdmission || "",
           gender: Gender || "",
-          qualificationLevel: normalizeQualificationLevel(AdmissionLevel || ""), // Assuming qualificationLevel is in restCap
+          qualificationLevel: normalizeQualificationLevel(AdmissionLevel || ""),
+          admissionYear: AdmissionYear || "", // Assuming admissionYear is in restCap
           //unable to map AppliedforEWS,meritNo, seatType, admissionLevel
         };
 
