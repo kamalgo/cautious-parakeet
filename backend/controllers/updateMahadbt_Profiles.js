@@ -155,7 +155,10 @@ exports.UPTA = async (req, res) => {
           updateFields.admissionApplicationId = extracted.admissionApplicationId;
           updateFields.instituteName = extracted.instituteName;
           updateFields.gender = extracted.gender;
-          updateFields.admissionYear = extracted.admissionYear;         
+          updateFields.admissionYear = extracted.admissionYear;  
+          updateFields.instituteState = extracted.instituteState;    
+          updateFields.instituteDistrict = extracted.instituteDistrict;    
+          updateFields.instituteTaluka = extracted.instituteTaluka;  
           if (extracted.admissionDate) {
             const formattedDate = moment(extracted.admissionDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.admissionDate = formattedDate;
@@ -273,7 +276,7 @@ exports.getStudentDocInfo = async (req, res) => {
       casteDoc: ["casteCertificateNumber", "casteIssuedDistrict", "casteApplicantName", "casteIssAuthority", "casteIssuedDate", "subCaste"],
       domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
-      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate", "qualificationLevel","admissionYear"],
+      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate", "qualificationLevel","admissionYear","instituteState", "instituteDistrict", "instituteTaluka"],
       class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"],
       class12Doc: ["class12Stream", "class12Board", "class12SeatNumber", "class12PassingYear", "class12Percentage"],
       hostelDoc: ["hostelState", "hostelDistrict", "hostelTaluka", "hostelName", "hostelAddress", "hostelPincode", "hostelAdmissionDate", "hostelType"],

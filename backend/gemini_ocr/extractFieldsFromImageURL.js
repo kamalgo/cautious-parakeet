@@ -85,6 +85,9 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         "AdmissionApplicationID": "",
         "AppliedforEWS": "",
         "InstituteName": "", //eg: "06203 - Annasaheb Dange College of Engineering and Technology, Ashta Sangli",
+        "InstituteState": "", //eg: "Maharashtra"
+        "InstituteDistrict": "", //eg: "Sangli"
+        "InstituteTaluka": "", //eg: "Ashta"
         "DateOfAdmission": "",
         "AdmissionYear": "", //eg: "2024"
         "MeritNo": "",
@@ -208,7 +211,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
 
       case "capAllotmentLetter":
         const { DisabilityofanyType, CourseName, MeritMarks, AdmissionApplicationID, InstituteName, DateOfAdmission, 
-                Gender, AdmissionLevel,AdmissionYear,  ...restCap } = parsed;
+                Gender, AdmissionLevel,AdmissionYear,InstituteState,InstituteDistrict,InstituteTaluka,  ...restCap } = parsed;
         
                 console.log("✅ Extracted CAP fields:", {
                   ...restCap,
@@ -221,6 +224,10 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
                   gender: Gender || "",
                   qualificationLevel: normalizeQualificationLevel(AdmissionLevel || ""), // Assuming qualificationLevel is in restCap
                   admissionYear: AdmissionYear || "", // Assuming admissionYear is in restCap
+                  instituteState: InstituteState || "",
+                  instituteDistrict : normalizeDistrict(InstituteDistrict || ""),
+                  instituteTaluka : normalizeTaluka(InstituteTaluka) || "",
+
                 });
                 
 
@@ -234,7 +241,10 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           admissionDate: DateOfAdmission || "",
           gender: Gender || "",
           qualificationLevel: normalizeQualificationLevel(AdmissionLevel || ""),
-          admissionYear: AdmissionYear || "", // Assuming admissionYear is in restCap
+          admissionYear: AdmissionYear || "",
+          instituteState: InstituteState || "",
+          instituteDistrict : normalizeDistrict(InstituteDistrict || ""),
+          instituteTaluka : normalizeTaluka(InstituteTaluka) || "",
           //unable to map AppliedforEWS,meritNo, seatType, admissionLevel
         };
 
