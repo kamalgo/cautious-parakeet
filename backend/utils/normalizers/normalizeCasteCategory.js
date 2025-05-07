@@ -10,7 +10,7 @@ function normalizeCasteCategory(input = "") {
         "vjnt",
         "vimukta",
         "nomadic tribes",
-        "vimukta jat","nt", "nt2"
+        "vimukta jat","nt", "nt2","Nt 2 (nt-c)","nt-c"
       ],
       "General": ["general", "open", "unreserved"],
       "SEBC": ["sebc", "socially and economically backward"]
