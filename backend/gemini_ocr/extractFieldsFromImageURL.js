@@ -10,6 +10,7 @@ const { normalizeQualificationLevel } = require("../../backend/utils/normalizers
 const {normalizeStream} = require("../../backend/utils/normalizers/normalizeStream");
 const { normalizeSubCaste } = require("../../backend/utils/normalizers/normalizeSubcaste");
 const {normalizeInstituteName} = require("../../backend/utils/normalizers/normalizeInstituteName");
+const {normalizeCasteCategory} = require("../../backend/utils/normalizers/normalizeCasteCategory");
 
 const genAI = new GoogleGenerativeAI("AIzaSyD0ANJ4hfTwNnxwh-mUUQ70yPSfZfC_9hc");
 
@@ -78,7 +79,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
     case "capAllotmentLetter":
       prompt = `From this CAP Allotment Letter image, extract these fields in English and return as JSON:
       {
-        "CasteCategory": "",
+        "CasteCategory": "", 
         "DisabilityofanyType": "", eg: "Yes" or "No"
         "CourseName": "",
         "MeritMarks": "", //eg: Merit Marks "85.00"        
@@ -211,7 +212,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
 
       case "capAllotmentLetter":
         const { DisabilityofanyType, CourseName, MeritMarks, AdmissionApplicationID, InstituteName, DateOfAdmission, 
-                Gender, AdmissionLevel,AdmissionYear,InstituteState,InstituteDistrict,InstituteTaluka,  ...restCap } = parsed;
+                Gender, AdmissionLevel,AdmissionYear,InstituteState,InstituteDistrict,InstituteTaluka,CasteCategory,  ...restCap } = parsed;
         
                 console.log("✅ Extracted CAP fields:", {
                   ...restCap,
@@ -227,7 +228,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
                   instituteState: InstituteState || "",
                   instituteDistrict : normalizeDistrict(InstituteDistrict || ""),
                   instituteTaluka : normalizeTaluka(InstituteTaluka) || "",
-
+                  admissionCategory: normalizeCasteCategory(CasteCategory || ""),
                 });
                 
 
@@ -245,6 +246,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           instituteState: InstituteState || "",
           instituteDistrict : normalizeDistrict(InstituteDistrict || ""),
           instituteTaluka : normalizeTaluka(InstituteTaluka) || "",
+          admissionCategory: normalizeCasteCategory(CasteCategory || ""),
           //unable to map AppliedforEWS,meritNo, seatType, admissionLevel
         };
 
