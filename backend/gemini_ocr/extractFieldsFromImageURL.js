@@ -229,7 +229,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           courseName: CourseName || "",
           cetPercentage: MeritMarks || "",
           admissionApplicationId: AdmissionApplicationID || "",
-          instituteName: InstituteName || "",
+          instituteName: normalizeInstituteName(InstituteName || ""),
           admissionDate: DateOfAdmission || "",
           gender: Gender || "",
           qualificationLevel: normalizeQualificationLevel(AdmissionLevel || ""), // Assuming qualificationLevel is in restCap
