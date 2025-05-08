@@ -500,9 +500,9 @@ exports.waDemo = async (req, res) => {
 
     // Map the demoform payload fields to your DB fields
     const dataToUpdate = {
-      name: demoform.screen_0_TextInput_0,           // Mapping screen_0_TextInput_0 to 'name'
-      mobile_number: demoform.screen_0_TextInput_1,  // Mapping screen_0_TextInput_1 to 'mobile_number'
-      marital_status: demoform.screen_0_Dropdown_2?.split("_")[1], // Extracting marital status from '0_Married' -> 'Married'
+      candidateName: demoform.screen_0_TextInput_0,           // Mapping screen_0_TextInput_0 to 'name'
+      parentMobileNumber: demoform.screen_0_TextInput_1,  // Mapping screen_0_TextInput_1 to 'mobile_number'
+      maritalStatus: demoform.screen_0_Dropdown_2?.split("_")[1], // Extracting marital status from '0_Married' -> 'Married'
     };
 
     // Update the profile based on the Aadhaar number
