@@ -490,6 +490,42 @@ exports.getScholarshipSuggestions = async (req, res) => {
   }
 };
 
+///////////////////////////////////////////////////////////////////////////////////////
+//WA form demo 1
+
+// UPTA update profile through Aadhaar number with mapped payload
+exports.waDemo = async (req, res) => {
+  try {
+    const { aadhaar_number, demoform } = req.body;  // Destructure aadhaar_number and demoform from the body
+
+    // Map the demoform payload fields to your DB fields
+    const dataToUpdate = {
+      name: demoform.screen_0_TextInput_0,           // Mapping screen_0_TextInput_0 to 'name'
+      mobile_number: demoform.screen_0_TextInput_1,  // Mapping screen_0_TextInput_1 to 'mobile_number'
+      marital_status: demoform.screen_0_Dropdown_2?.split("_")[1], // Extracting marital status from '0_Married' -> 'Married'
+    };
+
+    // Update the profile based on the Aadhaar number
+    const [updatedRows] = await shravani_allcolumns.update(dataToUpdate, {
+      where: { aadhaar_number },  // Use aadhaar_number from the body
+    });
+
+    if (updatedRows) {
+      return res.status(200).json({
+        success: true,
+        message: `${updatedRows} row(s) updated`,
+      });
+    } else {
+      return res.status(404).json({
+        success: false,
+        message: "Record not found for the given Aadhaar number",
+      });
+    }
+  } catch (error) {
+    console.error("Error updating records:", error);
+    return res.status(500).json({ error: "Internal Server Error" });
+  }
+};
 
 
 
