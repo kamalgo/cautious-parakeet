@@ -492,8 +492,7 @@ exports.getScholarshipSuggestions = async (req, res) => {
 
 ///////////////////////////////////////////////////////////////////////////////////////
 //WA form demo 1
-
-// UPTA update profile through Aadhaar number with mapped payload
+// This function updates the profile based on the Aadhaar number and demoform payload from the gallabox WA form
 exports.waDemo = async (req, res) => {
   try {
     const { aadhaar_number, demoform } = req.body;  // Destructure aadhaar_number and demoform from the body

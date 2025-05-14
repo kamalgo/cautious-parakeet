@@ -37,6 +37,8 @@ import FreshStud from "./pages/Fresh_Stud/FreshStud";
 import viewFreshStud from "./pages/Fresh_Stud/FreshStudentsComponents/viewFreshStud";
 import Projects from "./pages/Admin/Projects";
 import ManageTables from "./pages/Admin/ManageTables/ManageTables";
+// import ScanClass10 from "./pages/Admin/ScanImage/ScanClass10";
+import ScanbotScanner from "./pages/Admin/ScanImage/ScanbotScanner";
 
 function App() {
   return (
@@ -66,7 +68,7 @@ function App() {
           component={AdminDashboard}
           role={ROLES.ADMIN}
         />
-        
+
         <ProtectedRoute
           exact
           path="/dashboard/college"
@@ -154,21 +156,20 @@ function App() {
           role={ROLES.ADMIN}
         />
 
-<ProtectedRoute
-  exact
-  path="/dashboard/admin/projects"
-  component={Projects}
-  role={ROLES.ADMIN}
-/>
+        <ProtectedRoute
+          exact
+          path="/dashboard/admin/projects"
+          component={Projects}
+          role={ROLES.ADMIN}
+        />
 
-<ProtectedRoute
-  exact
-  path="/dashboard/admin/manageTables"
-  component={ManageTables}
-  role={ROLES.ADMIN}
-/>
+        <ProtectedRoute
+          exact
+          path="/dashboard/admin/manageTables"
+          component={ManageTables}
+          role={ROLES.ADMIN}
+        />
 
-        
         <ProtectedRoute
           exact
           path="/dashboard/college/stc"
@@ -176,30 +177,28 @@ function App() {
           role={ROLES.COLLEGE}
         />
 
-{/* Doc_Upload */}
-        
+        {/* Doc_Upload */}
+
         <ProtectedRoute
           exact
           path="/dashboard/admin/Doc_Upload"
           component={Doc_Upload}
           role={ROLES.ADMIN}
         />
-        
+
         <ProtectedRoute
           exact
           path="/dashboard/admin/FreshStudents"
           component={FreshStudents}
           role={ROLES.ADMIN}
         />
-        
+
         <ProtectedRoute
           exact
           path="/dashboard/admin/RenewalStudents"
           component={RenewalStudents}
           role={ROLES.ADMIN}
         />
-
-
 
         <ProtectedRoute
           exact
@@ -208,7 +207,7 @@ function App() {
           role={ROLES.COWORKER}
         />
 
-StudentProfileView
+        StudentProfileView
         <ProtectedRoute
           exact
           path="/coworker/StudentProfileView"
@@ -216,7 +215,7 @@ StudentProfileView
           role={ROLES.COWORKER}
         />
 
-                
+
         <ProtectedRoute
           exact
           path="/coworker/Doc_Upload"
@@ -245,7 +244,7 @@ StudentProfileView
           role={ROLES.COWORKER}
         />
 
-        
+
         <ProtectedRoute
           exact
           path="/coworker/viewFreshStud/:id"
@@ -255,19 +254,30 @@ StudentProfileView
 
 
 
-          <ProtectedRoute
+        <ProtectedRoute
           exact
           path="/coworker/viewRenewalStudents/:id"
           component={viewRenewalStudents}
           role={ROLES.COWORKER}
         />
 
-<ProtectedRoute
+        <ProtectedRoute
           exact
           path="/coworker/FreshStud"
           component={FreshStud}
           role={ROLES.COWORKER}
         />
+
+        {/* <Route
+          exact path="/public/scanclass10"
+          component={ScanClass10}
+         /> */}
+
+
+<Route exact path="/scanner" component={ScanbotScanner} />
+
+
+
 
 
         {/* 404 route */}
