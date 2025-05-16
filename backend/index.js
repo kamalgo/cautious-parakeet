@@ -37,7 +37,7 @@ const MahaDBT_Registration = require("../backend/routes/MahaDBT_Registration_Rou
 const projectsRoutes = require("../backend/routes/projects.routes");
 const manageTablesRoutes = require("../backend/routes/manageTables.routes");
 const generateAndUploadPDFS3 = require('../backend/routes/generateAndUploadPDFS3.routes');
-
+const getPresignedUrl = require('../backend/routes/s3Routes');
 
 dotenv.config();
 // comment
@@ -90,6 +90,7 @@ app.use("/api", MahaDBT_Registration);
 app.use("/api/projects", projectsRoutes);
 app.use("/api", manageTablesRoutes);
 app.use("/api", generateAndUploadPDFS3);
+app.use("/api", getPresignedUrl);
 
 
 

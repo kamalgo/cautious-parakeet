@@ -395,12 +395,12 @@ exports.getScholarshipSuggestions = async (req, res) => {
       return res.status(404).json({ message: "Student not found with provided Aadhaar" });
     }
 
-    const { annualFamilyIncome, admissionCategory, areYouHostellerDayScholar } = student;
+    const { annualFamilyIncome, casteCategory, areYouHostellerDayScholar } = student;
 
     const eligibleScholarships = [];
 
     // Normalize and prepare values
-    const casteLower = (admissionCategory || "").toLowerCase().trim();
+    const casteLower = (casteCategory || "").toLowerCase().trim();
     const hostellerStatus = (areYouHostellerDayScholar || "").toLowerCase().trim();
 
     console.log("Student Caste Category (normalized):", casteLower);
