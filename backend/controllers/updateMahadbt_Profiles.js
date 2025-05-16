@@ -458,7 +458,6 @@ exports.getScholarshipSuggestions = async (req, res) => {
     // Scholarship 10: GOVT. of India Post Matric Scholarship for SC Students
     if (annualFamilyIncome < 250000 && casteLower === "(sc) scheduled caste") {
       eligibleScholarships.push("Govt. of India Post Matric Scholarship for SC Students");
-      eligibleScholarships.push("Maintenannce Allowance for Students studying in professional courses"); //does this requires hosteller status?
 
     } 
 
@@ -472,6 +471,10 @@ exports.getScholarshipSuggestions = async (req, res) => {
       eligibleScholarships.push("freeship for SC Students");
     }
 
+        // Scholarship 13: Maintenance allowance SC students
+    if (annualFamilyIncome < 250000 && casteLower === "(sc) scheduled caste" && isHosteller) {
+      eligibleScholarships.push("Maintenannce Allowance for Students studying in professional courses"); //does this requires hosteller status?
+    }
     console.log("🟢 Scholarship suggestions for student:", eligibleScholarships);
 
     return res.status(200).json({
