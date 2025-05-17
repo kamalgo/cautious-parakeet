@@ -128,6 +128,7 @@ exports.UPTA = async (req, res) => {
           updateFields.casteApplicantName = extracted.casteApplicantName;
           updateFields.casteIssAuthority = extracted.casteIssAuthority;
           updateFields.doYouHaveCasteCertificate = "Yes";
+          updateFields.casteCategory = extracted.casteCategory;
           if (extracted.casteIssuedDate) {
             const formattedDate = moment(extracted.casteIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.casteIssuedDate = formattedDate;
@@ -274,7 +275,7 @@ exports.getStudentDocInfo = async (req, res) => {
     // Define the supported document fields
     const documentFields = {
       incomeDoc: ["annualFamilyIncome", "incomeCertNo", "incomeIssAuthority", "incomeIssuedDate", "name"],
-      casteDoc: ["casteCertificateNumber", "casteIssuedDistrict", "casteApplicantName", "casteIssAuthority", "casteIssuedDate", "subCaste"],
+      casteDoc: ["casteCertificateNumber", "casteIssuedDistrict", "casteApplicantName", "casteIssAuthority", "casteIssuedDate", "subCaste","casteCategory"],
       domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
       capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate", "qualificationLevel","admissionYear","instituteState", "instituteDistrict", "instituteTaluka", "admissionCategory"],

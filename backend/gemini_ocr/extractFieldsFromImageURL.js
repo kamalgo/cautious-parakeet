@@ -57,12 +57,13 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
     case "casteDoc":
       prompt = `From this caste certificate image, extract the following in English and return as JSON:
       {
-        "Caste": "", //eg:  Kunbi Caste which is recognised as Other Backward Class at Sr No.83 , save as "(83)Kunbi"
+        "SubCaste": "", //eg:  Kunbi Caste which is recognised as Other Backward Class at Sr No.83 , save as "(83)Kunbi"
         "CasteCertificateNumber": "",
         "IssuingDistrict": "",
         "ApplicantName": "",
         "IssuingAuthority": "", //eg: "Talathi", "Tehsildar", "District Collector"
         "CasteIssuingDate": ""
+        "CasteCategory": "" //eg: "Other Backward Class", "Scheduled Caste", "Scheduled Tribe" etc.
       }`;
       break;
 
@@ -79,7 +80,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
     case "capAllotmentLetter":
       prompt = `From this CAP Allotment Letter image, extract these fields in English and return as JSON:
       {
-        "CasteCategory": "", 
+        "AdmissionCategory": "", 
         "DisabilityofanyType": "", eg: "Yes" or "No"
         "CourseName": "",
         "MeritMarks": "", //eg: Merit Marks "85.00"        
@@ -185,8 +186,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
             ApplicantName,
             IssuingAuthority,
             CasteIssuingDate,
-            Caste,
-            ...restCaste
+            SubCaste,CasteCategory, ...restCaste
           } = parsed;
           return {
             ...restCaste,
@@ -195,7 +195,9 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
             casteApplicantName: ApplicantName || "",
             casteIssAuthority: normalizeAuthority(IssuingAuthority || ""),
             casteIssuedDate: CasteIssuingDate || "",
-            subCaste: normalizeSubCaste(Caste || "") // Normalize the caste name
+            subCaste: normalizeSubCaste(SubCaste || ""), // Normalize the caste name
+            casteCategory: normalizeCasteCategory(CasteCategory || "") // Normalize the caste category
+
           };
         
 
@@ -212,7 +214,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
 
       case "capAllotmentLetter":
         const { DisabilityofanyType, CourseName, MeritMarks, AdmissionApplicationID, InstituteName, DateOfAdmission, 
-                Gender, AdmissionLevel,AdmissionYear,InstituteState,InstituteDistrict,InstituteTaluka,CasteCategory,  ...restCap } = parsed;
+                Gender, AdmissionLevel,AdmissionYear,InstituteState,InstituteDistrict,InstituteTaluka,AdmissionCategory,  ...restCap } = parsed;
         
                 console.log("✅ Extracted CAP fields:", {
                   ...restCap,
@@ -228,7 +230,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
                   instituteState: InstituteState || "",
                   instituteDistrict : normalizeDistrict(InstituteDistrict || ""),
                   instituteTaluka : normalizeTaluka(InstituteTaluka) || "",
-                  admissionCategory: normalizeCasteCategory(CasteCategory || ""),
+                  admissionCategory: normalizeCasteCategory(AdmissionCategory || ""),
                 });
                 
 
@@ -246,7 +248,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           instituteState: InstituteState || "",
           instituteDistrict : normalizeDistrict(InstituteDistrict || ""),
           instituteTaluka : normalizeTaluka(InstituteTaluka) || "",
-          admissionCategory: normalizeCasteCategory(CasteCategory || ""),
+          admissionCategory: normalizeCasteCategory(AdmissionCategory || ""),
           //unable to map AppliedforEWS,meritNo, seatType, admissionLevel
         };
 
