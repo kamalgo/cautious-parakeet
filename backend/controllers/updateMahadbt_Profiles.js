@@ -192,6 +192,7 @@ exports.UPTA = async (req, res) => {
           updateFields.hostelAddress = extracted.hostelAddress;
           updateFields.hostelPincode = extracted.hostelPincode;
           updateFields.hostelType = extracted.hostelType;
+          updateFields.areYouHostellerDayScholar = "Hosteller";
           if (extracted.hostelAdmissionDate) {
             const formattedDate = moment(extracted.hostelAdmissionDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.hostelAdmissionDate = formattedDate;
@@ -409,7 +410,7 @@ exports.getScholarshipSuggestions = async (req, res) => {
 
     const eligibleCastes = ['open', 'ebc', 'sebc'];
     const isEligibleCaste = eligibleCastes.includes(casteLower);
-    const isHosteller = hostellerStatus === "hosteller";
+    const isHosteller = hostellerStatus === "Hosteller";
 
     // Scholarship 1: Rajashri Chhatrapati Shahu Maharaj Scholarship
     if (annualFamilyIncome < 800000 && isEligibleCaste) {
