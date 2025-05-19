@@ -813,7 +813,7 @@ exports.getStudentDocInfoRenewal = async (req, res) => {
       return res.status(400).json({ message: "Aadhaar number and docType are required" });
     }
 
-    const student = await shravani_allcolumns.findOne({ where: { aadhar_number } });
+    const student = await MahadbtRenewal.findOne({ where: { aadhar_number } });
 
     if (!student) {
       return res.status(404).json({ message: "Student not found with provided Aadhaar" });
