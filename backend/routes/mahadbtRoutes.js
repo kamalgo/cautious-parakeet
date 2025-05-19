@@ -2,7 +2,7 @@ const express = require("express");
 
 const{UPTE, UPTA, createProfileBot, fetchBlankRecordsByAadhaar, editStudent, fetchstud, getallFresh
       ,getallRenewal, createProfileBotRenewal, getStudentDocInfo,handleStudentResponse, getScholarshipSuggestions,waDemo,fathersform,
-      mothersform
+      mothersform,renewalUPTA,getStudentDocInfoRenewal
       } = require("../controllers/updateMahadbt_Profiles")
 
 const {
@@ -190,6 +190,8 @@ router.put("/UPTA", UPTA); // UPTA update profile through aadhaar
 router.put("/waDemo", waDemo); // waDemo update profile through aadhaar
 router.put("/fathersform", fathersform); // fathersform update fathers info through aadhaar
 router.put("/mothersform", mothersform); // mothersform update mothers info through aadhaar
+router.put("/renewalUPTA", renewalUPTA); // UPTA update profile through aadhaar getStudentDocInfoRenewal
+router.get("/getStudentDocInfoRenewal", getStudentDocInfoRenewal); // UPTA update profile through aadhaar getStudentDocInfoRenewal
 
 
 router.get("/getStudentDocInfo", getStudentDocInfo); // get income info

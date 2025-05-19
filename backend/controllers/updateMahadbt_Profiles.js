@@ -603,6 +603,184 @@ exports.mothersform = async (req, res) => {
 
 
 /////////////////////////////////////////////////////////////////////////////////    
+//This one is for mahadbt renewal v2 of UPTE
+exports.renewalUPTA = async (req, res) => {
+  try {
+    const { aadhar_number, ...rest } = req.body;
+
+    if (!aadhar_number) {
+      return res.status(400).json({
+        success: false,
+        message: "aadhar_number is required",
+      });
+    }
+
+    const documentFields = ["casteDoc", "incomeDoc", "domicileDoc", "capAllotmentLetter", "class10Doc", "class12Doc", "hostelDoc", "disabilityDoc"];
+    const updateFields = {};
+
+    for (const [key, value] of Object.entries(rest)) {
+      console.log(`Processing ${key}:`, value); // Debugging line to log document fields
+      if (documentFields.includes(key)) {
+        const extracted = await extractFieldsFromImageURL(value, key);
+        console.log(`📄 Extracted fields from ${key}:`, extracted); // Debugging line for extracted fields
+
+        if (!extracted || Object.keys(extracted).length === 0) {
+          return res.status(422).json({
+            success: false,
+            message: `Could not extract any data from ${key}`,
+          });
+        }
+
+        // Add the extracted fields to updateFields, including the image URL
+        if (key === "incomeDoc") {
+          updateFields.incomeDoc = value; // Save the image URL (value is the image URL)
+          updateFields.annualIncome = extracted.annualFamilyIncome;
+          updateFields.incomeCertNumber = extracted.incomeCertNo;
+          updateFields.incomeIssuingAuthority = extracted.incomeIssAuthority;
+          updateFields.doYouHaveIncomeCertificate = "Yes";
+          if (extracted.incomeIssueDate) {
+            const formattedDate = moment(extracted.incomeIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.incomeIssueDate = formattedDate;
+          } else {
+            updateFields.incomeIssueDate = null;
+          }
+        } else if (key === "casteDoc") {
+          updateFields.casteDoc = value; // Save the image URL (value is the image URL)
+          updateFields.subCaste = extracted.subCaste;
+          updateFields.casteCertificateNumber = extracted.casteCertificateNumber;
+          updateFields.casteIssuedDistrict = extracted.casteIssuedDistrict;
+          updateFields.casteApplicantName = extracted.casteApplicantName;
+          updateFields.casteIssAuthority = extracted.casteIssAuthority;
+          updateFields.doYouHaveCasteCertificate = "Yes";
+          updateFields.casteCategory = extracted.casteCategory;
+          if (extracted.casteIssuedDate) {
+            const formattedDate = moment(extracted.casteIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.casteIssuedDate = formattedDate;
+          } else {
+            updateFields.casteIssuedDate = null;
+          }
+        } else if (key === "domicileDoc") {
+          updateFields.domicileDoc = value; // Save the image URL (value is the image URL)
+          updateFields.domicileCertNumber = extracted.domicileCertNumber;
+          updateFields.domicileApplicantName = extracted.domicileApplicantName;
+          updateFields.domicileIssuedAuthority = extracted.domicileIssuedAuthority;
+          updateFields.doYouHaveDomicileCertificate = "Yes";
+          if (extracted.domicileIssuedDate) {
+            const formattedDate = moment(extracted.domicileIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.domicileIssuedDate = formattedDate;
+          } else {
+            updateFields.domicileIssuedDate = null;
+          }
+        } else if (key === "capAllotmentLetter") {
+          updateFields.capAllotmentLetter = value; // Save the image URL (value is the image URL)
+          updateFields.qualificationLevel = extracted.qualificationLevel;
+          updateFields.doYouHaveDisability = extracted.doYouHaveDisability;
+          updateFields.courseName = extracted.courseName;
+          updateFields.cetPercentage = extracted.cetPercentage;
+          updateFields.admissionApplicationId = extracted.admissionApplicationId;
+          updateFields.instituteName = extracted.instituteName;
+          updateFields.gender = extracted.gender;
+          updateFields.admissionYear = extracted.admissionYear;  
+          updateFields.instituteState = extracted.instituteState;    
+          updateFields.instituteDistrict = extracted.instituteDistrict;    
+          updateFields.instituteTaluka = extracted.instituteTaluka;  
+          updateFields.admissionCategory = extracted.admissionCategory;  
+          if (extracted.admissionDate) {
+            const formattedDate = moment(extracted.admissionDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.admissionDate = formattedDate;
+          } else {
+            updateFields.admissionDate = null;
+          }
+        } else if (key === "class10Doc") {
+          updateFields.class10Doc = value; // Save the image URL (value is the image URL)
+          updateFields.class10Board = extracted.class10Board;
+          updateFields.class10PassingYear = extracted.class10PassingYear;
+          updateFields.class10Percentage = extracted.class10Percentage;
+          updateFields.class10SeatNumber = extracted.class10SeatNumber;
+          updateFields.class10MonthOfExam = extracted.class10MonthOfExam;
+          updateFields.class10MarksObtained = extracted.class10MarksObtained;
+        } else if (key === "class12Doc") { // ✅ Properly nested "else if"
+          updateFields.class12Doc = value; // Save the image URL (value is the image URL)
+          updateFields.class12Stream = extracted.class12Stream;
+          updateFields.class12Board = extracted.class12Board;
+          updateFields.class12SeatNumber = extracted.class12SeatNumber;
+          updateFields.class12PassingYear = extracted.class12PassingYear;
+          updateFields.class12Percentage = extracted.class12Percentage;
+        }
+        else if (key === "hostelDoc") {
+          updateFields.hostelDoc = value; // Save the image URL (value is the image URL)
+          updateFields.hostelState = extracted.hostelState;
+          updateFields.hostelDistrict = extracted.hostelDistrict;
+          updateFields.hostelTaluka = extracted.hostelTaluka;
+          updateFields.hostelName = extracted.hostelName;
+          updateFields.hostelAddress = extracted.hostelAddress;
+          updateFields.hostelPincode = extracted.hostelPincode;
+          updateFields.hostelType = extracted.hostelType;
+          updateFields.areYouHostellerDayScholar = "Hosteller";
+          if (extracted.hostelAdmissionDate) {
+            const formattedDate = moment(extracted.hostelAdmissionDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.hostelAdmissionDate = formattedDate;
+          } else {
+            updateFields.hostelAdmissionDate = null;
+          }
+        } else if (key === "disabilityDoc") {
+          updateFields.disabilityDoc = value; // Save the image URL (value is the image URL)
+          updateFields.disabilityType = extracted.disabilityType;
+          updateFields.disabilityName = extracted.disabilityName;
+          updateFields.disabilityCertificateNo = extracted.disabilityCertificateNo;
+          updateFields.disabilityPercentage = extracted.disabilityPercentage;
+          updateFields.disabilityIssuingAuthority = extracted.disabilityIssuingAuthority;
+          updateFields.doYouHaveDisability = "Yes";
+          updateFields.doYouHaveDisabilityCertificate = "Yes";          
+          if (extracted.disabilityIssuedDate) {
+            const formattedDate = moment(extracted.disabilityIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+            updateFields.disabilityIssuedDate = formattedDate;
+          } else {
+            updateFields.disabilityIssuedDate = null;
+          }
+        }
+
+      } else {
+        updateFields[key] = value; // For other fields, just add them as is
+      }
+    }
+
+
+    // Ensure that there are fields to update
+    if (Object.keys(updateFields).length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No updatable fields found",
+      });
+    }
+
+    // Debugging to check the update result
+    const updateResult = await MahadbtRenewal.update(updateFields, {
+      where: { aadhar_number },
+    });
+
+    console.log("Update result:", updateResult);
+
+    // Check if any rows were updated
+    if (updateResult[0] === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "No rows were updated.",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Data extracted and/or updated successfully.",
+    });
+
+  } catch (err) {
+    console.error("Error in UPTA controller:", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};
+/////////////////////////////////////////////////////////////////////////
+//This one is for the mahadbt_renewal table
 exports.UPTE = async (req, res) => {
   MahadbtRenewal.update(req.body, {
     // Specify the condition for the update
@@ -624,6 +802,60 @@ exports.UPTE = async (req, res) => {
       console.error("Error updating records:", error);
       res.status(500).json({ error: "Internal Server Error" });
     });
+};
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////
+exports.getStudentDocInfoRenewal = async (req, res) => {
+  try {
+    const { aadhar_number, docType } = req.query;
+
+    if (!aadhar_number || !docType) {
+      return res.status(400).json({ message: "Aadhaar number and docType are required" });
+    }
+
+    const student = await shravani_allcolumns.findOne({ where: { aadhar_number } });
+
+    if (!student) {
+      return res.status(404).json({ message: "Student not found with provided Aadhaar" });
+    }
+
+    // Define the supported document fields
+    const documentFields = {
+      incomeDoc: ["annualIncome", "incomeCertNumber", "incomeIssuingAuthority", "incomeIssueDate"],
+      casteDoc: ["casteCertificateNumber", "casteIssuedDistrict", "casteApplicantName", "casteIssAuthority", "casteIssuedDate", "subCaste","casteCategory"],
+      domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
+      disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
+      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate", "qualificationLevel","admissionYear","instituteState", "instituteDistrict", "instituteTaluka", "admissionCategory"],
+      class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"],
+      class12Doc: ["class12Stream", "class12Board", "class12SeatNumber", "class12PassingYear", "class12Percentage"],
+      hostelDoc: ["hostelState", "hostelDistrict", "hostelTaluka", "hostelName", "hostelAddress", "hostelPincode", "hostelAdmissionDate", "hostelType"],
+      disabilityDoc: ["disabilityType", "disabilityName", "disabilityCertificateNo", "disabilityPercentage", "disabilityIssuingAuthority", "disabilityIssuedDate"]
+      // Add other document types and their respective fields here
+    };
+
+    if (!documentFields[docType]) {
+      return res.status(400).json({ message: "Invalid docType provided" });
+    }
+
+    const responseData = {};
+    documentFields[docType].forEach(field => {
+      responseData[field] = student[field] || null;
+    });
+
+    console.log(`🟢 Extracted ${docType} Data:`, responseData);
+
+    return res.status(200).json({
+      message: `Extracted ${docType} data successfully`,
+      data: responseData
+    });
+
+  } catch (err) {
+    console.error("🔴 Error in getStudentDocInfo:", err.message, err.stack);
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: err.message
+    });
+  }
 };
 
 
