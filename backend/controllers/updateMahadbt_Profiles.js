@@ -674,12 +674,10 @@ exports.renewalUPTA = async (req, res) => {
         } else if (key === "capAllotmentLetter") {
           updateFields.capAllotmentLetter = value; // Save the image URL (value is the image URL)
           updateFields.qualificationLevel = extracted.qualificationLevel;
-          updateFields.doYouHaveDisability = extracted.doYouHaveDisability;
           updateFields.courseName = extracted.courseName;
           updateFields.cetPercent = extracted.cetPercentage;
           updateFields.admissionApplicationId = extracted.admissionApplicationId;
           updateFields.instituteName = extracted.instituteName;
-          updateFields.gender = extracted.gender;
           updateFields.admissionYear = extracted.admissionYear;  
           updateFields.instituteState = extracted.instituteState;    
           updateFields.instituteDistrict = extracted.instituteDistrict;    
@@ -825,7 +823,7 @@ exports.getStudentDocInfoRenewal = async (req, res) => {
       casteDoc: ["casteCertificateNumber", "casteIssuedDistrict", "casteApplicantName", "casteIssAuthority", "casteIssuedDate", "subCaste","casteCategory"],
       domicileDoc: ["domicileCertNumber", "domicileApplicantName", "domicileIssuedAuthority", "domicileIssuedDate"],
       disabilityDoc: ["disabilityPercent", "disabilityCertNo", "disabilityIssAuthority", "disabilityIssuedDate", "name"],
-      capAllotmentLetter: ["doYouHaveDisability", "courseName", "cetPercentage", "admissionApplicationId", "instituteName", "gender", "admissionDate", "qualificationLevel","admissionYear","instituteState", "instituteDistrict", "instituteTaluka", "admissionCategory"],
+      capAllotmentLetter: ["qualificationLevel", "courseName", "cetPercent", "admissionApplicationId", "instituteName", "instituteState","instituteDistrict","instituteTaluka","admissionCasteCateogary"],
       class10Doc: ["class10Board", "class10PassingYear", "class10Percentage", "class10SeatNumber", "class10MonthOfExam", "class10MarksObtained"],
       class12Doc: ["class12Stream", "class12Board", "class12SeatNumber", "class12PassingYear", "class12Percentage"],
       hostelDoc: ["hostelState", "hostelDistrict", "hostelTaluka", "hostelName", "hostelAddress", "hostelPincode", "hostelAdmissionDate", "hostelType"],
