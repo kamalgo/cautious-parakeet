@@ -676,7 +676,7 @@ exports.renewalUPTA = async (req, res) => {
           updateFields.qualificationLevel = extracted.qualificationLevel;
           updateFields.doYouHaveDisability = extracted.doYouHaveDisability;
           updateFields.courseName = extracted.courseName;
-          updateFields.cetPercentage = extracted.cetPercentage;
+          updateFields.cetPercent = extracted.cetPercentage;
           updateFields.admissionApplicationId = extracted.admissionApplicationId;
           updateFields.instituteName = extracted.instituteName;
           updateFields.gender = extracted.gender;
@@ -684,7 +684,7 @@ exports.renewalUPTA = async (req, res) => {
           updateFields.instituteState = extracted.instituteState;    
           updateFields.instituteDistrict = extracted.instituteDistrict;    
           updateFields.instituteTaluka = extracted.instituteTaluka;  
-          updateFields.admissionCategory = extracted.admissionCategory;  
+          updateFields.admissionCasteCateogary = extracted.admissionCategory;  
           if (extracted.admissionDate) {
             const formattedDate = moment(extracted.admissionDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.admissionDate = formattedDate;

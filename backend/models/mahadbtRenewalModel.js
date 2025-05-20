@@ -322,7 +322,7 @@ const RenewalMahadbt = sequelize.define('RenewalMahadbt', {
         allowNull: true,
         field: 'Caste_Validity',
     },
-    allotmentLetterDoc: {
+    capAllotmentLetter: {
         type: DataTypes.STRING,
         allowNull: true,
         field: 'admission_letter_doc',
