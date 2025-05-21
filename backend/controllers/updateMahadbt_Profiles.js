@@ -175,6 +175,15 @@ exports.UPTA = async (req, res) => {
           updateFields.class10SeatNumber = extracted.class10SeatNumber;
           updateFields.class10MonthOfExam = extracted.class10MonthOfExam;
           updateFields.class10MarksObtained = extracted.class10MarksObtained;
+          updateFields.class10Qualification = "S.S.C. (10 Std)";
+          updateFields.class10Stream = "21"; // check with shravani once
+          updateFields.class10State = extracted.class10State;
+          updateFields.class10Course = "SSC";
+          updateFields.class10Mode = "Regular";
+          updateFields.class10Result = "Passed";
+          updateFields.class10Attempt = "1";
+
+          
         } else if (key === "class12Doc") { // ✅ Properly nested "else if"
           updateFields.class12Doc = value; // Save the image URL (value is the image URL)
           updateFields.class12Stream = extracted.class12Stream;
@@ -182,6 +191,14 @@ exports.UPTA = async (req, res) => {
           updateFields.class12SeatNumber = extracted.class12SeatNumber;
           updateFields.class12PassingYear = extracted.class12PassingYear;
           updateFields.class12Percentage = extracted.class12Percentage;
+          updateFields.class12QualificationLevel = "H.S.C. (12 Std)";
+          updateFields.class12Course = "H.S.C. (12 Std)";
+          updateFields.class12Mode = "Regular";
+          updateFields.class12Result = "Passed";
+          updateFields.class12Attempts = "1";
+
+
+          
         }
         else if (key === "hostelDoc") {
           updateFields.hostelDoc = value; // Save the image URL (value is the image URL)

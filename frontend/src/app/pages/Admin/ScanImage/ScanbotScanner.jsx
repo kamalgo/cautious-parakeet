@@ -58,26 +58,28 @@ import ScanbotSDK from "scanbot-web-sdk/ui";
 
 const ScanbotScanner = () => {
     const [scannedFile, setScannedFile] = useState(null);
+    const [previewUrl, setPreviewUrl] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const init = async () => {
             try {
                 await ScanbotSDK.initialize({
-                    licenseKey: "eW1OfVfGMpNFQqUmARYm9WZrgM2kLv" +
-                        "hMl06/u51XVbqnxsavptnWKPYHXAOz" +
-                        "oGgm5+JajQBghQmkx1WVVg+mLmT2kg" +
-                        "lNJKbuNW5f/ioeRWotLyAVWLvJ9nfF" +
-                        "VSa/jAxPsU3RCtd0A9BPBnw5Ak9nkg" +
-                        "z9VhBbPGjd9p15S7Ox8MkffQt3ZWD2" +
-                        "+vO+LKAWEiNQqDaQGK9PW6KATCYuWd" +
-                        "AWUVm2BE/VQoCvHjOztqZR7oqEDc5w" +
-                        "k12NiVzTWyo16MDkRSqquJJYHI55UX" +
-                        "kK+YBUdIBIO+UxbIAfDBPjuUUxyjVg" +
-                        "kn2zPyfQisfpYKT2NZN08DNBFtqInI" +
-                        "QpsptX592PuA==\nU2NhbmJvdFNESw" +
-                        "psb2NhbGhvc3R8d3d3LmZvcnN0dS5j" +
-                        "bwoxNzQ3MzUzNTk5CjgzODg2MDcKOA" +
-                        "==\n",
+                    licenseKey:
+                        "M+YpezSx8a2alkPMD9M3nkvmEaMHS5" +
+                        "rw2gTzymieXPzZ+9Ppy1u44vWpY7Bo" +
+                        "WsAphJJaPMWLnFMeOHr6aXYee/k58l" +
+                        "PtHf7ru8fdXhNU9dr3tFeAZkTgzD+N" +
+                        "DfsD1PjmZ7NxUqzd9eEb5RvZ2/qdZ8" +
+                        "zwgbDsAvQKkX0jbknL2tuqlvcVpkcE" +
+                        "fpATFIzo+1h/JVMoRJiMJrRncZ4vfT" +
+                        "aoqmB+rzDuTBvmpNwuXRAOzc/HBh2V" +
+                        "x8cFXA5dp7AkzWaaPCyOOlV4jgOZ4I" +
+                        "cm06Q4SxLiXSV8htkauEm5fXoFN/aP" +
+                        "fZmmpQuSS+fvugTut93KQaGVA4Ekyb" +
+                        "/wtwdjP7jpJw==\nU2NhbmJvdFNESw" +
+                        "psb2NhbGhvc3R8Zm9yc3R1LmN0Lndz" +
+                        "CjE3NDgzOTAzOTkKODM4ODYwNwo4\n",
                     enginePath: "/wasm/",
                 });
 
@@ -106,23 +108,26 @@ const ScanbotScanner = () => {
                     type: blob.type,
                 });
 
-                console.log("📄 Document scanned.");
-                setScannedFile(file); // Save it to state
+                setScannedFile(file);
+                setPreviewUrl(URL.createObjectURL(file));
+                console.log("📄 Document scanned and ready.");
             } else {
-                console.warn("⚠️ No pages scanned.");
-                alert("No document was scanned. Please press 'Submit' after scanning.");
+                console.warn("⚠️ No document scanned.");
+                alert("No document was scanned. Please try again.");
             }
         } catch (error) {
-            console.error("❌ Document scanning failed:", error);
-            alert("Error during scanning. Please ensure camera access is allowed.");
+            console.error("❌ Scanner error:", error);
+            alert("Error during scanning. Please allow camera access.");
         }
     };
 
     const sendToGallabox = async () => {
         if (!scannedFile) {
-            alert("No scanned file found. Please scan a document first.");
+            alert("No scanned document found. Please scan first.");
             return;
         }
+
+        setIsLoading(true);
 
         const gallaboxApiUrl = "https://api.gallabox.com/whatsapp/sendMedia";
         const recipientPhoneNumber = "917887674130";
@@ -150,24 +155,38 @@ const ScanbotScanner = () => {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("✅ Document sent to WhatsApp:", data);
+                console.log("✅ Sent to WhatsApp:", data);
                 alert("Document sent successfully via WhatsApp.");
             } else {
                 const errorData = await response.json();
                 console.error("❌ Gallabox API error:", errorData);
-                alert("Failed to send the document. Check API key and phone format.");
+                alert("Failed to send the document. Check the phone format or API key.");
             }
         } catch (error) {
             console.error("❌ Network error:", error);
             alert("Network error while sending document.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div>
-            <button onClick={sendToGallabox}>Submit</button>
+        <div style={{ textAlign: "center" }}>
+            <h2>Scanbot Web Scanner</h2>
+
+            {previewUrl && (
+                <div style={{ marginBottom: "20px" }}>
+                    <h4>Scanned Preview:</h4>
+                    <img src={previewUrl} alt="Scanned preview" style={{ maxWidth: "300px", border: "1px solid #ccc" }} />
+                </div>
+            )}
+
+            <button onClick={sendToGallabox} disabled={isLoading} style={{ padding: "10px 20px", fontSize: "16px" }}>
+                {isLoading ? "Submitting..." : "Submit"}
+            </button>
         </div>
     );
 };
 
 export default ScanbotScanner;
+

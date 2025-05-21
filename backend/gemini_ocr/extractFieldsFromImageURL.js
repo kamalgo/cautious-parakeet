@@ -107,7 +107,8 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           "class10Percentage": "",
           "class10SeatNumber": "",        
           "class10MonthOfExam": "",
-          "class10MarksObtained": "", //eg: 385 + 3 
+          "class10MarksObtained": "", //if like this 385 + 3 then convert to 388
+          "class10State": "",It should fetch according to the board and if cbse then check in school
                 }`;
         break;
 
@@ -260,6 +261,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           class10SeatNumber,
           class10MonthOfExam,
           class10MarksObtained,
+          class10State,
           ...restClass10
         } = parsed;
         return {
@@ -269,7 +271,9 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
           class10Percentage: class10Percentage || "",
           class10SeatNumber: class10SeatNumber || "",
           class10MonthOfExam: class10MonthOfExam || "",
-          class10MarksObtained: class10MarksObtained || ""
+          class10MarksObtained: class10MarksObtained || "",
+          class10State: class10State || "",
+          
         };
 
         case "class12Doc":
