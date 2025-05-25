@@ -57,9 +57,7 @@ import { useEffect, useState } from "react";
 import ScanbotSDK from "scanbot-web-sdk/ui";
 
 const ScanbotScanner = () => {
-    const [scannedFile, setScannedFile] = useState(null);
     const [previewUrl, setPreviewUrl] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         const init = async () => {
@@ -86,107 +84,60 @@ const ScanbotScanner = () => {
                 await runDocumentScanner();
             } catch (error) {
                 console.error("❌ Initialization failed:", error);
-                alert("Failed to initialize the scanner. Please try again.");
+                alert("Failed to initialize the scanner.");
             }
         };
 
         init();
     }, []);
 
-    const runDocumentScanner = async () => {
-        const config = new ScanbotSDK.UI.Config.DocumentScanningFlow();
+const runDocumentScanner = async () => {
+    const config = new ScanbotSDK.UI.Config.DocumentScanningFlow();
 
-        try {
-            const result = await ScanbotSDK.UI.createDocumentScanner(config);
+    try {
+        const result = await ScanbotSDK.UI.createDocumentScanner(config);
 
-            if (result.pages && result.pages.length > 0) {
-                const scannedImageUri = result.pages[0].documentImageFileUri;
-                const response = await fetch(scannedImageUri);
-                const blob = await response.blob();
+        console.log("📸 Scanner Result:", result);
 
-                const file = new File([blob], "scanned-document.jpg", {
-                    type: blob.type,
-                });
+        // Check if pages exist and are valid
+        if (Array.isArray(result.pages) && result.pages.length > 0 && result.pages[0].documentImageFileUri) {
+            const scannedImageUri = result.pages[0].documentImageFileUri;
 
-                setScannedFile(file);
-                setPreviewUrl(URL.createObjectURL(file));
-                console.log("📄 Document scanned and ready.");
-            } else {
-                console.warn("⚠️ No document scanned.");
-                alert("No document was scanned. Please try again.");
-            }
-        } catch (error) {
-            console.error("❌ Scanner error:", error);
-            alert("Error during scanning. Please allow camera access.");
-        }
-    };
+            console.log("🖼️ Captured Image URI:", scannedImageUri);
 
-    const sendToGallabox = async () => {
-        if (!scannedFile) {
-            alert("No scanned document found. Please scan first.");
-            return;
-        }
+            const response = await fetch(scannedImageUri);
+            const blob = await response.blob();
 
-        setIsLoading(true);
-
-        const gallaboxApiUrl = "https://api.gallabox.com/whatsapp/sendMedia";
-        const recipientPhoneNumber = "917887674130";
-        const gallaboxApiKey = "6824549420ef01f267799de8";
-
-        const formData = new FormData();
-        formData.append("file", scannedFile);
-
-        const payload = {
-            phone: recipientPhoneNumber,
-            type: "document",
-            caption: "Here is your scanned document.",
-        };
-
-        formData.append("payload", JSON.stringify(payload));
-
-        try {
-            const response = await fetch(gallaboxApiUrl, {
-                method: "POST",
-                headers: {
-                    "api-key": gallaboxApiKey,
-                },
-                body: formData,
+            const file = new File([blob], "scanned-document.jpg", {
+                type: blob.type,
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                console.log("✅ Sent to WhatsApp:", data);
-                alert("Document sent successfully via WhatsApp.");
-            } else {
-                const errorData = await response.json();
-                console.error("❌ Gallabox API error:", errorData);
-                alert("Failed to send the document. Check the phone format or API key.");
-            }
-        } catch (error) {
-            console.error("❌ Network error:", error);
-            alert("Network error while sending document.");
-        } finally {
-            setIsLoading(false);
+            setPreviewUrl(URL.createObjectURL(file));
+            console.log("✅ Scanned file object:", file);
+        } else {
+            console.warn("⚠️ No valid pages found in scanner result:", result.pages);
+            alert("No document was scanned. Please try again.");
         }
-    };
+    } catch (error) {
+        console.error("❌ Scanner error:", error);
+        alert("Error during scanning. Please allow camera access.");
+    }
+};
+
 
     return (
         <div style={{ textAlign: "center" }}>
-            <h2>Scanbot Web Scanner</h2>
-
             {previewUrl && (
-                <div style={{ marginBottom: "20px" }}>
-                    <h4>Scanned Preview:</h4>
-                    <img src={previewUrl} alt="Scanned preview" style={{ maxWidth: "300px", border: "1px solid #ccc" }} />
+                <div>
+                    <img
+                        src={previewUrl}
+                        alt="Scanned preview"
+                        style={{ maxWidth: "300px", border: "1px solid #ccc" }}
+                    />
                 </div>
             )}
-
-            <button onClick={sendToGallabox} disabled={isLoading} style={{ padding: "10px 20px", fontSize: "16px" }}>
-                {isLoading ? "Submitting..." : "Submit"}
-            </button>
         </div>
     );
 };
 
 export default ScanbotScanner;
-

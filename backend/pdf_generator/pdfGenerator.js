@@ -28,7 +28,7 @@ async function createPDF(userData) {
         .font('Helvetica')
         .fontSize(valueFontSize)
         .text(` ${value ?? '-'}`);
-      
+
       y = doc.y + 5;
       checkPageEnd();
     };
@@ -53,8 +53,10 @@ async function createPDF(userData) {
     // --- Application Details ---
     addSectionTitle('Application Details');
     drawLabelAndValue('Application ID', userData.admissionApplicationId);
-    drawLabelAndValue('Scheme Name', userData.eligibleScheme1);
-    drawLabelAndValue('Department Name', userData.departmentName);
+    drawLabelAndValue('Current Department 1', userData.currentDept1);
+    drawLabelAndValue('Current Scheme 1', userData.currentScheme1);
+    drawLabelAndValue('Current Department 2', userData.currentDept2);
+    drawLabelAndValue('Current Scheme 2', userData.currentScheme2);
     drawLabelAndValue('Applied Date', userData.applicationSubmissionDate);
     y += 15;
 
@@ -84,7 +86,7 @@ async function createPDF(userData) {
     drawLabelAndValue('Pincode', userData.correspondancePincode);
     drawLabelAndValue('Is correspondence address same as permanent address', userData.correpoAddressSameAsPermanentAddress);
 
-    
+
     //is correspondence address same as permanent address
     y += 15;
 
