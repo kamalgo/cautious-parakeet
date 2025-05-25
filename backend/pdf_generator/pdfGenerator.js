@@ -53,9 +53,9 @@ async function createPDF(userData) {
     // --- Application Details ---
     addSectionTitle('Application Details');
     drawLabelAndValue('Application ID', userData.admissionApplicationId);
-    drawLabelAndValue('Current Department 1', userData.currentDept1);
+    // drawLabelAndValue('Current Department 1', userData.currentDept1);
     drawLabelAndValue('Current Scheme 1', userData.currentScheme1);
-    drawLabelAndValue('Current Department 2', userData.currentDept2);
+    // drawLabelAndValue('Current Department 2', userData.currentDept2);
     drawLabelAndValue('Current Scheme 2', userData.currentScheme2);
     drawLabelAndValue('Applied Date', userData.applicationSubmissionDate);
     y += 15;
