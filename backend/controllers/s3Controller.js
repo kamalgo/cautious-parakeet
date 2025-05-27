@@ -7,7 +7,9 @@ exports.getPresignedUrl = async (req, res) => {
     return res.status(400).json({ error: "Missing query parameters" });
   }
 
-  const key = `${id}/${type}/${fileName}`;
+const extension = fileName.split('.').pop();
+const uniqueName = `${Date.now()}-${Math.floor(Math.random() * 1000)}.${extension}`;
+const key = `${id}/${type}/${uniqueName}`;
 
   try {
     const url = await generatePresignedUploadURL(key, contentType);

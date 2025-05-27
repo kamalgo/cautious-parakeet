@@ -11,7 +11,7 @@ const s3 = new S3Client({
 
 const generatePresignedUploadURL = async (key, contentType) => {
   const command = new PutObjectCommand({
-    Bucket: process.env.S3_BUCKET_NAME,
+    Bucket: "scanbotdemo",
     Key: key,
     ContentType: contentType,
   });
@@ -19,6 +19,9 @@ const generatePresignedUploadURL = async (key, contentType) => {
   const url = await getSignedUrl(s3, command, {
     expiresIn: 60 * 5, // 5 minutes
   });
+
+  console.log('✅ Pre-Signed URL:', url);
+console.log('📂 Key:', key);
 
   return url;
 };
