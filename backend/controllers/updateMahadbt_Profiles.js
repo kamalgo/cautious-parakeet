@@ -655,7 +655,7 @@ exports.renewalUPTA = async (req, res) => {
           updateFields.incomeCertNumber = extracted.incomeCertNo;
           updateFields.incomeIssuingAuthority = extracted.incomeIssAuthority;
           updateFields.doYouHaveIncomeCertificate = "Yes";
-          if (extracted.incomeIssueDate) {
+          if (extracted.incomeIssuedDate) {
             const formattedDate = moment(extracted.incomeIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.incomeIssueDate = formattedDate;
           } else {
