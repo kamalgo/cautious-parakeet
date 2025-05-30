@@ -415,23 +415,27 @@ exports.getScholarshipSuggestions = async (req, res) => {
     }
 
     const { annualFamilyIncome, casteCategory, areYouHostellerDayScholar } = student;
+    console.log("🟢 Student Data:", annualFamilyIncome,casteCategory,areYouHostellerDayScholar);
 
     const eligibleScholarships = [];
 
     // Normalize and prepare values
     const casteLower = (casteCategory || "").toLowerCase().trim();
     const hostellerStatus = (areYouHostellerDayScholar || "").toLowerCase().trim();
+    // const isHosteller = hostellerStatus.includes("hostel") || hostellerStatus.includes("hosteller");
 
     console.log("Student Caste Category (normalized):", casteLower);
 
 
     const eligibleCastes = ['open', 'ebc', 'sebc'];
     const isEligibleCaste = eligibleCastes.includes(casteLower);
-    const isHosteller = hostellerStatus === "Hosteller";
+    const isHosteller = hostellerStatus === "hosteller";
+
 
     // Scholarship 1: Rajashri Chhatrapati Shahu Maharaj Scholarship
     if (annualFamilyIncome < 800000 && isEligibleCaste) {
       eligibleScholarships.push("Rajashri Chhatrapati Shahu Maharaj Scholarship");
+
     }
 
     // Scholarship 2: Dr. Panjabrao Deshmukh Hostel Maintenance Scholarship
