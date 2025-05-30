@@ -401,6 +401,23 @@ exports.handleStudentResponse = async (req, res) => {
 
 /////////////////////////////////////////////////////////////////////////////////////////////
 exports.getScholarshipSuggestions = async (req, res) => {
+
+  const schemeToDeptMap = {
+  "Rajashri Chhatrapati Shahu Maharaj Scholarship": "Directorate of Higher Education",
+  "Dr. Panjabrao Deshmukh Hostel Maintenance Scholarship": "Directorate of Technical Education",
+  "Post Matric Scholarship for OBC Students": "OBC, SEBC, VJNT & SBC Welfare Department",
+  "Tution fees and examination fees to OBC Students": "OBC, SEBC, VJNT & SBC Welfare Department",
+  "Post matric to sbc students": "OBC, SEBC, VJNT & SBC Welfare Department",
+  "Payment of maintenance allowance to VJNT and SBC students": "OBC, SEBC, VJNT & SBC Welfare Department",
+  "Tution fees and examination fees to SBC Students": "OBC, SEBC, VJNT & SBC Welfare Department",
+  "Post matric to VJNT students": "OBC, SEBC, VJNT & SBC Welfare Department",
+  "Tution fees and examination fees to VJNT Students": "OBC, SEBC, VJNT & SBC Welfare Department",
+  "Govt. of India Post Matric Scholarship for SC Students": "Social Justice and Special Assistance Department",
+  "freeship for SC Students": "Social Justice and Special Assistance Department",
+  "freeship for ST Students": "Tribal Development Department",
+  "Maintenannce Allowance for Students studying in professional courses": "Social Justice and Special Assistance Department"
+};
+
   try {
     const { aadhaar_number } = req.body;
 
@@ -432,72 +449,110 @@ exports.getScholarshipSuggestions = async (req, res) => {
     const isHosteller = hostellerStatus === "hosteller";
 
 
-    // Scholarship 1: Rajashri Chhatrapati Shahu Maharaj Scholarship
-    if (annualFamilyIncome < 800000 && isEligibleCaste) {
-      eligibleScholarships.push("Rajashri Chhatrapati Shahu Maharaj Scholarship");
+// Scholarship 1: Rajashri Chhatrapati Shahu Maharaj Scholarship 
+if (annualFamilyIncome < 800000 && isEligibleCaste) {
+  eligibleScholarships.push({
+    scheme: "Rajashri Chhatrapati Shahu Maharaj Scholarship",
+    department: schemeToDeptMap["Rajashri Chhatrapati Shahu Maharaj Scholarship"] || "Unknown Department"
+  });
+}
 
-    }
+// Scholarship 2: Dr. Panjabrao Deshmukh Hostel Maintenance Scholarship
+if (annualFamilyIncome < 800000 && isEligibleCaste && isHosteller) {
+  eligibleScholarships.push({
+    scheme: "Dr. Panjabrao Deshmukh Hostel Maintenance Scholarship",
+    department: schemeToDeptMap["Dr. Panjabrao Deshmukh Hostel Maintenance Scholarship"] || "Unknown Department"
+  });
+}
 
-    // Scholarship 2: Dr. Panjabrao Deshmukh Hostel Maintenance Scholarship
-    if (annualFamilyIncome < 800000 && isEligibleCaste && isHosteller) {
-      eligibleScholarships.push("Dr. Panjabrao Deshmukh Hostel Maintenance Scholarship");
-    }
+// Scholarship 3: Post Matric Scholarship for OBC Students
+if (casteLower === "(obc) other backward class" && annualFamilyIncome < 150000) {
+  eligibleScholarships.push({
+    scheme: "Post Matric Scholarship for OBC Students",
+    department: schemeToDeptMap["Post Matric Scholarship for OBC Students"] || "Unknown Department"
+  });
+}
 
-    // Scholarship 3: Post Matric Scholarship for OBC Students
-    if (casteLower === "(obc) other backward class" && annualFamilyIncome < 150000) {
-      eligibleScholarships.push("Post Matric Scholarship for OBC Students");
-    }
+// Scholarship 4: Tution fees and examination fees to OBC Students
+if (casteLower === "(obc) other backward class" && annualFamilyIncome > 150000) {
+  eligibleScholarships.push({
+    scheme: "Tution fees and examination fees to OBC Students",
+    department: schemeToDeptMap["Tution fees and examination fees to OBC Students"] || "Unknown Department"
+  });
+}
 
-    // Scholarship 4: Tution fees and examination fees to OBC Students
-    if (casteLower === "(obc) other backward class" && annualFamilyIncome > 150000) {
-      eligibleScholarships.push("Tution fees and examination fees to OBC Students");
-    }
+// Scholarship 5: Post matric to sbc students
+if (casteLower === "(sbc) special backward class" && annualFamilyIncome < 150000) {
+  eligibleScholarships.push({
+    scheme: "Post matric to sbc students",
+    department: schemeToDeptMap["Post matric to sbc students"] || "Unknown Department"
+  });
+}
 
-    // Scholarship 5: Post matric to sbc students
-    if (casteLower === "(sbc) special backward class" && annualFamilyIncome < 150000) {
-      eligibleScholarships.push("Post matric to sbc students");
-    }
+// Scholarship 6: Payment of maintenance allowance to VJNT and SBC students
+if ((casteLower === "(sbc) special backward class" || casteLower === "(vjnt) vimukta jat nomadic tribes") && annualFamilyIncome < 150000 && isHosteller) {
+  eligibleScholarships.push({
+    scheme: "Payment of maintenance allowance to VJNT and SBC students",
+    department: schemeToDeptMap["Payment of maintenance allowance to VJNT and SBC students"] || "Unknown Department"
+  });
+}
 
-    // Scholarship 6: Payment of maintenance allowance to VJNT and SBC students
-    if (casteLower === "(sbc) special backward class" || casteLower === "(vjnt) vimukta jat nomadic tribes" && annualFamilyIncome < 150000 && isHosteller) {
-      eligibleScholarships.push("Payment of maintenance allowance to VJNT and SBC students");
-    }
-    
-    // Scholarship 7: Tution fees and examination fees to SBC Students
-    if (casteLower === "(sbc) special backward class" && annualFamilyIncome > 150000) {
-      eligibleScholarships.push("Tution fees and examination fees to SBC Students");
-    }
+// Scholarship 7: Tution fees and examination fees to SBC Students
+if (casteLower === "(sbc) special backward class" && annualFamilyIncome > 150000) {
+  eligibleScholarships.push({
+    scheme: "Tution fees and examination fees to SBC Students",
+    department: schemeToDeptMap["Tution fees and examination fees to SBC Students"] || "Unknown Department"
+  });
+}
 
-    // Scholarship 8: Post matric to VJNT students
-    if (casteLower === "(vjnt) vimukta jat nomadic tribes" && annualFamilyIncome < 150000) {
-      eligibleScholarships.push("Post matric to VJNT students");
-    }  
-    
-    // Scholarship 9: Tution fees and examination fees to VJNT Students
-    if (casteLower === "(vjnt) vimukta jat nomadic tribes" && annualFamilyIncome > 150000) {
-      eligibleScholarships.push("Tution fees and examination fees to VJNT Students");
-    }    
+// Scholarship 8: Post matric to VJNT students
+if (casteLower === "(vjnt) vimukta jat nomadic tribes" && annualFamilyIncome < 150000) {
+  eligibleScholarships.push({
+    scheme: "Post matric to VJNT students",
+    department: schemeToDeptMap["Post matric to VJNT students"] || "Unknown Department"
+  });
+}
 
-    // Scholarship 10: GOVT. of India Post Matric Scholarship for SC Students
-    if (annualFamilyIncome < 250000 && casteLower === "(sc) scheduled caste") {
-      eligibleScholarships.push("Govt. of India Post Matric Scholarship for SC Students");
+// Scholarship 9: Tution fees and examination fees to VJNT Students
+if (casteLower === "(vjnt) vimukta jat nomadic tribes" && annualFamilyIncome > 150000) {
+  eligibleScholarships.push({
+    scheme: "Tution fees and examination fees to VJNT Students",
+    department: schemeToDeptMap["Tution fees and examination fees to VJNT Students"] || "Unknown Department"
+  });
+}
 
-    } 
+// Scholarship 10: GOVT. of India Post Matric Scholarship for SC Students
+if (annualFamilyIncome < 250000 && casteLower === "(sc) scheduled caste") {
+  eligibleScholarships.push({
+    scheme: "Govt. of India Post Matric Scholarship for SC Students",
+    department: schemeToDeptMap["Govt. of India Post Matric Scholarship for SC Students"] || "Unknown Department"
+  });
+}
 
-    // Scholarship 11: Freeship for SC Students
-    if (annualFamilyIncome > 250000 && casteLower === "(sc) scheduled caste" && isHosteller) {
-      eligibleScholarships.push("freeship for SC Students");
-    }  
-    
-    // Scholarship 12: Post Matric Scholarship for ST Students
-    if (casteLower === "(st) scheduled tribes") {
-      eligibleScholarships.push("freeship for SC Students");
-    }
+// Scholarship 11: Freeship for SC Students
+if (annualFamilyIncome > 250000 && casteLower === "(sc) scheduled caste" && isHosteller) {
+  eligibleScholarships.push({
+    scheme: "Freeship for SC Students",
+    department: schemeToDeptMap["Freeship for SC Students"] || "Unknown Department"
+  });
+}
 
-        // Scholarship 13: Maintenance allowance SC students
-    if (annualFamilyIncome < 250000 && casteLower === "(sc) scheduled caste" && isHosteller) {
-      eligibleScholarships.push("Maintenannce Allowance for Students studying in professional courses"); //does this requires hosteller status?
-    }
+// Scholarship 12: Post Matric Scholarship for ST Students
+if (casteLower === "(st) scheduled tribes") {
+  eligibleScholarships.push({
+    scheme: "Post Matric Scholarship for ST Students",
+    department: schemeToDeptMap["Post Matric Scholarship for ST Students"] || "Unknown Department"
+  });
+}
+
+// Scholarship 13: Maintenance allowance SC students
+if (annualFamilyIncome < 250000 && casteLower === "(sc) scheduled caste" && isHosteller) {
+  eligibleScholarships.push({
+    scheme: "Maintenannce Allowance for Students studying in professional courses",
+    department: schemeToDeptMap["Maintenannce Allowance for Students studying in professional courses"] || "Unknown Department"
+  });
+}
+
     console.log("🟢 Scholarship suggestions for student:", eligibleScholarships);
 
     return res.status(200).json({
