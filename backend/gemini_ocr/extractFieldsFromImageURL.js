@@ -62,7 +62,7 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
         "IssuingDistrict": "",
         "ApplicantName": "",
         "IssuingAuthority": "", //eg: "Talathi", "Tehsildar", "District Collector"
-        "CasteIssuingDate": ""
+        "CasteIssuingDate": "",
         "CasteCategory": "" //eg: "Other Backward Class", "Scheduled Caste", "Scheduled Tribe" etc.
       }`;
       break;
@@ -189,6 +189,20 @@ async function extractFieldsFromImageURL(imageUrl, docType) {
             CasteIssuingDate,
             SubCaste,CasteCategory, ...restCaste
           } = parsed;
+
+          console.log("✅ Extracted Caste fields:", {
+            ...restCaste,
+            casteCertificateNumber: CasteCertificateNumber || "",
+            casteIssuedDistrict: normalizeDistrict(IssuingDistrict || ""),
+            casteApplicantName: ApplicantName || "",
+            casteIssAuthority: normalizeAuthority(IssuingAuthority || ""),
+            casteIssuedDate: CasteIssuingDate || "",
+            subCaste: (SubCaste || ""), // Normalize the caste name
+            casteCategory: normalizeCasteCategory(CasteCategory || "") // Normalize the caste category
+          });
+
+ 
+
           return {
             ...restCaste,
             casteCertificateNumber: CasteCertificateNumber || "",

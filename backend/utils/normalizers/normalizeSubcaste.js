@@ -81,70 +81,103 @@ const path = require("path");
 const csv = require("csv-parser");
 const levenshtein = require("fast-levenshtein");
 
-const subCasteMap = {};
+const subCasteMap = new Map();        // full raw map
+const nameOnlyMap = new Map();        // "chambhar" => fullValue
+const fullEntryList = [];             // list of all full values (for code+name logic)
 
-const csvPath = path.resolve(__dirname, '../utils/normalizers/subcaste.csv');
+const casteColumns = [
+  "Obc",
+  "(SBC) Special",
+  "(SC)Scheduled Cast",
+  "(ST) Scheduled Tribes",
+  "(VJNT)Vimukta Jati and Nomadic Tribes",
+  "SEBC"
+];
+
+const csvPath = path.resolve(__dirname, "subcaste.csv");
+console.log("Resolved CSV Path:", csvPath);
 
 function loadSubCasteCSV() {
   return new Promise((resolve, reject) => {
     fs.createReadStream(csvPath)
       .pipe(csv())
-      .on('data', (row) => {
-        if (!row.sub_caste_name) return;
+      .on("data", (row) => {
+        casteColumns.forEach((col) => {
+          const value = row[col];
+          if (!value) return;
 
-        const original = row.sub_caste_name.trim();
+          const trimmedValue = value.trim();
+          const cleanedName = trimmedValue
+            .replace(/\(\d+\)/g, "")   // remove (number)
+            .replace(/[^a-zA-Z ]/g, "") // remove special chars
+            .toLowerCase()
+            .trim()
+            .replace(/\s+/g, "");
 
-        // Extract the name only, without number suffix/prefix
-        const cleaned = original
-          .replace(/^\(\d+\)(\([A-Z]+\))?/, '')      // remove prefix like (11)
-          .replace(/\(\s*\d+\s*\)$/, '')             // remove suffix like ( 11 )
-          .trim()
-          .toLowerCase();
+          if (!nameOnlyMap.has(cleanedName)) {
+            nameOnlyMap.set(cleanedName, trimmedValue);
+          }
 
-        // Map to original value
-        if (!subCasteMap[cleaned]) {
-          subCasteMap[cleaned] = original;
-        }
+          fullEntryList.push(trimmedValue);
+        });
       })
-      .on('end', () => {
+      .on("end", () => {
         console.log("✅ CSV file successfully processed.");
         resolve();
       })
-      .on('error', (err) => {
+      .on("error", (err) => {
         console.error("❌ Error reading CSV:", err.message);
         reject(err);
       });
   });
 }
+
 function normalizeSubCaste(input = "") {
-  const cleanedInput = input
-    .trim()
-    .replace(/^\(\d+\)(\([A-Z]+\))?/, '') // remove prefix
-    .replace(/\(\s*\d+\s*\)$/, '')        // remove suffix
-    .toLowerCase();
+  const originalInput = input.trim();
 
-  // Direct match
-  if (subCasteMap[cleanedInput]) {
-    return subCasteMap[cleanedInput];
-  }
+  const inputCodes = [...originalInput.matchAll(/\d+/g)].map(m => m[0]);
+  const inputName = originalInput
+    .replace(/\d+/g, "")
+    .replace(/\(\d+\)/g, "")
+    .replace(/[^a-zA-Z]/g, "")
+    .toLowerCase()
+    .trim();
 
-  // Fuzzy match
-  let closest = null;
-  let minDistance = Infinity;
+  // 1. Try direct match: name + all codes must match
+  for (const entry of fullEntryList) {
+    const entryCodes = [...entry.matchAll(/\d+/g)].map(m => m[0]);
+    const entryName = entry
+      .replace(/\(\d+\)/g, "")
+      .replace(/[^a-zA-Z]/g, "")
+      .toLowerCase()
+      .trim();
 
-  for (const key in subCasteMap) {
-    const distance = levenshtein.get(cleanedInput, key);
-    if (distance < minDistance) {
-      minDistance = distance;
-      closest = key;
+    const codesMatch = inputCodes.every(code => entryCodes.includes(code));
+    const nameMatch = entryName === inputName;
+
+    if (codesMatch && nameMatch) {
+      return entry;
     }
   }
 
-  if (closest) {
-    return subCasteMap[closest];
+  // 2. Try name-only match
+  if (nameOnlyMap.has(inputName)) {
+    return nameOnlyMap.get(inputName);
   }
 
-  return input; // fallback
+  // 3. Fuzzy fallback on name
+  let closest = null;
+  let minDistance = Infinity;
+
+  for (const [key, value] of nameOnlyMap.entries()) {
+    const distance = levenshtein.get(inputName, key);
+    if (distance < minDistance) {
+      minDistance = distance;
+      closest = value;
+    }
+  }
+
+  return closest || originalInput;
 }
 
 module.exports = {
