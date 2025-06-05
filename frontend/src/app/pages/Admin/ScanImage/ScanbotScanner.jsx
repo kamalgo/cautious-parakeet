@@ -66,21 +66,21 @@ const ScanbotScanner = () => {
       try {
         await ScanbotSDK.initialize({
           licenseKey:
-"Cs/bDjISnbQv2Jj0GYdojPepYEaXZq" +
-"a0lCEBc4PwZt1rFvVgcgdP+s5puRjQ" +
-"+S9fi5j/g4tmqsXSY69sL5HrdqYTZ9" +
-"iXV+1BLhF/+PFWl7JY4M2au/At6+RH" +
-"kbkTXFmUJST+A81U9fDOjE3qHrg+a9" +
-"3jUWz1DCnhsjPUGBWwow7vRzt+4Ofy" +
-"1gqL7wdT7zKJxYzqVhkjcsbgXHR2G3" +
-"mMllDDdNPn4/8AsQorc3EX5+9x8/Sd" +
-"kKj8uwUSsbfoecjaN17rN4Ye/+lza5" +
-"yqRjCmNuhnjEwFygwIR2R+N6E4q3+T" +
-"QytXzjL+aT4uDTThZmFXv9rj0MfJm3" +
-"260wJtx2HJIg==\nU2NhbmJvdFNESw" +
-"psb2NhbGhvc3R8cnl6ZW4ud3VhemUu" +
-"Y29tCjE3NDk3NzI3OTkKODM4ODYwNw" +
-"o4\n",
+"km+bu7qmLk6EQUo59o0liXfiDrjJG0" +
+"aIwrAodjn5fZNBU1MyyK5PAkjVviAQ" +
+"XrB6dJ0X4rg9797STxHAp+DxGbLSPk" +
+"5IsxGP2LBJFdMwMQBpG/HybUcbVKvE" +
+"lHUFbCkah0yGbQ/1IQX23EKSzLtyhP" +
+"XvzFc5S6yPCrnf72d+GXkil5EjsdJF" +
+"OZApVyMxVcbZhjw/0Z2F7j5yvLOAeO" +
+"kF9v4elapGnCsRgRZQ4ErOzohZ/p+i" +
+"4Mzye2WL8U97SFvEPLehUwsGtGXIc1" +
+"HGxRHrJoQ4lZIyCUkGkmCi4qXWrW0W" +
+"WktYyIwQGkhiVhzI2EHfWM5nByVSf7" +
+"bJwjRHTlU23A==\nU2NhbmJvdFNESw" +
+"psb2NhbGhvc3R8c2Nhbm5lci5mb3Jz" +
+"dHUuY28KMTc0OTc3Mjc5OQo4Mzg4Nj" +
+"A3Cjg=\n",
           enginePath: "/wasm/",
         });
 
