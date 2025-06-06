@@ -6,6 +6,57 @@ const MahaDBT_Registration = require("../models/MahaDBT_Registration");
 
 const redisClient = require("../database/redisClient");
     
+// exports.mahadbt_Applicant_Name = async (req, res) => {
+//     try {
+//         const { applicantName } = req.body;
+//         console.log("🔹 Received request at /mahadbt-applicant");
+//         console.log("🔹 Request body:", req.body);
+
+//         if (!applicantName) {
+//             console.log("❌ Missing applicantName");
+//             return res.status(400).json({
+//                 success: false,
+//                 message: "Applicant name is required.",
+//             });
+//         }
+
+//         // Store directly in MySQL (MySQL will generate the ID)
+//         console.log("🔹 Attempting to store in MySQL");
+//         const newApplicant = await MahaDBT_Registration.create({
+//             mahadbt_Applicant_Name: applicantName
+//         });
+
+//         console.log("✅ Stored in MySQL with ID:", newApplicant.id);
+
+//         // Use MySQL ID for Redis storage
+//         const mysqlId = newApplicant.id;
+//         const redisKey = `mahadbt_Applicant_Name:${mysqlId}`;
+//         const redisData = { id: mysqlId, applicantName };
+
+//         // Store in Redis
+//         await redisClient.set(redisKey, JSON.stringify(redisData));
+//         console.log("✅ Stored in Redis:", redisKey, redisData);
+
+//         return res.status(201).json({
+//             success: true,
+//             message: "Applicant created successfully",
+//             data: {
+//                 id: mysqlId,
+//                 applicantName: newApplicant.mahadbt_Applicant_Name
+//             }
+//         });
+
+//     } catch (error) {
+//         console.error("❌ Error:", error);
+//         return res.status(500).json({
+//             success: false,
+//             message: "Server error.",
+//         });
+//     }
+// };
+const { spawn } = require("child_process");
+const path = require("path");
+
 exports.mahadbt_Applicant_Name = async (req, res) => {
     try {
         const { applicantName } = req.body;
@@ -20,26 +71,44 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
             });
         }
 
-        // Store directly in MySQL (MySQL will generate the ID)
+        // 🔹 Store in MySQL
         console.log("🔹 Attempting to store in MySQL");
         const newApplicant = await MahaDBT_Registration.create({
             mahadbt_Applicant_Name: applicantName
         });
 
-        console.log("✅ Stored in MySQL with ID:", newApplicant.id);
-
-        // Use MySQL ID for Redis storage
         const mysqlId = newApplicant.id;
+        console.log("✅ Stored in MySQL with ID:", mysqlId);
+
+        // 🔹 Store in Redis
         const redisKey = `mahadbt_Applicant_Name:${mysqlId}`;
         const redisData = { id: mysqlId, applicantName };
-
-        // Store in Redis
         await redisClient.set(redisKey, JSON.stringify(redisData));
         console.log("✅ Stored in Redis:", redisKey, redisData);
 
+        // 🔹 Full JAR path
+        const jarPath = path.join(__dirname, '../jars/Mahadbt-0.0.1-SNAPSHOT-shaded.jar');
+
+        // 🔹 Trigger the JAR file
+        console.log(`🚀 Launching JAR: java -jar ${jarPath} ${mysqlId}`);
+        const jarProcess = spawn('java', ['-jar', jarPath, mysqlId]);
+
+        jarProcess.stdout.on('data', (data) => {
+            console.log(`📤 JAR stdout: ${data.toString()}`);
+        });
+
+        jarProcess.stderr.on('data', (data) => {
+            console.error(`⚠️ JAR stderr: ${data.toString()}`);
+        });
+
+        jarProcess.on('close', (code) => {
+            console.log(`✅ JAR exited with code ${code}`);
+        });
+
+        // 🔹 Respond back
         return res.status(201).json({
             success: true,
-            message: "Applicant created successfully",
+            message: "Applicant created and JAR triggered successfully.",
             data: {
                 id: mysqlId,
                 applicantName: newApplicant.mahadbt_Applicant_Name
