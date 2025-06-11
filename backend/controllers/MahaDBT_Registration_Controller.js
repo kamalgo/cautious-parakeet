@@ -90,7 +90,7 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
         // 🔹 Full JAR path
         const jarPath = path.join(__dirname, '../jars/Mahadbt-0.0.1-SNAPSHOT-shaded.jar');
 
-        // 🔹 Trigger the JAR file
+        // 🔹 Trigger the JAR file  
         console.log(`🚀 Launching JAR: java -jar ${jarPath} ${mysqlId}`);
         const jarProcess = spawn('java', ['-jar', jarPath, mysqlId]);
 
