@@ -88,7 +88,7 @@ exports.mahadbt_Applicant_Name = async (req, res) => {
         console.log("✅ Stored in Redis:", redisKey, redisData);
 
         // 🔹 Full JAR path
-        const jarPath = path.join(__dirname, '../jars/Mahadbt-0.0.1-SNAPSHOT-shaded.jar');
+        const jarPath = path.join(__dirname, '../jars/registration/Mahadbt-0.0.1-SNAPSHOT-shaded.jar');
 
         // 🔹 Trigger the JAR file  
         console.log(`🚀 Launching JAR: java -jar ${jarPath} ${mysqlId}`);
