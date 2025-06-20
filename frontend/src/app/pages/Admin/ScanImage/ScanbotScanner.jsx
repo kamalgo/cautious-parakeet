@@ -140,7 +140,9 @@ const ScanbotScanner = () => {
       const contentType = file.type;
       const id = "user-id-123"; // Replace this with real ID if needed
 
-      const res = await axios.get("http://localhost:4004/api/get-presigned-url", {
+      // Uncomment the next line if you want to use a different endpoint
+      // const res = await axios.get("http://localhost:4004/api/get-presigned-url", {
+       const res = await axios.get("https://api.forstu.co/api/get-presigned-url", {
         params: {
           id,
           fileName,
