@@ -114,6 +114,7 @@ exports.UPTA = async (req, res) => {
           updateFields.incomeCertNo = extracted.incomeCertNo;
           updateFields.incomeIssAuthority = extracted.incomeIssAuthority;
           updateFields.doYouHaveIncomeCertificate = "Yes";
+          updateFields.incomeCertHasBarcode = "No";
           if (extracted.incomeIssuedDate) {
             const formattedDate = moment(extracted.incomeIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.incomeIssuedDate = formattedDate;
@@ -128,6 +129,8 @@ exports.UPTA = async (req, res) => {
           updateFields.casteApplicantName = extracted.casteApplicantName;
           updateFields.casteIssAuthority = extracted.casteIssAuthority;
           updateFields.doYouHaveCasteCertificate = "Yes";
+          updateFields.casteCertHasBarcode = "No";
+
           updateFields.casteCategory = extracted.casteCategory;
           if (extracted.casteIssuedDate) {
             const formattedDate = moment(extracted.casteIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
@@ -141,6 +144,8 @@ exports.UPTA = async (req, res) => {
           updateFields.domicileApplicantName = extracted.domicileApplicantName;
           updateFields.domicileIssuedAuthority = extracted.domicileIssuedAuthority;
           updateFields.doYouHaveDomicileCertificate = "Yes";
+          updateFields.doYouHaveDomicileMaharashtraKarnataka = "Yes";
+          updateFields.domicileCertHasBarcode = "No";
           if (extracted.domicileIssuedDate) {
             const formattedDate = moment(extracted.domicileIssuedDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
             updateFields.domicileIssuedDate = formattedDate;
